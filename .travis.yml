@@ -1,13 +1,10 @@
 language: python
 python:
   - "3.6"
-cache: pip
-install:
-  - pip install -r requirements.txt
 before_script:
   - cd virtual_testing_machine/src
 script:
-  - python3 -m unittest
+  - python -m unittest
 branches:
   only:
     - master
