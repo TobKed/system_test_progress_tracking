@@ -1,7 +1,6 @@
 codecov:
-  notify:
-    archive:
-      uploads: no
+  archive:
+    uploads: no
 
 coverage:
   precision: 2
@@ -9,4 +8,5 @@ coverage:
   range: 80...100
 
 comment:
-  layout: “reach, diff, flags, files, footer”
+  layout: "reach, diff, flags, files, footer"
+  behavior: default
