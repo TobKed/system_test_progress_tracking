@@ -1,8 +1,8 @@
 import unittest
 import os
-import run
 from time import time
 from unittest.mock import MagicMock
+import run
 
 
 class TestDirsFiles(unittest.TestCase):
@@ -36,3 +36,13 @@ class TestRunTestCase(unittest.TestCase):
         time_end = time()
         execution_time = time_end - time_start
         self.assertTrue(1.5 < execution_time < 2.5)
+
+    @unittest.mock.patch("test_runner.run_script")
+    def test_runners(self, mocked_run_script):
+        test_path = run.SCENARIO_MASTER
+        run.run_test_case(test_path)
+        run.run_test_scenario(test_path)
+        run.run_scenario_master(test_path)
+        mocked_run_script.assert_called_with(test_path)
+        self.assertEqual(mocked_run_script.call_args_list, [unittest.mock.call(test_path)]*3)
+        self.assertEqual(mocked_run_script.call_count, 3)
