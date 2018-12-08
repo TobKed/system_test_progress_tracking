@@ -1,4 +1,3 @@
-from test_runner.models import TestData
 from time import sleep
 
 print("Start 01_01_test_lamp.py")
@@ -12,5 +11,3 @@ print("Turn off lamp")
 print("Wait 1 second")
 sleep(1)
 print("Verify is lamp off")
-
-TestData.state = "passed"

@@ -25,13 +25,6 @@ class TestRunTestCase(unittest.TestCase):
     def test_test_case_path(self):
         self.assertTrue(os.path.exists(self.test_case_path))
 
-    @unittest.mock.patch("builtins.print")
-    def test_print_current_test_status(self, mocked_print):
-        test_string = "test status"
-        test_runner.models.TestData.state = test_string
-        test_runner.models.TestData.print_last_test_status()
-        mocked_print.assert_called_once_with('Last test status:', test_string)
-
     def test_run_test_case(self):
         time_start = time()
         test_runner.actions.run_test_case(self.test_case_path)

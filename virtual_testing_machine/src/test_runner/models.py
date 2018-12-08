@@ -4,7 +4,23 @@ from datetime import datetime
 
 
 class RunData:
-    dry_run = False
+    def __init__(self):
+        self.dry_run_active = False
+        self.dry_run_data = None
+        self.is_running = False
+
+    @property
+    def dry_run(self):
+        return self.dry_run_active
+
+    @dry_run.setter
+    def dry_run(self, state):
+        if state:
+            self.dry_run_data = DryRunData()
+        self.dry_run_active = state
+
+
+RUN_DATA = RunData()
 
 
 class DryRunData:
@@ -13,6 +29,16 @@ class DryRunData:
         self.machine_name = MACHINE_NAME
         self.time_stamp = None
         self.master_scenario = None
+
+    def add_script(self, script_object):
+        if isinstance(script_object, MasterScenarioData):
+            self.master_scenario = script_object
+        elif isinstance(script_object, ScenarioData):
+            self.master_scenario.scenarios.append(script_object)
+        elif isinstance(script_object, TestCase):
+            self.master_scenario.scenarios[-1].tests.append(TestCase)
+        else:
+            raise TypeError("Unknown script type")
 
     def toJSON(self):
         self.time_stamp = datetime.now()
@@ -54,11 +80,3 @@ class ScenarioData(ScriptData):
 
 class TestCase(ScriptData):
     pass
-
-
-class TestData:
-    state = "NA"
-
-    @classmethod
-    def print_last_test_status(cls):
-        print("Last test status:", cls.state)
