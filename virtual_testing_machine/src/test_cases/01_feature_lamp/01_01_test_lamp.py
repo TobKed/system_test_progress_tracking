@@ -1,4 +1,4 @@
-from run import TestData
+from run import TestCaseData
 from time import sleep
 
 print("Start 01_01_test_lamp.py")
@@ -13,4 +13,4 @@ print("Wait 1 second")
 sleep(1)
 print("Verify is lamp off")
 
-TestData.state = "passed"
+TestCaseData.state = "passed"
