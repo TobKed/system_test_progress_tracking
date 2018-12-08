@@ -10,19 +10,20 @@ from test_runner.models import (
 )
 
 
-def run_script(script_path, type=None):
+def run_script(script_path, type_=None):
     file_path, file_name = os.path.split(script_path)
     print(f"START  - {file_name}")
     with open(script_path) as script_file:
-        script_compiled = compile(script_file.read(), os.path.basename(script_path), 'exec')
+        script_data = script_file.read()
+        script_compiled = compile(script_data, os.path.basename(script_path), 'exec')
     if RUN_DATA.dry_run:
-        if type == "master":
-            script = MasterScenarioData(file_path, file_name, script_compiled)
-        elif type == "scenario":
-            script = ScenarioData(file_path, file_name, script_compiled)
-        elif type == "test_case":
-            script = TestCase(file_path, file_name, script_compiled)
-        RUN_DATA.dry_run_data.add_script(script)
+        if type_ == "master":
+            script_obj = MasterScenarioData(file_path, file_name, script_data)
+        elif type_ == "scenario":
+            script_obj = ScenarioData(file_path, file_name, script_data)
+        elif type_ == "test_case":
+            script_obj = TestCase(file_path, file_name, script_data)
+        RUN_DATA.dry_run_data.add_script(script_obj)
 
     if not RUN_DATA.dry_run or (RUN_DATA.dry_run and SCENARIOS_DIR in script_path):
         exec(script_compiled)
