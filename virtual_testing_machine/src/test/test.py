@@ -45,6 +45,12 @@ class TestRunTestCase(unittest.TestCase):
         test_runner.actions.run_test_case(test_path)
         test_runner.actions.run_test_scenario(test_path)
         test_runner.actions.run_scenario_master(test_path)
-        mocked_run_script.assert_called_with(test_path)
-        self.assertEqual(mocked_run_script.call_args_list, [unittest.mock.call(test_path)]*3)
+        self.assertEqual(
+            mocked_run_script.call_args_list,
+            [
+                unittest.mock.call(test_path, "test_case"),
+                unittest.mock.call(test_path, "scenario"),
+                unittest.mock.call(test_path, "master"),
+            ]
+        )
         self.assertEqual(mocked_run_script.call_count, 3)
