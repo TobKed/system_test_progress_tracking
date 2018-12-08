@@ -40,10 +40,13 @@ class DryRunData:
         else:
             raise TypeError("Unknown script type")
 
-    def toJSON(self):
+    def serialize(self):
         self.time_stamp = str(datetime.now())
-        self.master_scenario = self.master_scenario.toJSON()
-        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+        self.master_scenario = self.master_scenario.serialize()
+        return self.__dict__
+
+    def toJSON(self):
+        return json.dumps(self.serialize(), sort_keys=True, indent=4)
 
 
 class ScriptData:
@@ -52,8 +55,8 @@ class ScriptData:
         self.file_name = file_name
         self.script = script
 
-    def toJSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+    def serialize(self):
+        return self.__dict__
 
     def __str__(self):
         return self.file_name
@@ -64,9 +67,9 @@ class MasterScenarioData(ScriptData):
         self.scenarios = []
         super().__init__(file_path, file_name, script)
 
-    def toJSON(self):
-        self.scenarios = [scenario.toJSON() for scenario in self.scenarios] if self.scenarios else None
-        return super().toJSON()
+    def serialize(self):
+        self.scenarios = [scenario.serialize() for scenario in self.scenarios] if self.scenarios else None
+        return self.__dict__
         
 
 class ScenarioData(ScriptData):
@@ -74,9 +77,9 @@ class ScenarioData(ScriptData):
         self.tests = []
         super().__init__(file_path, file_name, script)
 
-    def toJSON(self):
-        self.tests = [test.toJSON() for test in self.tests] if self.tests else None
-        return super().toJSON()
+    def serialize(self):
+        self.tests = [test.__dict__ for test in self.tests] if self.tests else None
+        return self.__dict__
 
 
 class TestCase(ScriptData):
