@@ -2,10 +2,11 @@ import os
 
 
 def run_script(script_path, dry_run):
-    with open(script_path) as script_file:
-        script_compiled = compile(script_file.read(), os.path.basename(script_path), 'exec')
     head, tail = os.path.split(script_path)
     print(f"START  - {tail}")
+    # if not dry_run and
+    with open(script_path) as script_file:
+        script_compiled = compile(script_file.read(), os.path.basename(script_path), 'exec')
     exec(script_compiled)
     print(f"FINISH - {tail}")
 
