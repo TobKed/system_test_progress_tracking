@@ -74,7 +74,7 @@ class TestRunDataTestCase(unittest.TestCase):
 
         script_data = test_runner.models.ScriptData(**self.script_data_dict)
         self.assertIs(script_data.__str__(), script_data.file_name)
-        self.assertEqual(script_data.to_dict(), self.script_data_dict)
+        self.assertEqual(script_data.convert_to_dict(), self.script_data_dict)
         
     def test_TestCase_object(self):
         with self.assertRaises(Exception):
@@ -82,7 +82,7 @@ class TestRunDataTestCase(unittest.TestCase):
 
         test_case = test_runner.models.TestCaseData(**self.script_data_dict)
         self.assertIs(test_case.__str__(), test_case.file_name)
-        self.assertEqual(test_case.to_dict(), self.script_data_dict)
+        self.assertEqual(test_case.convert_to_dict(), self.script_data_dict)
 
     def test_ScenarioData_object(self):
         with self.assertRaises(Exception):
@@ -90,7 +90,7 @@ class TestRunDataTestCase(unittest.TestCase):
 
         scenario_data = test_runner.models.ScenarioData(**self.script_data_dict)
         self.assertIs(scenario_data.__str__(), scenario_data.file_name)
-        self.assertEqual(scenario_data.to_dict(), self.scenario_data_dict)
+        self.assertEqual(scenario_data.convert_to_dict(), self.scenario_data_dict)
 
     def test_MasterScenarioData_object(self):
         with self.assertRaises(Exception):
@@ -98,4 +98,4 @@ class TestRunDataTestCase(unittest.TestCase):
 
         master_scenario_data = test_runner.models.MasterScenarioData(**self.script_data_dict)
         self.assertIs(master_scenario_data.__str__(), master_scenario_data.file_name)
-        self.assertEqual(master_scenario_data.to_dict(), self.master_scenario_data_dict)
+        self.assertEqual(master_scenario_data.convert_to_dict(), self.master_scenario_data_dict)

@@ -27,7 +27,7 @@ class DryRunData:
     """ class used to collect data about all test cases during dry run and generate JSON """
     def __init__(self):
         self.machine_name = MACHINE_NAME
-        self.time_stamp = None
+        self.time_stamp = datetime.now()
         self.master_scenario = None
 
     def add_script(self, script_object):
@@ -40,13 +40,13 @@ class DryRunData:
         else:
             raise TypeError("Unknown script type")
 
-    def to_dict(self):
-        self.time_stamp = str(datetime.now())
-        self.master_scenario = self.master_scenario.to_dict()
-        return self.__dict__
+    def convert_to_dict(self):
+        time_stamp = str(self.time_stamp)
+        master_scenario = self.master_scenario.convert_to_dict()
+        return {**self.__dict__, **{"master_scenario": master_scenario, "time_stamp": time_stamp}}
 
     def toJSON(self):
-        return json.dumps(self.to_dict(), sort_keys=True, indent=4)
+        return json.dumps(self.convert_to_dict(), sort_keys=True, indent=4)
 
 
 class ScriptData:
@@ -55,7 +55,7 @@ class ScriptData:
         self.file_name = file_name
         self.script = script
 
-    def to_dict(self):
+    def convert_to_dict(self):
         return self.__dict__
 
     def __str__(self):
@@ -67,9 +67,9 @@ class MasterScenarioData(ScriptData):
         self.scenarios = []
         super().__init__(file_path, file_name, script)
 
-    def to_dict(self):
-        self.scenarios = [scenario.to_dict() for scenario in self.scenarios] if self.scenarios else None
-        return self.__dict__
+    def convert_to_dict(self):
+        scenarios = [scenario.convert_to_dict() for scenario in self.scenarios] if self.scenarios else None
+        return {**self.__dict__, **{"scenarios": scenarios}}
         
 
 class ScenarioData(ScriptData):
@@ -77,9 +77,9 @@ class ScenarioData(ScriptData):
         self.tests = []
         super().__init__(file_path, file_name, script)
 
-    def to_dict(self):
-        self.tests = [test.__dict__ for test in self.tests] if self.tests else None
-        return self.__dict__
+    def convert_to_dict(self):
+        tests = [test.convert_to_dict() for test in self.tests] if self.tests else None
+        return {**self.__dict__, **{"tests": tests}}
 
 
 class TestCaseData(ScriptData):
