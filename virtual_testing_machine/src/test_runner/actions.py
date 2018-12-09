@@ -6,7 +6,7 @@ from test_runner.models import (
     RUN_DATA,
     MasterScenarioData,
     ScenarioData,
-    TestCase,
+    TestCaseData,
 )
 
 
@@ -22,7 +22,7 @@ def run_script(script_path, type_=None):
         elif type_ == "scenario":
             script_obj = ScenarioData(file_path, file_name, script_data)
         elif type_ == "test_case":
-            script_obj = TestCase(file_path, file_name, script_data)
+            script_obj = TestCaseData(file_path, file_name, script_data)
         RUN_DATA.dry_run_data.add_script(script_obj)
 
     if not RUN_DATA.dry_run or (RUN_DATA.dry_run and SCENARIOS_DIR in script_path):
