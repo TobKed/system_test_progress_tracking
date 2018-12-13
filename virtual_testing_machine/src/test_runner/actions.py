@@ -1,6 +1,8 @@
 import os
+import requests
 from .settings import (
     SCENARIOS_DIR,
+    ENDPOINT_DRY_RUN,
 )
 from test_runner.models import (
     RUN_DATA,
@@ -42,4 +44,7 @@ def run_scenario_master(scenario_master_path, dry_run=False):
     RUN_DATA.is_running = True
     RUN_DATA.dry_run = dry_run
     run_script(scenario_master_path, "master")
+    if dry_run:
+        dry_run_json = RUN_DATA.dry_run_data.toJSON()
+        #TODO send dry_run_json to ENDPOINT_DRY_RUN
     RUN_DATA.is_running = False
