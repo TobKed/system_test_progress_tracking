@@ -46,5 +46,6 @@ def run_scenario_master(scenario_master_path, dry_run=False):
     run_script(scenario_master_path, "master")
     if dry_run:
         dry_run_json = RUN_DATA.dry_run_data.toJSON()
+        print(dry_run_json)
         #TODO send dry_run_json to ENDPOINT_DRY_RUN
     RUN_DATA.is_running = False
