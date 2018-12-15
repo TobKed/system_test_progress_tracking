@@ -48,8 +48,13 @@ def run_scenario_master(scenario_master_path, dry_run=False):
         #TODO send dry_run_json to
         dry_run_dict_data = RUN_DATA.dry_run_data.convert_to_dict()
         dry_run_dict_data = {
-            "machine_name": "test machine name2",
+            "machine_name": "test machine name3",
             "time_stamp": "2018-12-15 09:42:36.086550",
+            "master_scenario": {
+                "file_name": "scenario_master.py",
+                "file_path": "/home/tobked/PycharmProjects/system_test_progress_tracking/virtual_testing_machine/src/test_cases/scenarios",
+                "script": "import os\nfrom run import SCENARIOS_DIR, run_test_scenario\n\n\nrun_test_scenario(os.path.join(SCENARIOS_DIR, \"scenario_01_feature_lamp.py\"))\nrun_test_scenario(os.path.join(SCENARIOS_DIR, \"scenario_02_feature_door.py\"))\nrun_test_scenario(os.path.join(SCENARIOS_DIR, \"scenario_03_feature_trunk.py\"))\n"
+            }
         }
         print(dry_run_dict_data)
         r = requests.post(ENDPOINT_DRY_RUN, json=dry_run_dict_data)
