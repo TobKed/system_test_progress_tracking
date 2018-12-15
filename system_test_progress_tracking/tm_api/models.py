@@ -23,7 +23,7 @@ class MasterScenario(BaseScript):
 
 class DryRunData(BaseScript):
     machine         = models.ForeignKey(Machine, on_delete=models.CASCADE, related_name="master_scenarios")
-    time_stamp      = models.DateTimeField(null=True, blank=True)
+    time_stamp      = models.DateTimeField(auto_now_add=True)
     # master_scenario = models.OneToOneField(MasterScenario, null=True, blank=True, on_delete=models.CASCADE)
     
     def __str__(self):
