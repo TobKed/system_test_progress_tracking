@@ -4,3 +4,9 @@ from .models import (
     Scenario,
     MasterScenario
 )
+
+
+class DryRunSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MasterScenario
+        fields = ('machine_name',)
