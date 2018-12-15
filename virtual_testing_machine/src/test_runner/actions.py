@@ -45,7 +45,13 @@ def run_scenario_master(scenario_master_path, dry_run=False):
     RUN_DATA.dry_run = dry_run
     run_script(scenario_master_path, "master")
     if dry_run:
-        dry_run_json = RUN_DATA.dry_run_data.toJSON()
-        print(dry_run_json)
-        #TODO send dry_run_json to ENDPOINT_DRY_RUN
+        dry_run_dict_data = RUN_DATA.dry_run_data.convert_to_dict()
+        dry_run_dict_data = {
+            "machine_name": "test machine name2"
+        }
+        print(dry_run_dict_data)
+        #TODO send dry_run_json to
+        r = requests.post(ENDPOINT_DRY_RUN, json=dry_run_dict_data)
+        print(r.status_code)
+        print(r.content)
     RUN_DATA.is_running = False

@@ -2,12 +2,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from .serializers import DryRunSerializer
+from .serializers import DryRunDataSerializer
 
 
 class DryRunView(APIView):
     def post(self, request, format=None):
-        serializer = DryRunSerializer(data=request.data)
+        serializer = DryRunDataSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
