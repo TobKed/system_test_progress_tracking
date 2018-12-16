@@ -54,7 +54,19 @@ def run_scenario_master(scenario_master_path, dry_run=False):
             "master_scenario": {
                 "file_name": "scenario_master.py",
                 "file_path": "/home/tobked/PycharmProjects/system_test_progress_tracking/virtual_testing_machine/src/test_cases/scenarios",
-                "script": "import os\nfrom run import SCENARIOS_DIR, run_test_scenario\n\n\nrun_test_scenario(os.path.join(SCENARIOS_DIR, \"scenario_01_feature_lamp.py\"))\nrun_test_scenario(os.path.join(SCENARIOS_DIR, \"scenario_02_feature_door.py\"))\nrun_test_scenario(os.path.join(SCENARIOS_DIR, \"scenario_03_feature_trunk.py\"))\n"
+                "script": "import os\nfrom run import SCENARIOS_DIR, run_test_scenario\n\n\nrun_test_scenario(os.path.join(SCENARIOS_DIR, \"scenario_01_feature_lamp.py\"))\nrun_test_scenario(os.path.join(SCENARIOS_DIR, \"scenario_02_feature_door.py\"))\nrun_test_scenario(os.path.join(SCENARIOS_DIR, \"scenario_03_feature_trunk.py\"))\n",
+                "scenarios": [
+                    {
+                        "file_name": "scenario_01_feature_lamp.py",
+                        "file_path": "/home/tobked/PycharmProjects/system_test_progress_tracking/virtual_testing_machine/src/test_cases/scenarios",
+                        "script": "import os\nfrom run import TEST_CASES_DIR, run_test_case\n\n\nFEATURE_DIR = os.path.join(TEST_CASES_DIR, \"01_feature_lamp\")\n\n\nrun_test_case(os.path.join(FEATURE_DIR, \"01_01_test_lamp.py\"))\nrun_test_case(os.path.join(FEATURE_DIR, \"01_02_test_lamp.py\"))\nrun_test_case(os.path.join(FEATURE_DIR, \"01_03_test_lamp.py\"))\nrun_test_case(os.path.join(FEATURE_DIR, \"01_04_test_lamp.py\"))\nrun_test_case(os.path.join(FEATURE_DIR, \"01_05_test_lamp.py\"))\n",
+                    },
+                    {
+                        "file_name": "scenario_02_feature_door.py",
+                        "file_path": "/home/tobked/PycharmProjects/system_test_progress_tracking/virtual_testing_machine/src/test_cases/scenarios",
+                        "script": "import os\nfrom run import TEST_CASES_DIR, run_test_case\n\n\nFEATURE_DIR = os.path.join(TEST_CASES_DIR, \"02_feature_door\")\n\n\nrun_test_case(os.path.join(FEATURE_DIR, \"01_01_test_door.py\"))\nrun_test_case(os.path.join(FEATURE_DIR, \"01_02_test_door.py\"))\n",
+                    },
+                ],
             }
         }
         print(dry_run_dict_data)

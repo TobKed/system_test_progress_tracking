@@ -8,11 +8,18 @@ from .models import (
 )
 
 
-class MasterScenarioSerializer(serializers.ModelSerializer):
-
+class ScenarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = MasterScenario
         fields = ("file_name", "file_path", "script")
+
+
+class MasterScenarioSerializer(serializers.ModelSerializer):
+    scenarios       = ScenarioSerializer(many=True)
+
+    class Meta:
+        model = MasterScenario
+        fields = ("file_name", "file_path", "script", "scenarios")
 
 
 class DryRunDataSerializer(serializers.Serializer):
@@ -26,7 +33,10 @@ class DryRunDataSerializer(serializers.Serializer):
         timestamp = validated_data.pop("timestamp", None)
 
         master_scenario_data = validated_data.pop('master_scenario')
+        scenarios_data = master_scenario_data.pop("scenarios")
         master_scenario = MasterScenario.objects.create(**master_scenario_data)
-        # scenarios = master_scenario.pop("scenarios")
+        for scenario_data in scenarios_data:
+            scenario = Scenario.objects.create(master_scenario=master_scenario, **scenario_data)
+            print(scenario)
 
         return DryRunData.objects.create(machine=machine, timestamp=timestamp, master_scenario=master_scenario)
