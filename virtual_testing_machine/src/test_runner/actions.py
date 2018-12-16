@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 import requests
 from .settings import (
     SCENARIOS_DIR,
@@ -49,7 +50,7 @@ def run_scenario_master(scenario_master_path, dry_run=False):
         dry_run_dict_data = RUN_DATA.dry_run_data.convert_to_dict()
         dry_run_dict_data = {
             "machine_name": "test machine name3",
-            "timestamp": "2018-12-15 09:42:36.086550",
+            "timestamp": str(datetime.now()),
             "master_scenario": {
                 "file_name": "scenario_master.py",
                 "file_path": "/home/tobked/PycharmProjects/system_test_progress_tracking/virtual_testing_machine/src/test_cases/scenarios",
