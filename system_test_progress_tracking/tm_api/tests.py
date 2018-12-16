@@ -9,9 +9,8 @@ class DryRunViewTest(APITestCase):
         fake = Faker()
         self.test_data_dict = {
             "machine_name": fake.name(),
-            "time_stamp": fake.date_time(),
+            "timestamp": fake.date_time(),
             "master_scenario": {
-                # "file_name": "scenario_master.py",
                 "file_name": fake.file_name(extension="py"),
                 "file_path": "/".join(fake.file_path(depth=10).split("/")[:-1]),
                 "script": "import os\nfrom run import SCENARIOS_DIR, run_test_scenario\n\n\nrun_test_scenario(os.path.join(SCENARIOS_DIR, \"scenario_01_feature_lamp.py\"))\nrun_test_scenario(os.path.join(SCENARIOS_DIR, \"scenario_02_feature_door.py\"))\nrun_test_scenario(os.path.join(SCENARIOS_DIR, \"scenario_03_feature_trunk.py\"))\n"

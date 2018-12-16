@@ -49,7 +49,7 @@ def run_scenario_master(scenario_master_path, dry_run=False):
         dry_run_dict_data = RUN_DATA.dry_run_data.convert_to_dict()
         dry_run_dict_data = {
             "machine_name": "test machine name3",
-            "time_stamp": "2018-12-15 09:42:36.086550",
+            "timestamp": "2018-12-15 09:42:36.086550",
             "master_scenario": {
                 "file_name": "scenario_master.py",
                 "file_path": "/home/tobked/PycharmProjects/system_test_progress_tracking/virtual_testing_machine/src/test_cases/scenarios",
@@ -57,7 +57,10 @@ def run_scenario_master(scenario_master_path, dry_run=False):
             }
         }
         print(dry_run_dict_data)
-        r = requests.post(ENDPOINT_DRY_RUN, json=dry_run_dict_data)
-        print(r.status_code)
-        print(r.content)
+        try:
+            r = requests.post(ENDPOINT_DRY_RUN, json=dry_run_dict_data)
+            print(r.status_code)
+            print(r.content)
+        except Exception as e:
+            print(e)
     RUN_DATA.is_running = False

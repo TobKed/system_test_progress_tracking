@@ -1,5 +1,20 @@
 from django.db import models
 
+WAITING = "waiting"
+PASSED  = "passed"
+FAILED  = "failed"
+WARNING = "warning"
+ERROR   = "error"
+UNKNOWN = "unknown"
+
+TEST_STATUS_CHOICES = (
+    (WAITING,   "waiting"),
+    (PASSED,    "passed"),
+    (FAILED,    "failed"),
+    (WARNING,   "warning"),
+    (ERROR,     "error"),
+    (UNKNOWN,   "unknown"),
+)
 
 class Machine(models.Model):
     machine_name    = models.CharField(max_length=256, unique=True)
@@ -23,11 +38,14 @@ class MasterScenario(BaseScript):
 
 class DryRunData(models.Model):
     machine         = models.ForeignKey(Machine, on_delete=models.CASCADE, related_name="master_scenarios")
-    time_stamp      = models.DateTimeField(null=True, blank=True)
+    timestamp       = models.DateTimeField(null=True, blank=True)
     master_scenario = models.OneToOneField(MasterScenario, null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"DryRunData: {self.machine.machine_name} - {self.time_stamp}"
+        return f"DryRunData: {self.machine.machine_name} - {self.timestamp}"
+
+    class Meta:
+        ordering = ['-timestamp', '-pk']
 
 
 class Scenario(BaseScript):
@@ -36,3 +54,4 @@ class Scenario(BaseScript):
 
 class Test(BaseScript):
     scenario_parent = models.ForeignKey(Scenario, on_delete=models.CASCADE, related_name="tests")
+    status          = models.CharField(max_length=9, choices=TEST_STATUS_CHOICES, default="unknown")

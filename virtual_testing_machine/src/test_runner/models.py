@@ -27,7 +27,7 @@ class DryRunData:
     """ class used to collect data about all test cases during dry run and generate JSON """
     def __init__(self):
         self.machine_name = MACHINE_NAME
-        self.time_stamp = datetime.now()
+        self.timestamp = datetime.now()
         self.master_scenario = None
 
     def add_script(self, script_object):
@@ -41,9 +41,9 @@ class DryRunData:
             raise TypeError("Unknown script type")
 
     def convert_to_dict(self):
-        time_stamp = str(self.time_stamp)
+        timestamp = str(self.timestamp)
         master_scenario = self.master_scenario.convert_to_dict()
-        return {**self.__dict__, **{"master_scenario": master_scenario, "time_stamp": time_stamp}}
+        return {**self.__dict__, **{"master_scenario": master_scenario, "timestamp": timestamp}}
 
     def toJSON(self):
         return json.dumps(self.convert_to_dict(), sort_keys=True, indent=4)
