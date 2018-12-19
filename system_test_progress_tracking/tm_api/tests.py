@@ -18,11 +18,36 @@ class DryRunViewTest(APITestCase):
                         "file_name": fake.file_name(extension="py"),
                         "file_path": "/".join(fake.file_path(depth=10).split("/")[:-1]),
                         "script": fake.text(),
+                        "tests": [
+                            {
+                                "file_name": fake.file_name(extension="py"),
+                                "file_path": "/".join(fake.file_path(depth=10).split("/")[:-1]),
+                                "script": fake.text(),
+                            },
+                            {
+                                "file_name": fake.file_name(extension="py"),
+                                "file_path": "/".join(fake.file_path(depth=10).split("/")[:-1]),
+                                "script": fake.text(),
+                            },
+
+                        ],
                     },
                     {
                         "file_name": fake.file_name(extension="py"),
                         "file_path": "/".join(fake.file_path(depth=10).split("/")[:-1]),
                         "script": fake.text(),
+                        "tests": [
+                            {
+                                "file_name": fake.file_name(extension="py"),
+                                "file_path": "/".join(fake.file_path(depth=10).split("/")[:-1]),
+                                "script": fake.text(),
+                            },
+                            {
+                                "file_name": fake.file_name(extension="py"),
+                                "file_path": "/".join(fake.file_path(depth=10).split("/")[:-1]),
+                                "script": fake.text(),
+                            },
+                        ],
                     },
                 ]
             }
