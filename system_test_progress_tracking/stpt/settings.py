@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'tm_api',
+    'progress_tracking',
 ]
 
 MIDDLEWARE = [

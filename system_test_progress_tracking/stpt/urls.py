@@ -19,4 +19,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('tm_api/', include(('tm_api.urls', 'tm_api'), namespace='tm_api')),
+    path('', include('progress_tracking.urls')),
 ]
