@@ -1,0 +1,24 @@
+{% extends "progress_tracking/base.html" %}
+{% block content %}
+    <div class="jumbotron bg-steel-2 text-center">
+        <h1 class="display-4">Welcome in ST Progress-Tracking</h1>
+        <p class="lead">This app allows you manage your system test runs.</p>
+        <hr class="my-4">
+        {% if user.is_authenticated %}
+            <p class="lead">
+                <p class="mb-4">So. What do you want to do?</p>
+                <div class="d-flex justify-content-center flex-wrap">
+                    <a class="btn btn-lg btn-info m-2" href="#" role="button">Logout</a>
+                </div>
+            </p>
+        {% else %}
+            <p class="lead">
+                <p class="mb-4">Login or register for further action.</p>
+                <div class="d-flex justify-content-center flex-wrap">
+                    <a class="btn btn-lg btn-info m-2" href="#" role="button">Login</a>
+                </div>
+            </p>
+        {% endif %}
+
+    </div>
+{% endblock content %}
