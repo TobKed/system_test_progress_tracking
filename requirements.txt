@@ -3,6 +3,7 @@ chardet==3.0.4
 codecov==2.0.15
 coverage==4.5.2
 Django==2.1.4
+django-crispy-forms==1.7.2
 djangorestframework==3.9.0
 Faker==1.0.1
 idna==2.7
