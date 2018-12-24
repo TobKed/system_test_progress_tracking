@@ -28,8 +28,14 @@ def run_script(script_path, type_=None):
             script_obj = TestCaseData(file_path, file_name, script_data)
         RUN_DATA.dry_run_data.add_script(script_obj)
 
-    if not RUN_DATA.dry_run or (RUN_DATA.dry_run and SCENARIOS_DIR in script_path):
+    if  type_ in ["scenario", "master"]:
         exec(script_compiled)
+    elif not RUN_DATA.dry_run and type_ =="test_case":
+        #TODO sending json wist test start/stop
+        print("test start")
+        exec(script_compiled)
+        print("test finished")
+
     print(f"FINISH - {file_name}")
 
 
