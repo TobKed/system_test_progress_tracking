@@ -1,0 +1,32 @@
+{% extends "progress_tracking/base.html" %}
+{% block content %}
+    <article class="media content-section">
+        <div class="media-body">
+            <h2 class="article-title">{{ machine.machine_name }}</h2>
+            <p class="article-content">
+                Master scenarios:
+                <ul>
+                    {% for master_scenario in machine.get_master_scenarios %}
+                        <li>{{ master_scenario }}</li>
+                            <ul>
+                                {% for scenario in master_scenario.scenarios.all %}
+                                    <li>{{ scenario }}</li>
+                                        <ul>
+                                            {% for test in scenario.tests.all %}
+                                                <li>{{ test }}</li>
+                                                    {% empty %}
+                                                <li>No tests</li>
+                                            {% endfor %}
+                                        </ul>
+                                {% empty %}
+                                    <li>No scenarios</li>
+                                {% endfor %}
+                            </ul>
+                    {% empty %}
+                        <li>No master scenarios</li>
+                    {% endfor %}
+                </ul>
+            </p>
+        </div>
+    </article>
+{% endblock content %}

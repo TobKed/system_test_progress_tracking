@@ -25,7 +25,7 @@
                                     <td>{{ machine.pk }} </td>
                                     <td>{{ machine.machine_name }} </td>
                                     <td>
-                                        <a href="#" class="btn btn-info btn-xs" data-toggle="tooltip" title="Info"><span class="fas fa-info xs"></span></a>
+                                        <a href="{% url 'machine-detail-view' machine.pk%}" class="btn btn-info btn-xs" data-toggle="tooltip" title="Info"><span class="fas fa-info xs"></span></a>
                                     </td>
                                 </tr>
                             {% endfor %}

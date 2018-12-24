@@ -25,6 +25,10 @@ class Machine(models.Model):
     def __str__(self):
         return self.machine_name
 
+    def get_master_scenarios(self):
+        # return [dry_run_data.master_scenario for dry_run_data in  DryRunData.objects.filter(machine=self)]
+        return (dry_run_data.master_scenario for dry_run_data in  self.dry_run_datas.all())
+
 
 class BaseScript(models.Model):
     file_name       = models.CharField(max_length=256)
@@ -40,7 +44,7 @@ class MasterScenario(BaseScript):
 
 
 class DryRunData(models.Model):
-    machine         = models.ForeignKey(Machine, on_delete=models.CASCADE, related_name="master_scenarios")
+    machine         = models.ForeignKey(Machine, on_delete=models.CASCADE, related_name="dry_run_datas")
     timestamp       = models.DateTimeField(null=True, blank=True)
     master_scenario = models.OneToOneField(MasterScenario, null=True, blank=True, on_delete=models.CASCADE)
 
