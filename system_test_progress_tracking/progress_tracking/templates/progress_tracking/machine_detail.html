@@ -4,16 +4,16 @@
         <div class="media-body">
             <h2 class="article-title">{{ machine.machine_name }}</h2>
             <p class="article-content">
-                Master scenarios:
+                <h2>Master scenarios:</h2>
                 <ul>
-                    {% for master_scenario in machine.get_master_scenarios %}
-                        <li>{{ master_scenario }}</li>
+                    {% for dry_run_data in machine.dry_run_datas.all %}
+                        <li class="h3">{{ dry_run_data.master_scenario }} - {{ dry_run_data.timestamp }}</li>
                             <ul>
-                                {% for scenario in master_scenario.scenarios.all %}
-                                    <li>{{ scenario }}</li>
+                                {% for scenario in dry_run_data.master_scenario.scenarios.all %}
+                                    <li class="h4">{{scenario }}</li>
                                         <ul>
                                             {% for test in scenario.tests.all %}
-                                                <li>{{ test }}</li>
+                                                <li>{{ test }} <span class="small">{{ test.status }}</span></li>
                                                     {% empty %}
                                                 <li>No tests</li>
                                             {% endfor %}

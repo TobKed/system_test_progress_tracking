@@ -26,7 +26,6 @@ class Machine(models.Model):
         return self.machine_name
 
     def get_master_scenarios(self):
-        # return [dry_run_data.master_scenario for dry_run_data in  DryRunData.objects.filter(machine=self)]
         return (dry_run_data.master_scenario for dry_run_data in  self.dry_run_datas.all())
 
 
