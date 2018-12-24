@@ -1,6 +1,7 @@
 from django.db import models
 
 WAITING = "waiting"
+RUNNING = "running"
 PASSED  = "passed"
 FAILED  = "failed"
 WARNING = "warning"
@@ -8,6 +9,7 @@ ERROR   = "error"
 UNKNOWN = "unknown"
 
 TEST_STATUS_CHOICES = (
+    (RUNNING,   "running"),
     (WAITING,   "waiting"),
     (PASSED,    "passed"),
     (FAILED,    "failed"),
