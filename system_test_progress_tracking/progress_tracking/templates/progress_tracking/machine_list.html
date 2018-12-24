@@ -1,0 +1,48 @@
+{% extends "progress_tracking/base.html" %}
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="container d-flex justify-content-between">
+                    <h4 class="d-inline-block mt-2">Machines ({{ page_obj.paginator.count }})</h4>
+                </div>
+
+                <div class="table-responsive">
+
+                    <table id="mytable" class="table table-bordred table-striped">
+
+                        <thead>
+                            <th>Id</th>
+                            <th>Machine name</th>
+                            <th>Details</th>
+                        </thead>
+
+                        <tbody>
+                            {% for machine in machines %}
+                                <tr>
+                                    <td>{{ machine.pk }} </td>
+                                    <td>{{ machine.machine_name }} </td>
+                                    <td>
+                                        <a href="#" class="btn btn-info btn-xs" data-toggle="tooltip" title="Info"><span class="fas fa-info xs"></span></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <div class="clearfix"></div>
+
+                    <!-- PAGINATOR START-->
+                    {% include 'progress_tracking/paginator.html' %}
+                    <!-- PAGINATOR END -->
+
+                </div>
+
+            </div> <!-- end col-md-12 -->
+        </div> <!-- end row -->
+    </div>  <!-- end containter -->
+
+
+{% endblock content %}

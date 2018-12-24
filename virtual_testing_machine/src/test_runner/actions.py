@@ -48,51 +48,6 @@ def run_scenario_master(scenario_master_path, dry_run=False):
     if dry_run:
         #TODO send dry_run_json to
         dry_run_dict_data = RUN_DATA.dry_run_data.convert_to_dict()
-        dry_run_dict_data = {
-            "machine_name": "test machine name3",
-            "timestamp": str(datetime.now()),
-            "master_scenario": {
-                "file_name": "scenario_master.py",
-                "file_path": "/home/tobked/PycharmProjects/system_test_progress_tracking/virtual_testing_machine/src/test_cases/scenarios",
-                "script": "import os\nfrom run import SCENARIOS_DIR, run_test_scenario\n\n\nrun_test_scenario(os.path.join(SCENARIOS_DIR, \"scenario_01_feature_lamp.py\"))\nrun_test_scenario(os.path.join(SCENARIOS_DIR, \"scenario_02_feature_door.py\"))\nrun_test_scenario(os.path.join(SCENARIOS_DIR, \"scenario_03_feature_trunk.py\"))\n",
-                "scenarios": [
-                    {
-                        "file_name": "scenario_01_feature_lamp.py",
-                        "file_path": "/home/tobked/PycharmProjects/system_test_progress_tracking/virtual_testing_machine/src/test_cases/scenarios",
-                        "script": "import os\nfrom run import TEST_CASES_DIR, run_test_case\n\n\nFEATURE_DIR = os.path.join(TEST_CASES_DIR, \"01_feature_lamp\")\n\n\nrun_test_case(os.path.join(FEATURE_DIR, \"01_01_test_lamp.py\"))\nrun_test_case(os.path.join(FEATURE_DIR, \"01_02_test_lamp.py\"))\nrun_test_case(os.path.join(FEATURE_DIR, \"01_03_test_lamp.py\"))\nrun_test_case(os.path.join(FEATURE_DIR, \"01_04_test_lamp.py\"))\nrun_test_case(os.path.join(FEATURE_DIR, \"01_05_test_lamp.py\"))\n",
-                        "tests": [
-                            {
-                                "file_name": "01_01_test_lamp.py",
-                                "file_path": "/home/tobked/PycharmProjects/system_test_progress_tracking/virtual_testing_machine/src/test_cases/01_feature_lamp",
-                                "script": "from time import sleep\n\nprint(\"Start 01_01_test_lamp.py\")\n\n\nprint(\"Turn on lamp\")\nprint(\"Wait 1 second1\")\nsleep(1)\nprint(\"Verify is lamp on\")\nprint(\"Turn off lamp\")\nprint(\"Wait 1 second\")\nsleep(1)\nprint(\"Verify is lamp off\")\n"
-                            },
-                            {
-                                "file_name": "01_02_test_lamp.py",
-                                "file_path": "/home/tobked/PycharmProjects/system_test_progress_tracking/virtual_testing_machine/src/test_cases/01_feature_lamp",
-                                "script": ""
-                            },
-                        ]
-                    },
-                    {
-                        "file_name": "scenario_02_feature_door.py",
-                        "file_path": "/home/tobked/PycharmProjects/system_test_progress_tracking/virtual_testing_machine/src/test_cases/scenarios",
-                        "script": "import os\nfrom run import TEST_CASES_DIR, run_test_case\n\n\nFEATURE_DIR = os.path.join(TEST_CASES_DIR, \"02_feature_door\")\n\n\nrun_test_case(os.path.join(FEATURE_DIR, \"01_01_test_door.py\"))\nrun_test_case(os.path.join(FEATURE_DIR, \"01_02_test_door.py\"))\n",
-                        "tests": [
-                            {
-                                "file_name": "01_01_test_door.py",
-                                "file_path": "/home/tobked/PycharmProjects/system_test_progress_tracking/virtual_testing_machine/src/test_cases/02_feature_door",
-                                "script": ""
-                            },
-                            {
-                                "file_name": "01_02_test_door.py",
-                                "file_path": "/home/tobked/PycharmProjects/system_test_progress_tracking/virtual_testing_machine/src/test_cases/02_feature_door",
-                                "script": ""
-                            }
-                        ]
-                    },
-                ],
-            }
-        }
         print(dry_run_dict_data)
         try:
             r = requests.post(ENDPOINT_DRY_RUN, json=dry_run_dict_data)

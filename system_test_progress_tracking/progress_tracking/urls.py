@@ -1,7 +1,11 @@
 from django.urls import path
-from . import views
+from .views import (
+    home,
+    MachineListView
+)
 
 
 urlpatterns = [
-    path('', views.home,  name='home-view'),
+    path('', home,  name='home-view'),
+    path('machine/', MachineListView.as_view(),  name='machine-list-view'),
 ]

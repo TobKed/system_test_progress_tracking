@@ -16,6 +16,7 @@ TEST_STATUS_CHOICES = (
     (UNKNOWN,   "unknown"),
 )
 
+
 class Machine(models.Model):
     machine_name    = models.CharField(max_length=256, unique=True)
 
