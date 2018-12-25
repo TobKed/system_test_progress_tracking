@@ -52,7 +52,6 @@ def run_scenario_master(scenario_master_path, dry_run=False):
     RUN_DATA.dry_run = dry_run
     run_script(scenario_master_path, "master")
     if dry_run:
-        #TODO send dry_run_json to
         dry_run_dict_data = RUN_DATA.dry_run_data.convert_to_dict()
         print(dry_run_dict_data)
         try:

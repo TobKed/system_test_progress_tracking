@@ -7,6 +7,7 @@ FAILED  = "failed"
 WARNING = "warning"
 ERROR   = "error"
 UNKNOWN = "unknown"
+ABORTED = "aborted"
 
 TEST_STATUS_CHOICES = (
     (RUNNING,   "running"),
@@ -16,6 +17,7 @@ TEST_STATUS_CHOICES = (
     (WARNING,   "warning"),
     (ERROR,     "error"),
     (UNKNOWN,   "unknown"),
+    (ABORTED,   "aborted"),
 )
 
 
