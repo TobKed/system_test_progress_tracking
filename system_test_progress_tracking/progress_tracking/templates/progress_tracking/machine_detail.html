@@ -6,8 +6,8 @@
             <p class="article-content">
                 <h2>Master scenarios:</h2>
                 <ul>
-                    {% for dry_run_data in machine.dry_run_datas.all %}
-                        <li class="h3">{{ dry_run_data.master_scenario }} - {{ dry_run_data.master_scenario.nr_of_tests }}</li>
+                    {% for dry_run_data in dry_run_datas %}
+                        <li class="h3">{{ dry_run_data.master_scenario }} - {{ dry_run_data.master_scenario.scenarios_count }} - {{ dry_run_data.master_scenario.tests_count }}</li>
                             <ul>
                                 {% for scenario in dry_run_data.master_scenario.scenarios.all %}
                                     <li class="h4">{{scenario }}</li>
@@ -22,9 +22,14 @@
                                     <li>No scenarios</li>
                                 {% endfor %}
                             </ul>
+
                     {% empty %}
                         <li>No master scenarios</li>
                     {% endfor %}
+
+                    <!-- PAGINATOR START-->
+                    {% include 'progress_tracking/paginator.html' %}
+                    <!-- PAGINATOR END -->
                 </ul>
             </p>
         </div>

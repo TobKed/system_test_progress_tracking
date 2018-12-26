@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core.paginator import Paginator
 from django.views.generic import (
     DetailView,
     ListView,
@@ -22,3 +23,17 @@ class MachineDetailView(DetailView):
     model = Machine
     template_name = "progress_tracking/machine_detail.html"
     context_object_name = 'machine'
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(*args, **kwargs)
+        dry_run_datas = self.object.dry_run_datas.all()
+        paginator = Paginator(dry_run_datas, 2)
+        page_obj = paginator.page(self.request.GET.get("page", 1))
+        is_paginated = True if dry_run_datas else False
+        extra_context = {
+            "dry_run_datas": page_obj,
+            "page_obj": page_obj,
+            "is_paginated": is_paginated,
+        }
+        context_data.update(extra_context)
+        return context_data

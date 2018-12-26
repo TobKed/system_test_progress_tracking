@@ -42,12 +42,12 @@ class BaseScript(models.Model):
 
 class MasterScenario(BaseScript):
     @property
-    def nr_of_scenarios(self):
+    def scenarios_count(self):
         return self.scenarios.all().count()
 
     @property
-    def nr_of_tests(self):
-        return sum([scenario.nr_of_tests for scenario in self.scenarios.all()])
+    def tests_count(self):
+        return sum([scenario.tests_count for scenario in self.scenarios.all()])
 
 
 class DryRunData(models.Model):
@@ -65,7 +65,7 @@ class DryRunData(models.Model):
 class Scenario(BaseScript):
     master_scenario = models.ForeignKey(MasterScenario, on_delete=models.CASCADE, related_name="scenarios")
     @property
-    def nr_of_tests(self):
+    def tests_count(self):
         return self.tests.all().count()
 
 
