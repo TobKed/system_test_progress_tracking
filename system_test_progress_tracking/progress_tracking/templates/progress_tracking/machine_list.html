@@ -27,7 +27,7 @@
                                     <td class="align-middle" style="width: 40%">{{ machine.machine_name }}</td>
                                     <td class="align-middle" style="width: 40%">
                                         <div class="progress" style="height: 38px;">
-                                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">status</div>
+                                            <div class="progress-bar bg-ts-{{ machine.get_last_master_scenario_status }} {% if machine.get_last_master_scenario_status in 'running,waiting' %}progress-bar-striped progress-bar-animated {% endif %} role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">{{ machine.get_last_master_scenario_status }}</div>
                                         </div>
                                     </td>
                                     </td>

@@ -39,7 +39,12 @@ class Machine(models.Model):
         return self.machine_name
 
     def get_master_scenarios(self):
-        return (dry_run_data.master_scenario for dry_run_data in  self.dry_run_datas.all())
+        return (dry_run_data.master_scenario for dry_run_data in self.dry_run_datas.all())
+
+    def get_last_master_scenario_status(self):
+        dry_run_data = self.dry_run_datas.first()
+        status = dry_run_data.master_scenario.tests_status if dry_run_data else "not-available"
+        return status
 
 
 class BaseScript(models.Model):
@@ -55,7 +60,6 @@ class BaseScript(models.Model):
 
 
 class MasterScenario(BaseScript):
-
     @property
     def scenarios_count(self):
         return self.scenarios.all().count()
@@ -70,6 +74,7 @@ class MasterScenario(BaseScript):
         for status in STATUS_PRIORITY:
             if status in tests_statuses:
                 return status
+        return "not-available"
 
     @property
     def tests_statistics(self):
@@ -108,6 +113,7 @@ class Scenario(BaseScript):
         for status in STATUS_PRIORITY:
             if status in tests_statuses:
                 return status
+        return "not-available"
 
     class Meta:
         ordering = ['-pk']

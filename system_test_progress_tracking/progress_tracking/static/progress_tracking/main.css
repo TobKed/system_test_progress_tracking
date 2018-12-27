@@ -67,7 +67,7 @@ ul {
     background-color: #444444;
 }
 
-.bg-ts-unknown {
+.bg-ts-unknown, .bg-ts-not-available {
     background-color: #7b7b7b;
 }
 
