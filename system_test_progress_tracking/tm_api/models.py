@@ -31,6 +31,20 @@ STATUS_PRIORITY = [
     PASSED
 ]
 
+STATUS_ONGOING = [
+    RUNNING,
+    WAITING
+]
+
+STATUS_FINISHED = [
+    ABORTED,
+    FAILED,
+    ERROR,
+    WAITING,
+    UNKNOWN,
+    PASSED,
+]
+
 
 class Machine(models.Model):
     machine_name    = models.CharField(max_length=256, unique=True)
@@ -60,6 +74,8 @@ class BaseScript(models.Model):
 
 
 class MasterScenario(BaseScript):
+    _tests_status = models.CharField(max_length=9, choices=TEST_STATUS_CHOICES, null=True, blank=True, default=None)
+
     @property
     def scenarios_count(self):
         return self.scenarios.all().count()
@@ -70,11 +86,15 @@ class MasterScenario(BaseScript):
 
     @property
     def tests_status(self):
-        tests_statuses = [scenario.tests_status for scenario in self.scenarios.all()]
-        for status in STATUS_PRIORITY:
-            if status in tests_statuses:
-                return status
-        return "not-available"
+        if self._tests_status is None:
+            tests_statuses = [scenario.tests_status for scenario in self.scenarios.all()]
+            for status in STATUS_PRIORITY:
+                if status in tests_statuses:
+                    self._tests_status = status
+            else:
+                self._tests_status = "unknown"
+            self.save()
+        return self._tests_status
 
     @property
     def tests_statistics(self):
@@ -102,6 +122,7 @@ class DryRunData(models.Model):
 
 class Scenario(BaseScript):
     master_scenario = models.ForeignKey(MasterScenario, on_delete=models.CASCADE, related_name="scenarios")
+    _tests_status   = models.CharField(max_length=9, choices=TEST_STATUS_CHOICES, null=True, blank=True, default=None)
 
     @property
     def tests_count(self):
@@ -109,11 +130,15 @@ class Scenario(BaseScript):
 
     @property
     def tests_status(self):
-        tests_statuses = [test.status for test in self.tests.all()]
-        for status in STATUS_PRIORITY:
-            if status in tests_statuses:
-                return status
-        return "not-available"
+        if self._tests_status is None:
+            tests_statuses = [test.status for test in self.tests.all()]
+            for status in STATUS_PRIORITY:
+                if status in tests_statuses:
+                    self._tests_status = status
+            else:
+                self._tests_status = "unknown"
+            self.save()
+        return self._tests_status
 
     class Meta:
         ordering = ['-pk']
