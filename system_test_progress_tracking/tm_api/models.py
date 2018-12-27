@@ -1,28 +1,29 @@
 from django.db import models, IntegrityError
 
-RUNNING = "running"
-ABORTED = "aborted"
-FAILED  = "failed"
-ERROR   = "error"
-WARNING = "warning"
-WAITING = "waiting"
-UNKNOWN = "unknown"
-PASSED  = "passed"
+
+RUNNING     = "running"
+CANCELLED   = "cancelled"
+FAILED      = "failed"
+ERROR       = "error"
+WARNING     = "warning"
+WAITING     = "waiting"
+UNKNOWN     = "unknown"
+PASSED      = "passed"
 
 TEST_STATUS_CHOICES = (
     (RUNNING,   "running"),
-    (WAITING,   "waiting"),
-    (PASSED,    "passed"),
+    (CANCELLED, "cancelled"),
     (FAILED,    "failed"),
-    (WARNING,   "warning"),
     (ERROR,     "error"),
+    (WARNING,   "warning"),
+    (WAITING,   "waiting"),
     (UNKNOWN,   "unknown"),
-    (ABORTED,   "aborted"),
+    (PASSED,    "passed"),
 )
 
 STATUS_PRIORITY = [
     RUNNING,
-    ABORTED,
+    CANCELLED,
     FAILED,
     ERROR,
     WARNING,
@@ -37,7 +38,7 @@ STATUS_ONGOING = [
 ]
 
 STATUS_FINISHED = [
-    ABORTED,
+    CANCELLED,
     FAILED,
     ERROR,
     WAITING,
@@ -84,24 +85,12 @@ class MasterScenario(BaseScript):
     def tests_count(self):
         return sum([scenario.tests_count for scenario in self.scenarios.all()])
 
-    def _get_tests_status(self):
-        tests_statuses = [scenario.tests_status for scenario in self.scenarios.all()]
-        for status in STATUS_PRIORITY:
-            if status in tests_statuses:
-                return status
-        else:
-            return "unknown"
-
     @property
     def tests_status(self):
         if self._tests_status is None:
             self._tests_status = self._get_tests_status()
             self.save()
         return self._tests_status
-
-    def update_tests_status(self):
-        self._tests_status = self._get_tests_status()
-        self.save()
 
     @property
     def tests_statistics(self):
@@ -110,6 +99,30 @@ class MasterScenario(BaseScript):
         for status in STATUS_PRIORITY:
             statistics[status] = tests_statuses.count(status)
         return statistics
+
+    def _get_tests_status(self):
+        tests_statuses = [scenario.tests_status for scenario in self.scenarios.all()]
+        for status in STATUS_PRIORITY:
+            if status in tests_statuses:
+                return status
+        else:
+            return "unknown"
+
+    def update_tests_status(self):
+        self._tests_status = self._get_tests_status()
+        self.save()
+
+    def _set_all_ongoing_tests_to_value(self, value):
+        for scenario in self.scenarios.all():
+            for test in scenario.tests.all():
+                if test.status in STATUS_ONGOING:
+                    test.status = value
+
+    def set_all_ongoing_tests_to_unknown(self):
+        self._set_all_ongoing_tests_to_value(UNKNOWN)
+
+    def set_all_ongoing_tests_to_cancelled(self):
+        self._set_all_ongoing_tests_to_value(CANCELLED)
 
     class Meta:
         ordering = ['-pk']
@@ -122,6 +135,13 @@ class DryRunData(models.Model):
 
     def __str__(self):
         return f"DryRunData: {self.machine.machine_name} - {self.timestamp}"
+
+    def save(self, *args, **kwargs):
+        for dry_run_data in DryRunData.objects.filter(machine=self.machine):
+            master_scenario = dry_run_data.master_scenario
+            if master_scenario.tests_status in STATUS_ONGOING:
+                dry_run_data.master_scenario.set_all_ongoing_tests_to_unknown()
+        return super().save(*args, **kwargs)
 
     class Meta:
         ordering = ['-timestamp', '-pk']
@@ -161,7 +181,7 @@ class Scenario(BaseScript):
 
 class Test(BaseScript):
     scenario_parent = models.ForeignKey(Scenario, on_delete=models.CASCADE, related_name="tests")
-    _status          = models.CharField(max_length=9, choices=TEST_STATUS_CHOICES, default="unknown", db_column="status")
+    _status         = models.CharField(max_length=9, choices=TEST_STATUS_CHOICES, default="unknown", db_column="status")
 
     @property
     def status(self):
