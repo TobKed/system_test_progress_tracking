@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, IntegrityError
 
 RUNNING = "running"
 ABORTED = "aborted"
@@ -74,7 +74,7 @@ class BaseScript(models.Model):
 
 
 class MasterScenario(BaseScript):
-    _tests_status = models.CharField(max_length=9, choices=TEST_STATUS_CHOICES, null=True, blank=True, default=None)
+    _tests_status = models.CharField(max_length=9, choices=TEST_STATUS_CHOICES, null=True, blank=True, default=None, db_column="tests_status")
 
     @property
     def scenarios_count(self):
@@ -84,17 +84,24 @@ class MasterScenario(BaseScript):
     def tests_count(self):
         return sum([scenario.tests_count for scenario in self.scenarios.all()])
 
+    def _get_tests_status(self):
+        tests_statuses = [scenario.tests_status for scenario in self.scenarios.all()]
+        for status in STATUS_PRIORITY:
+            if status in tests_statuses:
+                return status
+        else:
+            return "unknown"
+
     @property
     def tests_status(self):
         if self._tests_status is None:
-            tests_statuses = [scenario.tests_status for scenario in self.scenarios.all()]
-            for status in STATUS_PRIORITY:
-                if status in tests_statuses:
-                    self._tests_status = status
-            else:
-                self._tests_status = "unknown"
+            self._tests_status = self._get_tests_status()
             self.save()
         return self._tests_status
+
+    def update_tests_status(self):
+        self._tests_status = self._get_tests_status()
+        self.save()
 
     @property
     def tests_statistics(self):
@@ -122,23 +129,31 @@ class DryRunData(models.Model):
 
 class Scenario(BaseScript):
     master_scenario = models.ForeignKey(MasterScenario, on_delete=models.CASCADE, related_name="scenarios")
-    _tests_status   = models.CharField(max_length=9, choices=TEST_STATUS_CHOICES, null=True, blank=True, default=None)
+    _tests_status   = models.CharField(max_length=9, choices=TEST_STATUS_CHOICES, null=True, blank=True, default=None, db_column="tests_status")
 
     @property
     def tests_count(self):
         return self.tests.all().count()
 
+    def _get_tests_status(self):
+        tests_statuses = [test.status for test in self.tests.all()]
+        for status in STATUS_PRIORITY:
+            if status in tests_statuses:
+                return status
+        else:
+            return "unknown"
+
     @property
     def tests_status(self):
         if self._tests_status is None:
-            tests_statuses = [test.status for test in self.tests.all()]
-            for status in STATUS_PRIORITY:
-                if status in tests_statuses:
-                    self._tests_status = status
-            else:
-                self._tests_status = "unknown"
+            self._tests_status = self._get_tests_status()
             self.save()
         return self._tests_status
+
+    def update_tests_status(self):
+        self._tests_status = self._get_tests_status()
+        self.save()
+        self.master_scenario.update_tests_status()
 
     class Meta:
         ordering = ['-pk']
@@ -146,7 +161,20 @@ class Scenario(BaseScript):
 
 class Test(BaseScript):
     scenario_parent = models.ForeignKey(Scenario, on_delete=models.CASCADE, related_name="tests")
-    status          = models.CharField(max_length=9, choices=TEST_STATUS_CHOICES, default="unknown")
+    _status          = models.CharField(max_length=9, choices=TEST_STATUS_CHOICES, default="unknown", db_column="status")
+
+    @property
+    def status(self):
+        return self._status
+
+    @status.setter
+    def status(self, value):
+        if value in [i[0] for i in TEST_STATUS_CHOICES]:
+            self._status = value
+            self.save()
+            self.scenario_parent.update_tests_status()
+        else:
+            raise IntegrityError("wrong status cannot be set")
 
     class Meta:
         ordering = ['-pk']
