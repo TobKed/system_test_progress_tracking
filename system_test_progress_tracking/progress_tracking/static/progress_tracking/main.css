@@ -50,3 +50,31 @@ ul {
 .order-active {
   color: black;
 }
+
+.bg-ts-failed {
+    background-color: red;
+}
+
+.bg-ts-warning {
+    background-color: #d1bf12;
+}
+
+.bg-ts-error {
+    background-color: deeppink;
+}
+
+.bg-ts-aborted {
+    background-color: #444444;
+}
+
+.bg-ts-unknown {
+    background-color: #7b7b7b;
+}
+
+.bg-ts-passed {
+    background-color: #317b34;
+}
+
+.bg-ts-waiting {
+    background-color: #7b7b7b;
+}
