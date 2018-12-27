@@ -1,13 +1,13 @@
 from django.db import models
 
-WAITING = "waiting"
 RUNNING = "running"
-PASSED  = "passed"
-FAILED  = "failed"
-WARNING = "warning"
-ERROR   = "error"
-UNKNOWN = "unknown"
 ABORTED = "aborted"
+FAILED  = "failed"
+ERROR   = "error"
+WARNING = "warning"
+WAITING = "waiting"
+UNKNOWN = "unknown"
+PASSED  = "passed"
 
 TEST_STATUS_CHOICES = (
     (RUNNING,   "running"),
@@ -19,6 +19,17 @@ TEST_STATUS_CHOICES = (
     (UNKNOWN,   "unknown"),
     (ABORTED,   "aborted"),
 )
+
+STATUS_PRIORITY = [
+    RUNNING,
+    ABORTED,
+    FAILED,
+    ERROR,
+    WARNING,
+    WAITING,
+    UNKNOWN,
+    PASSED
+]
 
 
 class Machine(models.Model):
@@ -39,8 +50,12 @@ class BaseScript(models.Model):
     def __str__(self):
         return self.file_name
 
+    class Meta:
+        ordering = ['-pk']
+
 
 class MasterScenario(BaseScript):
+
     @property
     def scenarios_count(self):
         return self.scenarios.all().count()
@@ -48,6 +63,24 @@ class MasterScenario(BaseScript):
     @property
     def tests_count(self):
         return sum([scenario.tests_count for scenario in self.scenarios.all()])
+
+    @property
+    def tests_status(self):
+        tests_statuses = [scenario.tests_status for scenario in self.scenarios.all()]
+        for status in STATUS_PRIORITY:
+            if status in tests_statuses:
+                return status
+
+    @property
+    def tests_statistics(self):
+        statistics = {}
+        tests_statuses = [test.status for scenario in self.scenarios.all() for test in scenario.tests.all()]
+        for status in STATUS_PRIORITY:
+            statistics[status] = tests_statuses.count(status)
+        return statistics
+
+    class Meta:
+        ordering = ['-pk']
 
 
 class DryRunData(models.Model):
@@ -64,11 +97,25 @@ class DryRunData(models.Model):
 
 class Scenario(BaseScript):
     master_scenario = models.ForeignKey(MasterScenario, on_delete=models.CASCADE, related_name="scenarios")
+
     @property
     def tests_count(self):
         return self.tests.all().count()
+
+    @property
+    def tests_status(self):
+        tests_statuses = [test.status for test in self.tests.all()]
+        for status in STATUS_PRIORITY:
+            if status in tests_statuses:
+                return status
+
+    class Meta:
+        ordering = ['-pk']
 
 
 class Test(BaseScript):
     scenario_parent = models.ForeignKey(Scenario, on_delete=models.CASCADE, related_name="tests")
     status          = models.CharField(max_length=9, choices=TEST_STATUS_CHOICES, default="unknown")
+
+    class Meta:
+        ordering = ['-pk']
