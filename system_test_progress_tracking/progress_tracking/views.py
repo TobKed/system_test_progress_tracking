@@ -30,7 +30,7 @@ class MachineDetailView(DetailView):
         dry_run_datas = self.object.dry_run_datas.all()
         paginator = Paginator(dry_run_datas, self.paginate_by)
         page_obj = paginator.page(self.request.GET.get("page", 1))
-        is_paginated = True if dry_run_datas else False
+        is_paginated = page_obj.has_other_pages()
         extra_context = {
             "dry_run_datas": page_obj,
             "page_obj": page_obj,
