@@ -22,13 +22,13 @@ TEST_STATUS_CHOICES = (
 )
 
 STATUS_PRIORITY = [
-    RUNNING,
     CANCELLED,
+    RUNNING,
+    WAITING,
+    UNKNOWN,
     FAILED,
     ERROR,
     WARNING,
-    WAITING,
-    UNKNOWN,
     PASSED
 ]
 
@@ -117,6 +117,8 @@ class MasterScenario(BaseScript):
             for test in scenario.tests.all():
                 if test.status in STATUS_ONGOING:
                     test.status = value
+            scenario.update_tests_status()
+        self.update_tests_status()
 
     def set_all_ongoing_tests_to_unknown(self):
         self._set_all_ongoing_tests_to_value(UNKNOWN)
@@ -192,7 +194,10 @@ class Test(BaseScript):
         if value in [i[0] for i in TEST_STATUS_CHOICES]:
             self._status = value
             self.save()
-            self.scenario_parent.update_tests_status()
+            if value == CANCELLED:
+                self.scenario_parent.master_scenario.set_all_ongoing_tests_to_cancelled()
+            else:
+                self.scenario_parent.update_tests_status()
         else:
             raise IntegrityError("wrong status cannot be set")
 
