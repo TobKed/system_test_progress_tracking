@@ -4,12 +4,15 @@ import requests
 from .settings import (
     SCENARIOS_DIR,
     ENDPOINT_DRY_RUN,
+    ENDPOINT_RUN_START,
+    ENDPOINT_RUN_STOP,
 )
 from test_runner.models import (
     RUN_DATA,
     MasterScenarioData,
     ScenarioData,
     TestCaseData,
+    WetRunData
 )
 
 
@@ -31,10 +34,30 @@ def run_script(script_path, type_=None):
     if  type_ in ["scenario", "master"]:
         exec(script_compiled)
     elif not RUN_DATA.dry_run and type_ =="test_case":
+
         #TODO sending json wist test start/stop
         print("test start")
+        RUN_DATA.wet_run_data = WetRunData(file_path=file_path, file_name=file_name)
+        wet_run_dict_data_start = RUN_DATA.wet_run_data.get_wet_start_dict()
+        print(wet_run_dict_data_start)
+        try:
+            r = requests.post(ENDPOINT_RUN_START, json=wet_run_dict_data_start)
+            print(r.status_code)
+            print(r.content)
+        except Exception as e:
+            print(e)
+
         exec(script_compiled)
+
         print("test finished")
+        wet_run_dict_data_stop = RUN_DATA.wet_run_data.get_wet_stop_dict(status="passed")
+        print(wet_run_dict_data_stop)
+        try:
+            r = requests.post(ENDPOINT_RUN_STOP, json=wet_run_dict_data_stop)
+            print(r.status_code)
+            print(r.content)
+        except Exception as e:
+            print(e)
 
     print(f"FINISH - {file_name}")
 

@@ -7,7 +7,9 @@ class RunData:
     def __init__(self):
         self._dry_run_active = False
         self.dry_run_data = None
+        self.wet_run_data = None
         self.is_running = False
+        self.last_status = None
 
     @property
     def dry_run(self):
@@ -84,3 +86,32 @@ class ScenarioData(ScriptData):
 
 class TestCaseData(ScriptData):
     pass
+
+
+class WetRunData(ScriptData):
+    def __init__(self, file_path, file_name):
+        self.machine_name = MACHINE_NAME
+        self.file_path = file_path
+        self.file_name = file_name
+
+    def convert_to_dict(self):
+        return self.__dict__
+
+    def get_wet_start_dict(self):
+        wet_data = self.convert_to_dict()
+        wet_data.update({
+            "status": "running",
+            "timestamp_start": str(datetime.now()),
+        })
+        return wet_data
+
+    def get_wet_stop_dict(self, status):
+        wet_data = self.convert_to_dict()
+        wet_data.update({
+            "status": status,
+            "timestamp_stop": str(datetime.now()),
+        })
+        return wet_data
+
+    def __str__(self):
+        return self.file_name
