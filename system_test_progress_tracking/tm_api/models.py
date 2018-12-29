@@ -58,6 +58,15 @@ class Machine(models.Model):
     def get_master_scenarios(self):
         return (dry_run_data.master_scenario for dry_run_data in self.dry_run_datas.all())
 
+    def get_tests(self, file_name, file_path, status=WAITING):
+        return Test.objects.filter(
+            file_name=file_name,
+            file_path=file_path,
+            scenario_parent__master_scenario__dryrundata__in=self.dry_run_datas.all(),
+            scenario_parent___status__in=STATUS_ONGOING,
+            _status=status
+        )
+
     def get_last_master_scenario_status(self):
         dry_run_data = self.dry_run_datas.first()
         status = dry_run_data.master_scenario.tests_status if dry_run_data else "not-available"

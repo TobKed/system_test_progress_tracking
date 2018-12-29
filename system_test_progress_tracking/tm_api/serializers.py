@@ -1,3 +1,6 @@
+import operator
+from django.db.models import Q
+from functools import reduce
 from rest_framework import serializers
 from .models import (
     Machine,
@@ -11,15 +14,24 @@ from .models import (
 
 class TestSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MasterScenario
+        model = Test
         fields = ("file_name", "file_path", "script")
+
+
+class TestStartSerializer(serializers.ModelSerializer):
+    machine_name    = serializers.CharField()
+    status          = serializers.CharField()
+
+    class Meta:
+        model = Test
+        fields = ("machine_name", "file_name", "file_path", "status", "timestamp_start")
 
 
 class ScenarioSerializer(serializers.ModelSerializer):
     tests = TestSerializer(many=True, required=False)
 
     class Meta:
-        model = MasterScenario
+        model = Scenario
         fields = ("file_name", "file_path", "script", "tests")
 
 
