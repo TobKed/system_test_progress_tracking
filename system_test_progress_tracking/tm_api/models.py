@@ -112,7 +112,7 @@ class MasterScenario(BaseScript):
         return statistics
 
     def _get_status(self):
-        tests_statuses = [scenario.tests_status for scenario in self.scenarios.all()]
+        tests_statuses = [scenario.status for scenario in self.scenarios.all()]
         for status in STATUS_PRIORITY:
             if status in tests_statuses:
                 return status
@@ -120,10 +120,10 @@ class MasterScenario(BaseScript):
             return "unknown"
 
     def update_status(self):
-        self.objects.update(_status=self._get_status())
-        self.master_scenario.update_status()
+        self._status = self._get_status()
+        self.save()
 
-    def _set_all_ongoing_tests_to_value(self, value):
+    def set_all_ongoing_tests_to_value(self, value):
         for scenario in self.scenarios.all():
             for test in scenario.tests.all():
                 if test.status in STATUS_ONGOING:
@@ -132,10 +132,10 @@ class MasterScenario(BaseScript):
         self.update_status()
 
     def set_all_ongoing_tests_to_unknown(self):
-        self._set_all_ongoing_tests_to_value(UNKNOWN)
+        self.set_all_ongoing_tests_to_value(UNKNOWN)
 
     def set_all_ongoing_tests_to_cancelled(self):
-        self._set_all_ongoing_tests_to_value(CANCELLED)
+        self.set_all_ongoing_tests_to_value(CANCELLED)
 
     class Meta:
         ordering = ['-pk']
@@ -181,7 +181,8 @@ class Scenario(BaseScript):
         return self._status
 
     def update_status(self):
-        self.objects.update(_status=self._get_status())
+        self._status = self._get_status()
+        self.save()
         self.master_scenario.update_status()
 
     class Meta:

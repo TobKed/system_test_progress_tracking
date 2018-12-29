@@ -10,6 +10,6 @@ SCENARIO_MASTER = os.path.join(SCENARIOS_DIR, "scenario_master.py")
 
 ENDPOINT_BASE           = "http://localhost:8000/tm_api/"
 ENDPOINT_DRY_RUN        = ENDPOINT_BASE + "dry_run/"
-ENDPOINT_RUN_START      = ENDPOINT_BASE + "run_start/"
-ENDPOINT_RUN_STOP       = ENDPOINT_BASE + "run_stop/"
-ENDPOINT_RUN_EXCEPTION  = ENDPOINT_BASE + "run_exception/"
+ENDPOINT_RUN_START      = ENDPOINT_BASE + "test_start/"
+ENDPOINT_RUN_STOP       = ENDPOINT_BASE + "test_stop/"
+ENDPOINT_RUN_EXCEPTION  = ENDPOINT_BASE + "test_exception/"
