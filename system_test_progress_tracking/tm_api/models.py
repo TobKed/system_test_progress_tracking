@@ -63,19 +63,29 @@ class Machine(models.Model):
 
 
 class BaseScript(models.Model):
+    _status         = models.CharField(max_length=9, choices=TEST_STATUS_CHOICES, default="unknown", db_column="status")
     file_name       = models.CharField(max_length=256)
     file_path       = models.CharField(max_length=1024)
     script          = models.TextField(blank=True, null=True)
-    
-    def __str__(self):
-        return self.file_name
+    timestamp_start = models.DateTimeField(blank=True, null=True)
+    timestamp_stop  = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         ordering = ['-pk']
 
+    @property
+    def status(self):
+        return self._status
+
+    @status.setter
+    def status(self, value):
+            self.objects.update(_status=value)
+
+    def __str__(self):
+        return self.file_name
+
 
 class MasterScenario(BaseScript):
-    _tests_status = models.CharField(max_length=9, choices=TEST_STATUS_CHOICES, null=True, blank=True, default=None, db_column="tests_status")
 
     @property
     def scenarios_count(self):
@@ -87,10 +97,9 @@ class MasterScenario(BaseScript):
 
     @property
     def tests_status(self):
-        if self._tests_status is None:
-            self._tests_status = self._get_tests_status()
-            self.save()
-        return self._tests_status
+        if self._status is None:
+            self.objects.update(_status=self._get_status())
+        return self._status
 
     @property
     def tests_statistics(self):
@@ -100,7 +109,7 @@ class MasterScenario(BaseScript):
             statistics[status] = tests_statuses.count(status)
         return statistics
 
-    def _get_tests_status(self):
+    def _get_status(self):
         tests_statuses = [scenario.tests_status for scenario in self.scenarios.all()]
         for status in STATUS_PRIORITY:
             if status in tests_statuses:
@@ -108,17 +117,17 @@ class MasterScenario(BaseScript):
         else:
             return "unknown"
 
-    def update_tests_status(self):
-        self._tests_status = self._get_tests_status()
-        self.save()
+    def update_status(self):
+        self.objects.update(_status=self._get_status())
+        self.master_scenario.update_status()
 
     def _set_all_ongoing_tests_to_value(self, value):
         for scenario in self.scenarios.all():
             for test in scenario.tests.all():
                 if test.status in STATUS_ONGOING:
                     test.status = value
-            scenario.update_tests_status()
-        self.update_tests_status()
+            scenario.update_status()
+        self.update_status()
 
     def set_all_ongoing_tests_to_unknown(self):
         self._set_all_ongoing_tests_to_value(UNKNOWN)
@@ -151,13 +160,12 @@ class DryRunData(models.Model):
 
 class Scenario(BaseScript):
     master_scenario = models.ForeignKey(MasterScenario, on_delete=models.CASCADE, related_name="scenarios")
-    _tests_status   = models.CharField(max_length=9, choices=TEST_STATUS_CHOICES, null=True, blank=True, default=None, db_column="tests_status")
 
     @property
     def tests_count(self):
         return self.tests.all().count()
 
-    def _get_tests_status(self):
+    def _get_status(self):
         tests_statuses = [test.status for test in self.tests.all()]
         for status in STATUS_PRIORITY:
             if status in tests_statuses:
@@ -166,24 +174,21 @@ class Scenario(BaseScript):
             return "unknown"
 
     @property
-    def tests_status(self):
-        if self._tests_status is None:
-            self._tests_status = self._get_tests_status()
-            self.save()
-        return self._tests_status
+    def status(self):
+        if self._status is None:
+            self.objects.update(_status=self._get_status())
+        return self._status
 
-    def update_tests_status(self):
-        self._tests_status = self._get_tests_status()
-        self.save()
-        self.master_scenario.update_tests_status()
+    def update_status(self):
+        self.objects.update(_status=self._get_status())
+        self.master_scenario.update_status()
 
     class Meta:
         ordering = ['-pk']
 
 
 class Test(BaseScript):
-    scenario_parent = models.ForeignKey(Scenario, on_delete=models.CASCADE, related_name="tests")
-    _status         = models.CharField(max_length=9, choices=TEST_STATUS_CHOICES, default="unknown", db_column="status")
+    scenario_parent        = models.ForeignKey(Scenario, on_delete=models.CASCADE, related_name="tests")
 
     @property
     def status(self):
@@ -197,7 +202,7 @@ class Test(BaseScript):
             if value == CANCELLED:
                 self.scenario_parent.master_scenario.set_all_ongoing_tests_to_cancelled()
             else:
-                self.scenario_parent.update_tests_status()
+                self.scenario_parent.update_status()
         else:
             raise IntegrityError("wrong status cannot be set")
 

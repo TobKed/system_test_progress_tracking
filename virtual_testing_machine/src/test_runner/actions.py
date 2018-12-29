@@ -25,13 +25,13 @@ def run_script(script_path, type_=None):
     if RUN_DATA.dry_run:
         if type_ == "master":
             script_obj = MasterScenarioData(file_path, file_name, script_data)
-        elif type_ == "scenario":
+        elif type_ == "scenario_parent":
             script_obj = ScenarioData(file_path, file_name, script_data)
         elif type_ == "test_case":
             script_obj = TestCaseData(file_path, file_name, script_data)
         RUN_DATA.dry_run_data.add_script(script_obj)
 
-    if  type_ in ["scenario", "master"]:
+    if  type_ in ["scenario_parent", "master"]:
         exec(script_compiled)
     elif not RUN_DATA.dry_run and type_ =="test_case":
 
@@ -67,7 +67,7 @@ def run_test_case(test_case_path):
 
 
 def run_test_scenario(test_scenario_path):
-    run_script(test_scenario_path, "scenario")
+    run_script(test_scenario_path, "scenario_parent")
 
 
 def run_scenario_master(scenario_master_path, dry_run=False):

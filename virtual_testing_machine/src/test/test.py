@@ -42,7 +42,7 @@ class TestRunTestCase(unittest.TestCase):
             mocked_run_script.call_args_list,
             [
                 unittest.mock.call(test_path, "test_case"),
-                unittest.mock.call(test_path, "scenario"),
+                unittest.mock.call(test_path, "scenario_parent"),
                 unittest.mock.call(test_path, "master"),
             ]
         )
