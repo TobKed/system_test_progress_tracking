@@ -3,6 +3,7 @@ from django.db import models, IntegrityError
 from django.db.models import Q
 from functools import reduce
 
+
 RUNNING     = "running"
 CANCELLED   = "cancelled"
 FAILED      = "failed"
@@ -146,6 +147,13 @@ class MasterScenario(BaseScript):
     def set_all_ongoing_tests_to_cancelled(self):
         self.set_all_ongoing_tests_to_value(CANCELLED)
 
+    def set_only_last_running_test(self):
+        running_tests = Test.objects.filter(scenario_parent__in=self.scenarios.all(), _status=RUNNING)
+        count = running_tests.count()
+        if count > 1:
+            for running_test in running_tests[:count-1]:
+                running_test.status = UNKNOWN
+
     class Meta:
         ordering = ['-pk']
 
@@ -212,6 +220,8 @@ class Test(BaseScript):
             self.save()
             if value == CANCELLED:
                 self.scenario_parent.master_scenario.set_all_ongoing_tests_to_cancelled()
+            if value == RUNNING:
+                self.scenario_parent.master_scenario.set_only_last_running_test()
             else:
                 self.scenario_parent.update_status()
         else:

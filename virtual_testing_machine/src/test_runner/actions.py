@@ -50,14 +50,14 @@ def run_script(script_path, type_=None):
         exec(script_compiled)
 
         print("test finished")
-        wet_run_dict_data_stop = RUN_DATA.wet_run_data.get_wet_stop_dict(status="passed")
-        print(wet_run_dict_data_stop)
-        try:
-            r = requests.post(ENDPOINT_RUN_STOP, json=wet_run_dict_data_stop)
-            print(r.status_code)
-            print(r.content)
-        except Exception as e:
-            print(e)
+        # wet_run_dict_data_stop = RUN_DATA.wet_run_data.get_wet_stop_dict(status="passed")
+        # print(wet_run_dict_data_stop)
+        # try:
+        #     r = requests.post(ENDPOINT_RUN_STOP, json=wet_run_dict_data_stop)
+        #     print(r.status_code)
+        #     print(r.content)
+        # except Exception as e:
+        #     print(e)
 
     print(f"FINISH - {file_name}")
 

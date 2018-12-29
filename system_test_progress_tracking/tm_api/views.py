@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Test, DryRunData, Machine
+from .models import Test, DryRunData, Machine, WAITING
 
 from .serializers import DryRunDataSerializer, TestStartSerializer
 
@@ -23,10 +23,9 @@ class TestStartView(APIView):
             file_name = serializer.validated_data.get("file_name")
             file_path = serializer.validated_data.get("file_path")
             machine = Machine.objects.get(machine_name__iexact=machine_name)
-            machine_tests = machine.get_tests(file_name=file_name, file_path=file_path)
-            last_test = machine_tests.first()
-            last_test.status = "running"
-            last_test.save()
+            first_waiting_test = machine.get_tests(file_name=file_name, file_path=file_path, status=WAITING).first()
+            first_waiting_test.status = "running"
+            first_waiting_test.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
