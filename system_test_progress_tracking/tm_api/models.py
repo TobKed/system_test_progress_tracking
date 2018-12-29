@@ -1,5 +1,7 @@
+import operator
 from django.db import models, IntegrityError
-
+from django.db.models import Q
+from functools import reduce
 
 RUNNING     = "running"
 CANCELLED   = "cancelled"
@@ -148,10 +150,9 @@ class DryRunData(models.Model):
         return f"DryRunData: {self.machine.machine_name} - {self.timestamp}"
 
     def save(self, *args, **kwargs):
-        for dry_run_data in DryRunData.objects.filter(machine=self.machine):
-            master_scenario = dry_run_data.master_scenario
-            if master_scenario.tests_status in STATUS_ONGOING:
-                dry_run_data.master_scenario.set_all_ongoing_tests_to_unknown()
+        query = reduce(operator.or_, (Q(master_scenario___status__icontains=status) for status in STATUS_ONGOING))
+        for dry_run_data in DryRunData.objects.filter(query, machine=self.machine):
+            dry_run_data.master_scenario.set_all_ongoing_tests_to_unknown()
         return super().save(*args, **kwargs)
 
     class Meta:
