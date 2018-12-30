@@ -2,6 +2,7 @@ import operator
 from django.db import models, IntegrityError
 from django.db.models import Q
 from functools import reduce
+from datetime import datetime
 
 
 CANCELLED   = "cancelled"
@@ -130,7 +131,12 @@ class MasterScenario(BaseScript):
             return "unknown"
 
     def update_status(self):
-        self._status = self._get_status()
+        _status = self._get_status()
+        self._status = _status
+        if self.timestamp_start and _status in STATUS_FINISHED:
+            self.timestamp_stop = datetime.now()
+        if not self.timestamp_start and _status in STATUS_ONGOING:
+            self.timestamp_start = datetime.now()
         self.save()
 
     def set_all_ongoing_tests_to_value(self, value):
@@ -198,7 +204,12 @@ class Scenario(BaseScript):
         return self._status
 
     def update_status(self):
-        self._status = self._get_status()
+        _status = self._get_status()
+        self._status = _status
+        if self.timestamp_start and _status in STATUS_FINISHED:
+            self.timestamp_stop = datetime.now()
+        if not self.timestamp_start and _status in STATUS_ONGOING:
+            self.timestamp_start = datetime.now()
         self.save()
         self.master_scenario.update_status()
 
