@@ -222,6 +222,7 @@ class Test(BaseScript):
                 self.scenario_parent.master_scenario.set_all_ongoing_tests_to_cancelled()
             if value == RUNNING:
                 self.scenario_parent.master_scenario.set_only_last_running_test()
+                self.scenario_parent.update_status()
             else:
                 self.scenario_parent.update_status()
         else:
