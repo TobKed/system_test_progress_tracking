@@ -100,7 +100,6 @@ class WetRunData(ScriptData):
     def get_wet_start_dict(self):
         wet_data = self.convert_to_dict()
         wet_data.update({
-            "status": "running",
             "timestamp_start": str(datetime.now()),
         })
         return wet_data

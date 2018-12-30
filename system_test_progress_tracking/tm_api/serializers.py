@@ -20,11 +20,10 @@ class TestSerializer(serializers.ModelSerializer):
 
 class TestStartSerializer(serializers.ModelSerializer):
     machine_name    = serializers.CharField()
-    status          = serializers.CharField()
 
     class Meta:
         model = Test
-        fields = ("machine_name", "file_name", "file_path", "status", "timestamp_start")
+        fields = ("machine_name", "file_name", "file_path", "timestamp_start")
 
 
 class ScenarioSerializer(serializers.ModelSerializer):
