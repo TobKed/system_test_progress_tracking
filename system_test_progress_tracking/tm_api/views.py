@@ -2,13 +2,14 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Test, DryRunData, Machine, WAITING, RUNNING
+from .models import Test, Scenario, DryRunData, Machine, WAITING, RUNNING
 
 from .serializers import (
     DryRunDataSerializer,
     TestStartSerializer,
     TestStopSerializer,
     TestModelSerializer,
+    ScenarioModelSerializer,
 )
 
 
@@ -64,4 +65,11 @@ class TestDetailView(APIView):
     def get(self, request, pk, format=None):
         obj = get_object_or_404(Test, pk=pk)
         serializer = TestModelSerializer(obj, context={"request": request})
+        return Response(serializer.data)
+
+
+class ScenarioDetailView(APIView):
+    def get(self, request, pk, format=None):
+        obj = get_object_or_404(Scenario, pk=pk)
+        serializer = ScenarioModelSerializer(obj, context={"request": request})
         return Response(serializer.data)

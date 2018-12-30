@@ -21,7 +21,7 @@
                                 <tr>
                                     <th colspan="3" class="bg-steel-ligth align-middle">{{ scenario.file_name }}</th>
                                     <td class="align-middle text-center bg-steel-ligth" style="width: 10%">
-                                        <a href="#" class="btn btn-info btn-xs" data-toggle="tooltip" title="Info"><span class="fas fa-info xs"></span></a>
+                                        <button class="btn btn-info btn-xs info-button" data-toggle="modal" title="Info" data-target="#infoModal" data-model-name="scenario" data-model-id="{{ scenario.id }}"><span class="fas fa-info xs"></span></button>
                                     </td>
                                 </tr>
                                 {% for test in scenario.tests.all %}
@@ -91,7 +91,7 @@ function fillInfoModal(data) {
     infoModalLabel.text(data.file_name);
     let html = "<div>" +
             "<p>file name: " + data.file_name + "</p>" +
-            "<p>file path: " + data.file_path + "</p>" +
+            "<p>file path: <small>" + data.file_path + "</small></p>" +
             "<p>start: " + data.timestamp_start + "</p>" +
             "<p>stop: " + data.timestamp_stop + "</p>" +
             "<p>script: </p>" + script;
