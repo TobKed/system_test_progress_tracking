@@ -18,6 +18,12 @@ class TestSerializer(serializers.ModelSerializer):
         fields = ("file_name", "file_path", "script")
 
 
+class TestModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Test
+        fields = ("file_name", "file_path", "script", "timestamp_start", "timestamp_stop")
+
+
 class TestStartSerializer(serializers.ModelSerializer):
     machine_name    = serializers.CharField()
 
