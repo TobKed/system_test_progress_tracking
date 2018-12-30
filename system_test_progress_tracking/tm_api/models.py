@@ -4,13 +4,13 @@ from django.db.models import Q
 from functools import reduce
 
 
-RUNNING     = "running"
 CANCELLED   = "cancelled"
+RUNNING     = "running"
+WAITING     = "waiting"
+UNKNOWN     = "unknown"
 FAILED      = "failed"
 ERROR       = "error"
 WARNING     = "warning"
-WAITING     = "waiting"
-UNKNOWN     = "unknown"
 PASSED      = "passed"
 
 TEST_STATUS_CHOICES = (

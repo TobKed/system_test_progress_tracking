@@ -99,18 +99,18 @@ class WetRunData(ScriptData):
 
     def get_wet_start_dict(self):
         wet_data = self.convert_to_dict()
-        wet_data.update({
+        update = {
             "timestamp_start": str(datetime.now()),
-        })
-        return wet_data
+        }
+        return {**wet_data, **update}
 
     def get_wet_stop_dict(self, status):
         wet_data = self.convert_to_dict()
-        wet_data.update({
+        update = {
             "status": status,
             "timestamp_stop": str(datetime.now()),
-        })
-        return wet_data
+        }
+        return {**wet_data, **update}
 
     def __str__(self):
         return self.file_name

@@ -35,11 +35,10 @@ def run_script(script_path, type_=None):
         exec(script_compiled)
     elif not RUN_DATA.dry_run and type_ =="test_case":
 
-        #TODO sending json wist test start/stop
         print("test start")
         RUN_DATA.wet_run_data = WetRunData(file_path=file_path, file_name=file_name)
         wet_run_dict_data_start = RUN_DATA.wet_run_data.get_wet_start_dict()
-        print(wet_run_dict_data_start)
+        print("wet_run_dict_data_start:", wet_run_dict_data_start)
         try:
             r = requests.post(ENDPOINT_RUN_START, json=wet_run_dict_data_start)
             print(r.status_code)
@@ -51,7 +50,7 @@ def run_script(script_path, type_=None):
 
         print("test finished")
         wet_run_dict_data_stop = RUN_DATA.wet_run_data.get_wet_stop_dict(status=RUN_DATA.last_status)
-        print(wet_run_dict_data_stop)
+        print("wet_run_dict_data_stop:", wet_run_dict_data_stop)
         try:
             r = requests.post(ENDPOINT_RUN_STOP, json=wet_run_dict_data_stop)
             print(r.status_code)
@@ -76,7 +75,7 @@ def run_scenario_master(scenario_master_path, dry_run=False):
     run_script(scenario_master_path, "master")
     if dry_run:
         dry_run_dict_data = RUN_DATA.dry_run_data.convert_to_dict()
-        print(dry_run_dict_data)
+        print("dry_run_dict_data:", dry_run_dict_data)
         try:
             r = requests.post(ENDPOINT_DRY_RUN, json=dry_run_dict_data)
             print(r.status_code)
