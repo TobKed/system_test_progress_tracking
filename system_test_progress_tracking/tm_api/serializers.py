@@ -19,6 +19,9 @@ class TestSerializer(serializers.ModelSerializer):
 
 
 class TestModelSerializer(serializers.ModelSerializer):
+    timestamp_start = serializers.DateTimeField(format="%d-%m-%Y  %H:%M:%S", required=False, read_only=True)
+    timestamp_stop  = serializers.DateTimeField(format="%d-%m-%Y  %H:%M:%S", required=False, read_only=True)
+
     class Meta:
         model = Test
         fields = ("file_name", "file_path", "script", "timestamp_start", "timestamp_stop")
