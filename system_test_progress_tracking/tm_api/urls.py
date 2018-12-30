@@ -5,6 +5,7 @@ from .views import (
     TestStopView,
     TestDetailView,
     ScenarioDetailView,
+    MasterScenarioDetailView,
 )
 
 urlpatterns = [
@@ -14,4 +15,5 @@ urlpatterns = [
 
     path('test/<int:pk>', TestDetailView.as_view()),
     path('scenario/<int:pk>', ScenarioDetailView.as_view()),
+    path('master_scenario/<int:pk>', MasterScenarioDetailView.as_view()),
 ]
