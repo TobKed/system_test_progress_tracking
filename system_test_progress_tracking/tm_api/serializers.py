@@ -1,6 +1,3 @@
-import operator
-from django.db.models import Q
-from functools import reduce
 from rest_framework import serializers
 from .models import (
     Machine,
@@ -76,7 +73,6 @@ class MasterScenarioModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Scenario
         fields = ("file_name", "file_path", "script", "timestamp_start", "timestamp_stop")
-
 
 
 class DryRunDataSerializer(serializers.Serializer):

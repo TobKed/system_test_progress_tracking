@@ -6,7 +6,6 @@ from .models import (
     Test,
     Scenario,
     MasterScenario,
-    DryRunData,
     Machine,
     WAITING,
     RUNNING
