@@ -26,6 +26,15 @@ class TestStartSerializer(serializers.ModelSerializer):
         fields = ("machine_name", "file_name", "file_path", "timestamp_start")
 
 
+class TestStopSerializer(serializers.ModelSerializer):
+    machine_name    = serializers.CharField()
+    status          = serializers.CharField()
+
+    class Meta:
+        model = Test
+        fields = ("machine_name", "file_name", "file_path", "timestamp_stop", "status")
+
+
 class ScenarioSerializer(serializers.ModelSerializer):
     tests = TestSerializer(many=True, required=False)
 
