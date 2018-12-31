@@ -75,6 +75,28 @@ class MasterScenarioModelSerializer(serializers.ModelSerializer):
         fields = ("file_name", "file_path", "script", "timestamp_start", "timestamp_stop")
 
 
+class MasterScenarioModelDetailedSerializer(serializers.ModelSerializer):
+    class _ScenarioModelSerializer(serializers.ModelSerializer):
+        class _TestModelSerializer(serializers.ModelSerializer):
+            class Meta:
+                model = Test
+                fields = ("file_name", "status", "pk")
+
+        tests = _TestModelSerializer(many=True, read_only=True)
+
+        class Meta:
+            model = Scenario
+            fields = ("file_name", "tests", "status", "pk")
+
+    timestamp_start = serializers.DateTimeField(format="%d-%m-%Y  %H:%M:%S", required=False, read_only=True)
+    timestamp_stop  = serializers.DateTimeField(format="%d-%m-%Y  %H:%M:%S", required=False, read_only=True)
+    scenarios       = _ScenarioModelSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = MasterScenario
+        fields = ("pk", "file_name", "file_path", "script", "timestamp_start", "timestamp_stop", "scenarios", "status", "tests_statistics")
+
+
 class DryRunDataSerializer(serializers.Serializer):
     machine_name    = serializers.CharField(required=False, allow_blank=True, max_length=256)
     timestamp       = serializers.DateTimeField()
