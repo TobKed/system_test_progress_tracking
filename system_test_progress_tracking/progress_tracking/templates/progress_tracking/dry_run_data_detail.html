@@ -6,12 +6,12 @@
                 <a href="{% url 'machine-detail-view' dry_run_data.machine.pk %}" style="text-decoration: none; color: black;">{{ dry_run_data.machine.machine_name }}</a>
             </h4>
             <p>
-                Started: {{ dry_run_data.master_scenario.timestamp_start|time }} <small>{{ dry_run_data.master_scenario.timestamp_start|timesince }} ago </small>
+                Started: {{ dry_run_data.master_scenario.timestamp_start }} <small>{{ dry_run_data.master_scenario.timestamp_start|timesince }} ago </small>
                 <span class="mx-3 badge bg-ts-{{ dry_run_data.machine.get_last_master_scenario_status }}">{{ dry_run_data.machine.get_last_master_scenario_status }}</span>
                 <button class="btn btn-info btn-sm info-button" data-toggle="modal" title="Info" data-target="#infoModal" data-model-name="master_scenario" data-model-id="{{ dry_run_data.master_scenario.id }}"><span class="fas fa-info"></span></button>
                 {% if dry_run_data.master_scenario.timestamp_start and dry_run_data.master_scenario.timestamp_stop %}
                     <br>
-                    Finished: {{ dry_run_data.master_scenario.timestamp_stop|time }} <small>{{ dry_run_data.master_scenario.timestamp_stop|timesince }} ago </small>
+                    Finished: {{ dry_run_data.master_scenario.timestamp_stop }} <small>{{ dry_run_data.master_scenario.timestamp_stop|timesince }} ago </small>
                     <br>
                     Execution time: {{ dry_run_data.master_scenario.timestamp_start|timesince:dry_run_data.master_scenario.timestamp_stop }}
                 {% endif %}
