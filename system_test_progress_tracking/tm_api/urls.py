@@ -7,6 +7,7 @@ from .views import (
     ScenarioDetailView,
     MasterScenarioDetailView,
     MasterScenarioDetailFullView,
+    MachineLastDataView
 )
 
 urlpatterns = [
@@ -18,4 +19,5 @@ urlpatterns = [
     path('scenario/<int:pk>', ScenarioDetailView.as_view()),
     path('master_scenario/<int:pk>', MasterScenarioDetailView.as_view()),
     path('master_scenario_full/<int:pk>', MasterScenarioDetailFullView.as_view()),
+    path('machine_last_data/<int:pk>/', MachineLastDataView.as_view()),
 ]

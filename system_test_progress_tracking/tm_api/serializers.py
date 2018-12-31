@@ -94,7 +94,7 @@ class MasterScenarioModelDetailedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MasterScenario
-        fields = ("pk", "file_name", "file_path", "script", "timestamp_start", "timestamp_stop", "scenarios", "status", "tests_statistics")
+        fields = ("pk", "file_name", "timestamp_start", "timestamp_stop", "scenarios", "status", "tests_statistics")
 
 
 class DryRunDataSerializer(serializers.Serializer):
@@ -120,3 +120,11 @@ class DryRunDataSerializer(serializers.Serializer):
                 print("\ttest:", str(test))
 
         return DryRunData.objects.create(machine=machine, timestamp=timestamp, master_scenario=master_scenario)
+
+
+class MachineLastDataSerializer(serializers.ModelSerializer):
+    last_master_scenario = MasterScenarioModelDetailedSerializer(read_only=True)
+
+    class Meta:
+        model = Machine
+        fields = ("machine_name", "last_master_scenario")

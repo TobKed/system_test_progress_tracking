@@ -69,10 +69,16 @@ class Machine(models.Model):
             _status=status
         )
 
+    @property
+    def last_master_scenario(self):
+        dry_run_data = self.dry_run_datas.first()
+        return dry_run_data.master_scenario if dry_run_data else None
+
     def get_last_master_scenario_status(self):
         dry_run_data = self.dry_run_datas.first()
         status = dry_run_data.master_scenario.tests_status if dry_run_data else "not-available"
         return status
+
 
 
 class BaseScript(models.Model):
