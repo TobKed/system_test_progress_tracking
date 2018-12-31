@@ -113,7 +113,8 @@ class MasterScenarioModelDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MasterScenario
-        fields = ("pk", "file_name", "timestamp_start", "timestamp_stop", "scenarios", "status", "tests_statistics", "duration", "started_ago", "finished_ago")
+        fields = ("pk", "file_name", "timestamp_start", "started_ago", "timestamp_stop", "finished_ago", "duration",
+                  "status", "tests_statistics", "tests_count", "scenarios_count", "scenarios")
 
 
 class DryRunDataSerializer(serializers.Serializer):

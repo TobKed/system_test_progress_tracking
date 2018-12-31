@@ -27,6 +27,7 @@
                                 <th scope="col" style="width: 10%">Scenarios</th>
                                 <th scope="col" style="width: 10%">Running</th>
                                 <th scope="col" style="width: 10%">Waiting</th>
+                                <th scope="col" style="width: 10%">Cancelled</th>
                                 <th scope="col" style="width: 10%">Unknown</th>
                                 <th scope="col" style="width: 10%">Failed</th>
                                 <th scope="col" style="width: 10%">Error</th>
@@ -41,6 +42,7 @@
                                 <td>{{ dry_run_data.master_scenario.scenarios_count }}</td>
                                 <td>{{ dry_run_data.master_scenario.tests_statistics.running }}</td>
                                 <td>{{ dry_run_data.master_scenario.tests_statistics.waiting }}</td>
+                                <td>{{ dry_run_data.master_scenario.tests_statistics.cancelled }}</td>
                                 <td>{{ dry_run_data.master_scenario.tests_statistics.unknown }}</td>
                                 <td>{{ dry_run_data.master_scenario.tests_statistics.failed }}</td>
                                 <td>{{ dry_run_data.master_scenario.tests_statistics.error }}</td>

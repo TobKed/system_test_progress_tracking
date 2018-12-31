@@ -6,44 +6,41 @@
                 <a href="{% url 'machine-detail-view' machine.pk %}" style="text-decoration: none; color: black;">{{ machine.machine_name }}</a>
             </h4>
             <p id="firstParagraph">
-                Started: <span id="id_timestamp_start"></span> <small id="id_started_ago"></small>
-                <span class="mx-3 badge bg-ts-{{ machine.get_last_master_scenario_status }}">{{ machine.get_last_master_scenario_status }}</span>
-                <button class="btn btn-info btn-sm info-button" data-toggle="modal" title="Info" data-target="#infoModal" data-model-name="master_scenario" data-model-id="{{ master_scenario.id }}"><span class="fas fa-info"></span></button>
             </p>
-{##}
-{#            <p class="article-content">#}
-{#                <div class="m-5">#}
-{#                    <table id="mytable" class="table table-bordered table-sm">#}
-{##}
-{#                        <thead>#}
-{#                            <tr>#}
-{#                                <th scope="col" style="width: 10%">Tests</th>#}
-{#                                <th scope="col" style="width: 10%">Scenarios</th>#}
-{#                                <th scope="col" style="width: 10%">Running</th>#}
-{#                                <th scope="col" style="width: 10%">Waiting</th>#}
-{#                                <th scope="col" style="width: 10%">Unknown</th>#}
-{#                                <th scope="col" style="width: 10%">Failed</th>#}
-{#                                <th scope="col" style="width: 10%">Error</th>#}
-{#                                <th scope="col" style="width: 10%">Warning</th>#}
-{#                                <th scope="col" style="width: 10%">Passed</th>#}
-{#                            </tr>#}
-{#                        </thead>#}
-{##}
-{#                        <tbody>#}
-{#                            <tr>#}
-{#                                <td>{{ dry_run_data.master_scenario.tests_count }}</td>#}
-{#                                <td>{{ dry_run_data.master_scenario.scenarios_count }}</td>#}
-{#                                <td>{{ dry_run_data.master_scenario.tests_statistics.running }}</td>#}
-{#                                <td>{{ dry_run_data.master_scenario.tests_statistics.waiting }}</td>#}
-{#                                <td>{{ dry_run_data.master_scenario.tests_statistics.unknown }}</td>#}
-{#                                <td>{{ dry_run_data.master_scenario.tests_statistics.failed }}</td>#}
-{#                                <td>{{ dry_run_data.master_scenario.tests_statistics.error }}</td>#}
-{#                                <td>{{ dry_run_data.master_scenario.tests_statistics.warning }}</td>#}
-{#                                <td>{{ dry_run_data.master_scenario.tests_statistics.passed }}</td>#}
-{#                            </tr>#}
-{#                        </tbody>#}
-{#                    </table>#}
-{#                </div>#}
+
+            <p class="article-content">
+                <div class="m-5">
+                    <table id="tableStatistics" class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 10%">Tests</th>
+                                <th scope="col" style="width: 10%">Scenarios</th>
+                                <th scope="col" style="width: 10%">Running</th>
+                                <th scope="col" style="width: 10%">Waiting</th>
+                                <th scope="col" style="width: 10%">Cancelled</th>
+                                <th scope="col" style="width: 10%">Unknown</th>
+                                <th scope="col" style="width: 10%">Failed</th>
+                                <th scope="col" style="width: 10%">Error</th>
+                                <th scope="col" style="width: 10%">Warning</th>
+                                <th scope="col" style="width: 10%">Passed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="ts-testsCount"></td>
+                                <td id="ts-scenariosCount"></td>
+                                <td id="ts-running"></td>
+                                <td id="ts-waiting"></td>
+                                <td id="ts-cancelled"></td>
+                                <td id="ts-unknown"></td>
+                                <td id="ts-failed"></td>
+                                <td id="ts-error"></td>
+                                <td id="ts-warning"></td>
+                                <td id="ts-passed"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 {##}
 {#                <table id="mytable" class="table table-striped table-hover table-sm">#}
 {##}
@@ -91,8 +88,8 @@
 {#                    </tbody>#}
 {#                </table>#}
 {##}
-{#                <div class="clearfix"></div>#}
-{#            </p>#}
+                <div class="clearfix"></div>
+            </p>
 
         </div>
     </article>
@@ -127,41 +124,53 @@ function fillPageWithData(data) {
     let machineName = data.machine_name;
     let masterScenario = data.last_master_scenario;
     let timestampStart = masterScenario.timestamp_start;
-    let timestampStop = masterScenario.timestamp_stop;
     let startedAgo = masterScenario.started_ago;
+    let timestampStop = masterScenario.timestamp_stop;
     let finishedAgo = masterScenario.finished_ago;
     let duration = masterScenario.duration;
     let status = masterScenario.status;
+    let testsCount = masterScenario.tests_count;
+    let scenariosCount = masterScenario.scenarios_count;
     let testsStatistics = masterScenario.tests_statistics;
 
+    // fill first paragraph
+    let firstParagraph = $("#firstParagraph");
+    firstParagraph.html(
+        "Started: <span >" + timestampStart + "</span> <small>" + startedAgo + " ago</small>" +
+        "<span class='mx-3 badge bg-ts-" + status +"'>" + status + "</span>" +
+        "<button class='btn btn-info btn-sm info-button' data-toggle='modal' title='Info' data-target='#infoModal' data-model-name='master_scenario' data-model-id='" + masterScenario.pk + "'><span class='fas fa-info'></span></button>");
 
-    $("#id_timestamp_start").text(timestampStart);
-    $("#id_started_ago").text(startedAgo + " ago");
+    firstParagraph.append(
+        "<br>" +
+        "Finished: " + timestampStop + " <small>" + finishedAgo + " ago </small>" +
+        "<br>" +
+        "Execution time: " + duration);
 
-    if ((timestampStart != null) && (timestampStop != null)) {
-        $("#firstParagraph").append(
-            "<br>" +
-            "Finished: " + timestampStop + " <small>" + finishedAgo + " ago </small>" +
-            "<br>" +
-            "Execution time: " + duration)
-    }
+    // fill table-statistics
+    let tableStatistics = $("#tableStatistics");
+    $.each( testsStatistics, function( key, value ) {
+        tableStatistics.find("#ts-" + key).text(value);
+    });
+    tableStatistics.find("#ts-testsCount").text(testsCount);
+    tableStatistics.find("#ts-scenariosCount").text(scenariosCount);
 
 };
 
 $(document).ready(function() {
 
-    $.ajax({
-        url: "/tm_api/machine_last_data/" + {{ machine.pk }},
-        method: "GET",
-        success: function (data) {
-            fillPageWithData(data);
-        },
-        error: function (data) {
-            console.log("error");
-            console.log(data);
-        }
-    });
-
+    //setInterval(function(){
+        $.ajax({
+            url: "/tm_api/machine_last_data/" + {{ machine.pk }},
+            method: "GET",
+            success: function (data) {
+                fillPageWithData(data);
+            },
+            error: function (data) {
+                console.log("error");
+                console.log(data);
+            }
+        });
+    //}, 500);
 });
 
 </script>
