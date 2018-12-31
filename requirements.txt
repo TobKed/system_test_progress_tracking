@@ -4,9 +4,12 @@ codecov==2.0.15
 coverage==4.5.2
 Django==2.1.4
 django-crispy-forms==1.7.2
+django-extensions==2.1.4
 djangorestframework==3.9.0
 Faker==1.0.1
 idna==2.7
+pydot==1.4.1
+pyparsing==2.3.0
 python-dateutil==2.7.5
 pytz==2018.7
 requests==2.20.1

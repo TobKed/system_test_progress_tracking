@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_extensions',
     'rest_framework',
     'crispy_forms',
     'tm_api',
@@ -141,3 +142,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'home-view'
 LOGIN_URL = 'login'
+
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
