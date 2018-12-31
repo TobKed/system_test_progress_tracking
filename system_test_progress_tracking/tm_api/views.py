@@ -18,7 +18,7 @@ from .serializers import (
     TestModelSerializer,
     ScenarioModelSerializer,
     MasterScenarioModelSerializer,
-    MasterScenarioModelDetailedSerializer,
+    MasterScenarioModelDetailSerializer,
     MachineLastDataSerializer,
 )
 
@@ -95,7 +95,7 @@ class MasterScenarioDetailView(APIView):
 class MasterScenarioDetailFullView(APIView):
     def get(self, request, pk, format=None):
         obj = get_object_or_404(MasterScenario, pk=pk)
-        serializer = MasterScenarioModelDetailedSerializer(obj, context={"request": request})
+        serializer = MasterScenarioModelDetailSerializer(obj, context={"request": request})
         return Response(serializer.data)
 
 

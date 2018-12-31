@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator
+from django.views import View
 from django.views.generic import (
     DetailView,
     ListView,
@@ -44,3 +45,9 @@ class DryRunDataDetailView(DetailView):
     model = DryRunData
     template_name = "progress_tracking/dry_run_data_detail.html"
     context_object_name = 'dry_run_data'
+
+
+class MachineLastDataView(DetailView):
+    model = Machine
+    template_name = "progress_tracking/machine_last_data.html"
+    context_object_name = 'machine'

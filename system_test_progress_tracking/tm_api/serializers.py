@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.utils import timesince
 from .models import (
     Machine,
     Test,
@@ -75,7 +76,7 @@ class MasterScenarioModelSerializer(serializers.ModelSerializer):
         fields = ("file_name", "file_path", "script", "timestamp_start", "timestamp_stop")
 
 
-class MasterScenarioModelDetailedSerializer(serializers.ModelSerializer):
+class MasterScenarioModelDetailSerializer(serializers.ModelSerializer):
     class _ScenarioModelSerializer(serializers.ModelSerializer):
         class _TestModelSerializer(serializers.ModelSerializer):
             class Meta:
@@ -91,10 +92,28 @@ class MasterScenarioModelDetailedSerializer(serializers.ModelSerializer):
     timestamp_start = serializers.DateTimeField(format="%d-%m-%Y  %H:%M:%S", required=False, read_only=True)
     timestamp_stop  = serializers.DateTimeField(format="%d-%m-%Y  %H:%M:%S", required=False, read_only=True)
     scenarios       = _ScenarioModelSerializer(many=True, read_only=True)
+    duration        = serializers.SerializerMethodField()
+    started_ago     = serializers.SerializerMethodField()
+    finished_ago     = serializers.SerializerMethodField()
+
+    def get_duration(self, obj):
+        if obj.timestamp_start and obj.timestamp_stop:
+            return timesince.timesince(obj.timestamp_start, obj.timestamp_stop)
+        return None
+
+    def get_started_ago(self, obj):
+        if obj.timestamp_start:
+            return timesince.timesince(obj.timestamp_start)
+        return None
+
+    def get_finished_ago(self, obj):
+        if obj.timestamp_stop:
+            return timesince.timesince(obj.timestamp_stop)
+        return None
 
     class Meta:
         model = MasterScenario
-        fields = ("pk", "file_name", "timestamp_start", "timestamp_stop", "scenarios", "status", "tests_statistics")
+        fields = ("pk", "file_name", "timestamp_start", "timestamp_stop", "scenarios", "status", "tests_statistics", "duration", "started_ago", "finished_ago")
 
 
 class DryRunDataSerializer(serializers.Serializer):
@@ -123,7 +142,7 @@ class DryRunDataSerializer(serializers.Serializer):
 
 
 class MachineLastDataSerializer(serializers.ModelSerializer):
-    last_master_scenario = MasterScenarioModelDetailedSerializer(read_only=True)
+    last_master_scenario = MasterScenarioModelDetailSerializer(read_only=True)
 
     class Meta:
         model = Machine
