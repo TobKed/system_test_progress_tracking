@@ -2,18 +2,23 @@
 {% block content %}
     <article class="media content-section">
         <div class="media-body">
-            <h4 class="article-title">{{ machine.machine_name }}</h4>
+            <h4 class="article-title">
+                {{ machine.machine_name }}
+                <a href="{% url "machine-last-data-view" machine.pk %}" class="btn btn-info btn-sm mx-4"><span class="">last run</span></a>
+            </h4>
             <p class="article-content">
                 <h5>Master scenarios ({{ page_obj.paginator.count }})</h5>
-                    <table id="mytable" class="table table-bordred table-striped table-hover table-sm">
+                    <table id="mytable" class="table table-bordered table-striped table-hover table-sm">
 
                         <thead>
-                            <th>Id</th>
-                            <th>Timestamp</th>
-                            <th>Scenarios</th>
-                            <th>Tests</th>
-                            <th>Status</th>
-                            <th class=" text-center">Details</th>
+                            <tr>
+                                <th>Id</th>
+                                <th>Timestamp</th>
+                                <th>Scenarios</th>
+                                <th>Tests</th>
+                                <th>Status</th>
+                                <th class=" text-center">Details</th>
+                            </tr>
                         </thead>
 
                         <tbody>
