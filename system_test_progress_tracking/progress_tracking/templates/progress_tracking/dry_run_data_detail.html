@@ -67,8 +67,8 @@
                     <tbody>
                         {% for scenario in dry_run_data.master_scenario.scenarios.all %}
                             <tr>
-                                <th colspan="3" class="bg-steel-ligth align-middle">{{ scenario.file_name }}</th>
-                                <td class="align-middle text-center bg-steel-ligth" style="width: 10%">
+                                <th colspan="3" class="bg-steel-light align-middle">{{ scenario.file_name }}</th>
+                                <td class="align-middle text-center bg-steel-light" style="width: 10%">
                                     <button class="btn btn-info btn-xs info-button" data-toggle="modal" title="Info" data-target="#infoModal" data-model-name="scenario" data-model-id="{{ scenario.id }}"><span class="fas fa-info xs"></span></button>
                                 </td>
                             </tr>
@@ -155,7 +155,6 @@ $(document).ready(function() {
             url: "/tm_api/" + modelName + "/" + modelId,
             method: "GET",
             success: function (data) {
-                console.log(data);
                 fillInfoModal(data);
             },
             error: function (data) {
