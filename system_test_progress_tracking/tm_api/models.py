@@ -45,8 +45,8 @@ STATUS_FINISHED = [
     CANCELLED,
     FAILED,
     ERROR,
-    WAITING,
     UNKNOWN,
+    WARNING,
     PASSED,
 ]
 
