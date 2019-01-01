@@ -105,6 +105,14 @@ function fillPageWithData(data) {
 
     // fill first paragraph
     let firstParagraph = $("#firstParagraph");
+    if ((finishedAgo != null) && (timestampStop != null)) {
+        finishedAgo = finishedAgo + " ago";
+    } else {
+        finishedAgo = "";
+        timestampStop = "-";
+        duration = "-";
+    }
+
     firstParagraph.html(
         "Started: <span >" + timestampStart + "</span> <small>" + startedAgo + " ago</small>" +
         "<span class='mx-3 badge bg-ts-" + status +"'>" + status + "</span>" +
@@ -112,7 +120,7 @@ function fillPageWithData(data) {
 
     firstParagraph.append(
         "<br>" +
-        "Finished: " + timestampStop + " <small>" + finishedAgo + " ago </small>" +
+        "Finished: " + timestampStop + " <small>" + finishedAgo + " </small>" +
         "<br>" +
         "Execution time: " + duration);
 
@@ -212,7 +220,7 @@ $(document).ready(function() {
                 console.log(data);
             }
         });
-    }, 500);
+    }, 2000);
 
 });
 
