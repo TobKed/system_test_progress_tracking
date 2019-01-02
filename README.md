@@ -5,3 +5,5 @@
 ![system_test_progress_tracking_overall_scheme](/docs/img/system_test_progress_tracking_overall_scheme.png)
 
 ![test_scenario_structure](/docs/img/test_scenario_structure.png)
+
+![db_schema](/docs/img/db_scheme.png)
