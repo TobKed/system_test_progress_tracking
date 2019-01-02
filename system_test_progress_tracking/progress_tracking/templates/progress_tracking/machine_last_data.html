@@ -94,6 +94,7 @@
         'ws://' + window.location.host + '/ws/machine/' + machineId + '/last/'
     );
 
+    console.log(machineSocket.reply_channel)
     machineSocket.onmessage = function(e) {
         console.log("machineSocket.onmessage");
         let data = JSON.parse(e.data);
