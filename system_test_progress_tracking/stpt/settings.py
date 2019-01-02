@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'channels',
     'django_extensions',
     'rest_framework',
     'crispy_forms',
@@ -142,3 +143,6 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'home-view'
 LOGIN_URL = 'login'
+
+# Channels
+ASGI_APPLICATION = 'stpt.routing.application'
