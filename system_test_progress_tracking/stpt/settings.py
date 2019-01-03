@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'crispy_forms',
-    'tm_api',
+    'tm_api.apps.TmApiConfig',
     'users',
     'progress_tracking',
 ]

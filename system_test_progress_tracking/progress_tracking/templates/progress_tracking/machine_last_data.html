@@ -97,7 +97,7 @@
     machineSocket.onmessage = function(e) {
         console.log("machineSocket.onmessage");
         let data = JSON.parse(e.data);
-        let machineData = data["machineData"];
+        let machineData = data["machine_data"];
         fillPageWithData(machineData);
     };
 
