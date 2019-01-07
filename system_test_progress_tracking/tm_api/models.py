@@ -80,7 +80,6 @@ class Machine(models.Model):
         return status
 
 
-
 class BaseScript(models.Model):
     _status         = models.CharField(max_length=9, choices=TEST_STATUS_CHOICES, default="unknown", db_column="status")
     file_name       = models.CharField(max_length=256)
