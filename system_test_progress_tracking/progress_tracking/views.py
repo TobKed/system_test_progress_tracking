@@ -14,20 +14,16 @@ def home(request):
     return render(request, 'progress_tracking/home.html')
 
 
-class MachineListView(ListView):
-    model = Machine
+class MachineListView(View):
     template_name = "progress_tracking/machine_list.html"
-    context_object_name = 'machines'
     paginate_by = MachineListPagePagination.page_size
 
-    def get_context_data(self, *args, **kwargs):
-        context_data = super().get_context_data(*args, **kwargs)
+    def get(self, request):
         params = {
-            'page_number': self.request.GET.get('page', 'null'),
+            'page_number': self.request.GET.get('page', '1'),
             'page_size': self.request.GET.get('page_size', self.paginate_by),
         }
-        context_data.update(params)
-        return context_data
+        return render(request, self.template_name, params)
 
 
 class MachineDetailView(DetailView):

@@ -7,7 +7,7 @@
 
             <div class="col-md-12">
                 <div class="container d-flex justify-content-between">
-                    <h4 class="d-inline-block mt-2">Machines ({{ page_obj.paginator.count }})</h4>
+                    <h4 class="d-inline-block mt-2">Machines ()</h4>
                 </div>
 
                 <div class="table-responsive">
@@ -22,20 +22,6 @@
                         </thead>
 
                         <tbody>
-                            {% for machine in machines %}
-                                <tr>
-                                    <td class="align-middle" style="width: 10%">{{ machine.pk }}</td>
-                                    <td class="align-middle" style="width: 40%">{{ machine.machine_name }}</td>
-                                    <td class="align-middle" style="width: 40%">
-                                        <div class="progress" style="height: 38px;">
-                                            <div class="progress-bar bg-ts-{{ machine.get_last_master_scenario_status }} {% if machine.get_last_master_scenario_status in 'running,waiting' %}progress-bar-striped progress-bar-animated {% endif %}" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">{{ machine.get_last_master_scenario_status }}</div>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle text-center" style="width: 10%">
-                                        <a href="{% url 'machine-detail-view' machine.pk%}" class="btn btn-info btn-xs" data-toggle="tooltip" title="Info"><span class="fas fa-info xs"></span></a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
                         </tbody>
                     </table>
 
@@ -86,6 +72,7 @@
             success: function (data) {
                 putPaginator(data);
                 fillPageWithData(data);
+                history.pushState({'page': pageNumber, 'pageSize': pageSize}, $(document).prop('title'), URLparameters);
             },
             error: function (data) {
                 console.log("error");
@@ -104,7 +91,9 @@
         paginatorTarget.find( "a" ).click(function( event ) {
           event.preventDefault();
           let elem = $(this);
-          fetchMachineListData(elem.data('page'), elem.data('pageSize'));
+          let page = elem.data('page');
+          let pageSize = elem.data('pageSize');
+          fetchMachineListData(page, pageSize);
         });
     }
 
