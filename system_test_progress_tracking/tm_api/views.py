@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics
 from .models import (
     Test,
     Scenario,
@@ -20,7 +20,10 @@ from .serializers import (
     MasterScenarioModelSerializer,
     MasterScenarioModelDetailSerializer,
     MachineLastDataSerializer,
+    MachineListSerializer,
 )
+
+from .pagination import MachineListPagePagination
 
 
 class DryRunView(APIView):
@@ -104,3 +107,9 @@ class MachineLastDataView(APIView):
         obj = get_object_or_404(Machine, pk=pk)
         serializer = MachineLastDataSerializer(obj, context={"request": request})
         return Response(serializer.data)
+
+
+class MachineListView(generics.ListAPIView):
+    queryset = Machine.objects.all()
+    serializer_class = MachineListSerializer
+    pagination_class = MachineListPagePagination

@@ -17,14 +17,14 @@ class MachineListView(ListView):
     model = Machine
     template_name = "progress_tracking/machine_list.html"
     context_object_name = 'machines'
-    paginate_by = 5
+    paginate_by = 2
 
 
 class MachineDetailView(DetailView):
     model = Machine
     template_name = "progress_tracking/machine_detail.html"
     context_object_name = 'machine'
-    paginate_by = 5
+    paginate_by = 2
 
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)

@@ -142,6 +142,12 @@ class DryRunDataSerializer(serializers.Serializer):
         return DryRunData.objects.create(machine=machine, timestamp=timestamp, master_scenario=master_scenario)
 
 
+class MachineListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Machine
+        fields = ["pk", "machine_name", "get_last_master_scenario_status"]
+
+
 class MachineLastDataSerializer(serializers.ModelSerializer):
     last_master_scenario = MasterScenarioModelDetailSerializer(read_only=True)
 
