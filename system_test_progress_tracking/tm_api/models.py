@@ -1,6 +1,7 @@
 import operator
 from django.db import models, IntegrityError
 from django.db.models import Q
+from django.urls import reverse
 from functools import reduce
 from datetime import datetime
 
@@ -78,6 +79,9 @@ class Machine(models.Model):
         dry_run_data = self.dry_run_datas.first()
         status = dry_run_data.master_scenario.tests_status if dry_run_data else "not-available"
         return status
+
+    def get_absolute_url(self):
+        return reverse("machine-detail-view", kwargs={"pk": self.pk})
 
 
 class BaseScript(models.Model):

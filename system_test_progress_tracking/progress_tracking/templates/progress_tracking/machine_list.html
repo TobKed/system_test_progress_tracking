@@ -1,4 +1,5 @@
 {% extends "progress_tracking/base.html" %}
+{% load static %}
 {% block content %}
 
     <div class="container">
@@ -11,7 +12,7 @@
 
                 <div class="table-responsive">
 
-                    <table id="mytable" class="table table-bordered table-striped table-hover table-sm">
+                    <table id="machineListTable" class="table table-bordered table-striped table-hover table-sm">
 
                         <thead>
                             <th>Id</th>
@@ -45,6 +46,9 @@
                     {% include 'progress_tracking/paginator.html' %}
                     <!-- PAGINATOR END -->
 
+                    <div id="pagination">
+                    </div>
+
                 </div>
 
             </div> <!-- end col-md-12 -->
@@ -53,3 +57,38 @@
 
 
 {% endblock content %}
+
+{% block script %}
+<script>
+
+    let pageNumber = {{ page_number }};
+    let pageSize = {{ page_size }};
+
+    function putPaginator(data) {
+        let paginatorTarget = $('#pagination');
+        let paginatorDiv = getPaginatorDiv(data.total_pages, data.page_size, data.page_number,
+            data.has_previous, data.previous_page_number, data.has_next, data.next_page_number);
+        paginatorTarget.html(paginatorDiv);
+    }
+
+
+    $(document).ready(function() {
+
+        let URLparameters = "?page=" + pageNumber + "&page_size=" + pageSize;
+        $.ajax({
+            url: "tm_api/machines/" + URLparameters,
+            method: "GET",
+            success: function (data) {
+                console.log(data);
+                putPaginator(data);
+            },
+            error: function (data) {
+                console.log("error");
+                console.log(data);
+            }
+        });
+
+    });
+
+</script>
+{% endblock script %}

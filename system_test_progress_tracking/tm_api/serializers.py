@@ -143,13 +143,19 @@ class DryRunDataSerializer(serializers.Serializer):
 
 
 class MachineListSerializer(serializers.ModelSerializer):
+    absolute_url = serializers.SerializerMethodField()
+
+    def get_absolute_url(self, obj):
+        return obj.get_absolute_url()
+
     class Meta:
         model = Machine
-        fields = ["pk", "machine_name", "get_last_master_scenario_status"]
+        fields = ["pk", "machine_name", "get_last_master_scenario_status", "absolute_url"]
 
 
 class MachineLastDataSerializer(serializers.ModelSerializer):
     last_master_scenario = MasterScenarioModelDetailSerializer(read_only=True)
+
 
     class Meta:
         model = Machine

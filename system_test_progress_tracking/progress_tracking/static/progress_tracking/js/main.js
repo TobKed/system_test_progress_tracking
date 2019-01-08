@@ -16,12 +16,12 @@ function getPaginatorDiv(totalPages, pageSize, pageNumber,
                          hasNext, nextPageNumber) {
     let paginatorDiv = $( document.createElement('div') );
 
-    if (hasPrevious) {
+    if (hasPrevious == true) {
         paginatorDiv.append("<a class='btn btn-outline-info mb-4 mx-1' href='?page=1&page_size=" + pageSize + "'>First</a>");
         paginatorDiv.append("<a class='btn btn-outline-info mb-4 mx-1' href='?page=" + previousPageNumber + "&page_size=" + pageSize + "'>Previous</a>");
     }
 
-    for (let i = 0; i < totalPages; i++) {
+    for (let i = 1; i <= totalPages; i++) {
         if (i == pageNumber) {
             paginatorDiv.append("<a class='btn btn-info mb-4 mx-1' href='?page=" + i + "'>" + i + "</a>");
         } else if ( (i > (pageNumber-3)) && (i < (pageNumber+3)) ) {
@@ -30,7 +30,7 @@ function getPaginatorDiv(totalPages, pageSize, pageNumber,
 
     }
 
-    if (hasNext) {
+    if (hasNext == true) {
         paginatorDiv.append("<a class='btn btn-outline-info mb-4 mx-1' href='?page=" + nextPageNumber + "&page_size=" + pageSize + "'>Next</a>");
         paginatorDiv.append("<a class='btn btn-outline-info mb-4 mx-1' href='?page=" + totalPages     + "&page_size=" + pageSize + "'>Last</a>");
     }
