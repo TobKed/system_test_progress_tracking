@@ -17,22 +17,22 @@ function getPaginatorDiv(totalPages, pageSize, pageNumber,
     let paginatorDiv = $( document.createElement('div') );
 
     if (hasPrevious == true) {
-        paginatorDiv.append("<a class='btn btn-outline-info mb-4 mx-1' href='?page=1&page_size=" + pageSize + "'>First</a>");
-        paginatorDiv.append("<a class='btn btn-outline-info mb-4 mx-1' href='?page=" + previousPageNumber + "&page_size=" + pageSize + "'>Previous</a>");
+        paginatorDiv.append("<a class='btn btn-outline-info mb-4 mx-1' data-page='"+ 1 + "' data-page-size='" + pageSize + "' href='?page=1&page_size=" + pageSize + "'>First</a>");
+        paginatorDiv.append("<a class='btn btn-outline-info mb-4 mx-1' data-page='"+ previousPageNumber + "' data-page-size='" + pageSize + "' href='?page=" + previousPageNumber + "&page_size=" + pageSize + "'>Previous</a>");
     }
 
     for (let i = 1; i <= totalPages; i++) {
         if (i == pageNumber) {
-            paginatorDiv.append("<a class='btn btn-info mb-4 mx-1' href='?page=" + i + "'>" + i + "</a>");
+            paginatorDiv.append("<a class='btn btn-info mb-4 mx-1' data-page='"+ i + "' data-page-size='" + pageSize + "' href='?page=" + i + "&page_size=" + pageSize + "'>" + i + "</a>");
         } else if ( (i > (pageNumber-3)) && (i < (pageNumber+3)) ) {
-            paginatorDiv.append("<a class='btn btn-outline-info mb-4 mx-1' href='?page=" + i + "&page_size=" + pageSize + "'>" + i + "</a>");
+            paginatorDiv.append("<a class='btn btn-outline-info mb-4 mx-1' data-page='"+ i + "' data-page-size='"+ pageSize + "' href='?page=" + i + "&page_size=" + pageSize + "'>" + i + "</a>");
         }
 
     }
 
     if (hasNext == true) {
-        paginatorDiv.append("<a class='btn btn-outline-info mb-4 mx-1' href='?page=" + nextPageNumber + "&page_size=" + pageSize + "'>Next</a>");
-        paginatorDiv.append("<a class='btn btn-outline-info mb-4 mx-1' href='?page=" + totalPages     + "&page_size=" + pageSize + "'>Last</a>");
+        paginatorDiv.append("<a class='btn btn-outline-info mb-4 mx-1' data-page='"+ nextPageNumber + "' data-page-size='"+ pageSize + "' href='?page=" + nextPageNumber + "&page_size=" + pageSize + "'>Next</a>");
+        paginatorDiv.append("<a class='btn btn-outline-info mb-4 mx-1' data-page='"+ totalPages + "' data-page-size='"+ pageSize + "' href='?page=" + totalPages     + "&page_size=" + pageSize + "'>Last</a>");
     }
 
     return paginatorDiv;

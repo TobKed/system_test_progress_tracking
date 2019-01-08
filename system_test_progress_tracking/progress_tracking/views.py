@@ -18,13 +18,13 @@ class MachineListView(ListView):
     model = Machine
     template_name = "progress_tracking/machine_list.html"
     context_object_name = 'machines'
-    paginate_by = 2
+    paginate_by = MachineListPagePagination.page_size
 
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
         params = {
             'page_number': self.request.GET.get('page', 'null'),
-            'page_size': self.request.GET.get('page_size', MachineListPagePagination.page_size),
+            'page_size': self.request.GET.get('page_size', self.paginate_by),
         }
         context_data.update(params)
         return context_data

@@ -28,9 +28,8 @@
                                     <td class="align-middle" style="width: 40%">{{ machine.machine_name }}</td>
                                     <td class="align-middle" style="width: 40%">
                                         <div class="progress" style="height: 38px;">
-                                            <div class="progress-bar bg-ts-{{ machine.get_last_master_scenario_status }} {% if machine.get_last_master_scenario_status in 'running,waiting' %}progress-bar-striped progress-bar-animated {% endif %} role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">{{ machine.get_last_master_scenario_status }}</div>
+                                            <div class="progress-bar bg-ts-{{ machine.get_last_master_scenario_status }} {% if machine.get_last_master_scenario_status in 'running,waiting' %}progress-bar-striped progress-bar-animated {% endif %}" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">{{ machine.get_last_master_scenario_status }}</div>
                                         </div>
-                                    </td>
                                     </td>
                                     <td class="align-middle text-center" style="width: 10%">
                                         <a href="{% url 'machine-detail-view' machine.pk%}" class="btn btn-info btn-xs" data-toggle="tooltip" title="Info"><span class="fas fa-info xs"></span></a>
@@ -43,11 +42,10 @@
                     <div class="clearfix"></div>
 
                     <!-- PAGINATOR START-->
-                    {% include 'progress_tracking/paginator.html' %}
-                    <!-- PAGINATOR END -->
-
                     <div id="pagination">
+                        {% include 'progress_tracking/paginator.html' %}
                     </div>
+                    <!-- PAGINATOR END -->
 
                 </div>
 
@@ -61,33 +59,85 @@
 {% block script %}
 <script>
 
-    let pageNumber = {{ page_number }};
-    let pageSize = {{ page_size }};
+    let defaultPageNumber = {{ page_number }};
+    let defaultPageSize = {{ page_size }};
 
-    function putPaginator(data) {
-        let paginatorTarget = $('#pagination');
-        let paginatorDiv = getPaginatorDiv(data.total_pages, data.page_size, data.page_number,
-            data.has_previous, data.previous_page_number, data.has_next, data.next_page_number);
-        paginatorTarget.html(paginatorDiv);
-    }
+    function fetchMachineListData(number, size) {
+        console.log("fetching ...");
+        let pageNumber;
+        if (!number) {
+            pageNumber = defaultPageNumber;
+        } else {
+            pageNumber = number;
+        }
 
-
-    $(document).ready(function() {
+        let pageSize;
+        if (!size) {
+            pageSize = defaultPageSize;
+        } else {
+            pageSize = size;
+        }
 
         let URLparameters = "?page=" + pageNumber + "&page_size=" + pageSize;
+
         $.ajax({
             url: "tm_api/machines/" + URLparameters,
             method: "GET",
             success: function (data) {
-                console.log(data);
                 putPaginator(data);
+                fillPageWithData(data);
             },
             error: function (data) {
                 console.log("error");
                 console.log(data);
             }
         });
+    }
 
+    function putPaginator(data) {
+        let paginatorTarget = $('#pagination');
+        paginatorTarget.html("");
+        let paginatorDiv = getPaginatorDiv(data.total_pages, data.page_size, data.page_number,
+            data.has_previous, data.previous_page_number, data.has_next, data.next_page_number);
+        paginatorTarget.html(paginatorDiv);
+
+        paginatorTarget.find( "a" ).click(function( event ) {
+          event.preventDefault();
+          let elem = $(this);
+          fetchMachineListData(elem.data('page'), elem.data('pageSize'));
+        });
+    }
+
+    function fillPageWithData(data) {
+        let tableScenariosTests = $("#machineListTable");
+        let tableBody = tableScenariosTests.find("tbody");
+        let results = data.results;
+        tableBody.html("");
+        $.each(results, function(index, machine) {
+            let machine_status = machine.get_last_master_scenario_status;
+            let additionalStyle = "";
+            if ((machine_status == "running") || (machine_status == "waiting")) {
+                additionalStyle = "progress-bar-striped progress-bar-animated";
+            }
+
+            tableBody.append(
+               "<tr>" + 
+                    "<td class='align-middle' style='width: 10%'>" +  machine.pk + "</td>" +
+                    "<td class='align-middle' style='width: 40%'>" + machine.machine_name + "</td>" +
+                    "<td class='align-middle' style='width: 40%'>" +
+                        "<div class='progress' style='height: 38px;'>" +
+                            "<div class='progress-bar bg-ts-" + machine_status + " " + additionalStyle + "' role='progressbar' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100' style='width: 100%'>" + machine_status + "</div>" +
+                        "</div>" +
+                    "</td>" +
+                    "<td class='align-middle text-center' style='width: 10%'>" +
+                        "<a href='" + machine.absolute_url + "' class='btn btn-info btn-xs' data-toggle='tooltip' title='Info'><span class='fas fa-info xs'></span></a>" +
+                    "</td>" +
+                "</tr>");
+        });
+    }
+
+    $(document).ready(function() {
+        fetchMachineListData();
     });
 
 </script>
