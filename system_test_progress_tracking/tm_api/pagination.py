@@ -9,12 +9,16 @@ class MachineListPagePagination(PageNumberPagination):
 
     def get_paginated_response(self, data):
         return Response({
+            'current_site': self.request.get_host(),
+            'page_size': self.get_page_size(self.request),
             'count': self.page.paginator.count,
-            'number': self.page.number,
+            'page_number': self.page.number,
             'total_pages': self.page.paginator.num_pages,
             'has_previous': self.page.has_previous(),
+            "previous_page_number": self.page.previous_page_number() if self.page.has_previous() else None,
             'has_next': self.page.has_next(),
-            'next': self.get_next_link(),
-            'previous': self.get_previous_link(),
+            "next_page_number": self.page.next_page_number() if self.page.has_next() else None,
+            # 'next': self.get_next_link(),
+            # 'previous': self.get_previous_link(),
             'results': data
         })
