@@ -89,9 +89,14 @@
 <script>
 
     let machineId = {{ machine.pk }};
+    let loc = window.location;
+    let wsStart = 'ws://';
+    if (loc.protocol == 'https:') {
+        wsStart = 'wss://'
+    }
 
     let machineSocket = new WebSocket(
-        'ws://' + window.location.host + '/ws/machine/' + machineId + '/last/'
+        wsStart + loc.host + '/ws/machine/' + machineId + '/last/'
     );
 
     machineSocket.onmessage = function(e) {
