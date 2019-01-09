@@ -90,3 +90,4 @@ let data = {
 
 #### Django lessons learned
 * django channels (websockets)
+* rest pagination
