@@ -1,19 +1,18 @@
-function getUrlParameter(sParam) {
-    var sPageURL = window.location.search.substring(1),
-        sURLVariables = sPageURL.split('&'), sParameterName, i;
 
-    for (i = 0; i < sURLVariables.length; i++) {
-        sParameterName = sURLVariables[i].split('=');
-
-        if (sParameterName[0] === sParam) {
-            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
-        }
-    }
-}
-
+/**
+ * get paginator div (used by putPaginator function)
+ * @param  {Number} totalPages
+ * @param  {Number} pageSize
+ * @param  {Number} pageNumber
+ * @param  {Boolean} hasPrevious
+ * @param  {Number} previousPageNumber
+ * @param  {Number} hasNext
+ * @param  {Boolean} nextPageNumber
+ */
 function getPaginatorDiv(totalPages, pageSize, pageNumber,
                          hasPrevious, previousPageNumber,
                          hasNext, nextPageNumber) {
+
     let paginatorDiv = $( document.createElement('div') );
     
     if (totalPages > 1) {
@@ -48,14 +47,54 @@ function getPaginatorDiv(totalPages, pageSize, pageNumber,
         "</div>" +
     "</div>");
 
-
-
-
     return paginatorDiv;
 }
 
 
-$( document ).ready(function() {
-    console.log("pagination test");
+/**
+ * put paginator to given element
+ * @param  {String} paginatorTarget    element where paginator will be put.
+ * @param  {String} fetchDataFunction  data received from django rest endpoint
+ * @param  {String} data               data received from django rest endpoint
+ *                                     shall contain following properties:
+ *                                        total_pages
+ *                                        page_size
+ *                                        page_number
+ *                                        has_previous
+ *                                        previous_page_number
+ *                                        has_next
+ *                                        next_page_number
+ */
+function putPaginator(paginatorTarget, fetchDataFunction, data) {
+    paginatorTarget.html("");
+    let paginatorDiv = getPaginatorDiv(data.total_pages, data.page_size, data.page_number,
+        data.has_previous, data.previous_page_number, data.has_next, data.next_page_number);
+    paginatorTarget.html(paginatorDiv);
 
+    paginatorTarget.find( "a" ).click(function( event ) {
+        event.preventDefault();
+        let elem = $(this);
+        let page = elem.data('page');
+        let pageSize = elem.data('pageSize');
+        fetchDataFunction(page, pageSize);
+    });
+}
+
+
+function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+        sURLVariables = sPageURL.split('&'), sParameterName, i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        }
+    }
+}
+
+
+$( document ).ready(function() {
+    console.log("main.js loaded");
 });

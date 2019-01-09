@@ -7,7 +7,7 @@
 
             <div class="col-md-12">
                 <div class="container d-flex justify-content-between">
-                    <h4 class="d-inline-block mt-2">Machines ()</h4>
+                    <h4 class="d-inline-block mt-2">Machines ({{ count }})</h4>
                 </div>
 
                 <div class="table-responsive">
@@ -70,7 +70,8 @@
             url: "tm_api/machines/" + URLparameters,
             method: "GET",
             success: function (data) {
-                putPaginator(data);
+                let pagnatorTarget = $('#pagination');
+                putPaginator(pagnatorTarget, fetchMachineListData, data);
                 fillPageWithData(data);
                 history.pushState({'page': pageNumber, 'pageSize': pageSize}, $(document).prop('title'), URLparameters);
             },
@@ -81,21 +82,6 @@
         });
     }
 
-    function putPaginator(data) {
-        let paginatorTarget = $('#pagination');
-        paginatorTarget.html("");
-        let paginatorDiv = getPaginatorDiv(data.total_pages, data.page_size, data.page_number,
-            data.has_previous, data.previous_page_number, data.has_next, data.next_page_number);
-        paginatorTarget.html(paginatorDiv);
-
-        paginatorTarget.find( "a" ).click(function( event ) {
-          event.preventDefault();
-          let elem = $(this);
-          let page = elem.data('page');
-          let pageSize = elem.data('pageSize');
-          fetchMachineListData(page, pageSize);
-        });
-    }
 
     function fillPageWithData(data) {
         let tableScenariosTests = $("#machineListTable");

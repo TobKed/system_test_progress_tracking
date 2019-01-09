@@ -20,8 +20,9 @@ class MachineListView(View):
 
     def get(self, request):
         params = {
-            'page_number': self.request.GET.get('page', '1'),
-            'page_size': self.request.GET.get('page_size', self.paginate_by),
+            "count": Machine.objects.all().count(),
+            "page_number": self.request.GET.get("page", "1"),
+            "page_size": self.request.GET.get("page_size", self.paginate_by),
         }
         return render(request, self.template_name, params)
 
