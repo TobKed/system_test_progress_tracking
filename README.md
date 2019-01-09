@@ -1,6 +1,12 @@
 ## system_test_progress_tracking   
 [![Build Status](https:/travis-ci.org/TobKed/system_test_progress_tracking.svg?branch=master)](https:/travis-ci.org/TobKed/system_test_progress_tracking)  [![codecov](https:/codecov.io/gh/TobKed/system_test_progress_tracking/branch/master/graph/badge.svg)](https:/codecov.io/gh/TobKed/system_test_progress_tracking)
 
+## To start 
+Prject uses Redis as its backing store. To start a Redis server on port 6379, run the following command:
+```bash
+docker run -p 6379:6379 -d redis:2.8
+```
+
 #### Schemas:
 * General scheme
 ![system_test_progress_tracking_overall_scheme](/docs/img/system_test_progress_tracking_overall_scheme.png)
