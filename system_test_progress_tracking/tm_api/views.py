@@ -6,6 +6,7 @@ from .models import (
     Test,
     Scenario,
     MasterScenario,
+    DryRunData,
     Machine,
     WAITING,
     RUNNING
@@ -21,6 +22,7 @@ from .serializers import (
     MasterScenarioModelDetailSerializer,
     MachineLastDataSerializer,
     MachineListSerializer,
+    MachineDryRunDatasSerializer,
 )
 
 from .pagination import MachineListPagePagination
@@ -113,3 +115,14 @@ class MachineListView(generics.ListAPIView):
     queryset = Machine.objects.all()
     serializer_class = MachineListSerializer
     pagination_class = MachineListPagePagination
+
+
+class MachineDryRunDatasListView(generics.ListAPIView):
+    queryset = DryRunData.objects.all()
+    serializer_class = MachineDryRunDatasSerializer
+    pagination_class = MachineListPagePagination
+    lookup_url_kwarg = "pk"
+
+    def get_queryset(self, *args, **kwargs):
+        pk = self.kwargs.get(self.lookup_url_kwarg)
+        return DryRunData.objects.filter(machine_id=pk)

@@ -59,7 +59,7 @@ class Machine(models.Model):
         return self.machine_name
 
     def get_master_scenarios(self):
-        return (dry_run_data.master_scenario for dry_run_data in self.dry_run_datas.all())
+        return MasterScenario.objects.filter(dryrundata__machine=self)
 
     def get_tests(self, file_name, file_path, status=WAITING):
         return Test.objects.filter(

@@ -156,7 +156,14 @@ class MachineListSerializer(serializers.ModelSerializer):
 class MachineLastDataSerializer(serializers.ModelSerializer):
     last_master_scenario = MasterScenarioModelDetailSerializer(read_only=True)
 
-
     class Meta:
         model = Machine
-        fields = ("machine_name", "last_master_scenario")
+        fields = ["machine_name", "last_master_scenario"]
+
+
+class MachineDryRunDatasSerializer(serializers.ModelSerializer):
+    #TODO extend
+
+    class Meta:
+        model = DryRunData
+        fields = ["machine", "timestamp"]
