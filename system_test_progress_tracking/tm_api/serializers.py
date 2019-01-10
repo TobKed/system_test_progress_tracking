@@ -162,8 +162,19 @@ class MachineLastDataSerializer(serializers.ModelSerializer):
 
 
 class MachineDryRunDatasSerializer(serializers.ModelSerializer):
-    #TODO extend
+    scenarios = serializers.SerializerMethodField()
+    tests = serializers.SerializerMethodField()
+    tests_status = serializers.SerializerMethodField()
+
+    def get_scenarios(self, obj):
+        return obj.master_scenario.scenarios_count
+
+    def get_tests(self, obj):
+        return obj.master_scenario.tests_count
+
+    def get_tests_status(self, obj):
+        return obj.master_scenario.tests_status
 
     class Meta:
         model = DryRunData
-        fields = ["machine", "timestamp"]
+        fields = ["pk", "machine", "timestamp", "scenarios", "tests", "tests_status"]
