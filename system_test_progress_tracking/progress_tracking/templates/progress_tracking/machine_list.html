@@ -45,6 +45,28 @@
 {% block script %}
 <script>
 
+    let loc = window.location;
+    let wsStart = 'ws://';
+    if (loc.protocol == 'https:') {
+        wsStart = 'wss://'
+    }
+
+    let machineSocket = new WebSocket(
+        wsStart + loc.host + '/ws/machine/status/'
+    );
+
+    machineSocket.onmessage = function(e) {
+        console.log("machineSocket.onmessage");
+        let data = JSON.parse(e.data);
+        let machineId = data["machine_id"];
+        console.log(machineId);
+        {#fillPageWithData(machineData);#}
+    };
+
+    machineSocket.onclose = function(e) {
+        console.error('Machine socket closed unexpectedly');
+    };
+
     let defaultPageNumber = {{ page_number }};
     let defaultPageSize = {{ page_size }};
 
