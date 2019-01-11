@@ -29,3 +29,31 @@ class MachineConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'machine_data': machine_data
         }))
+
+
+class MachineStatusConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.machine_group_name = 'machine_status_change'
+
+        # Join machine group
+        await self.channel_layer.group_add(
+            self.machine_group_name,
+            self.channel_name
+        )
+
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        # Leave room group
+        await self.channel_layer.group_discard(
+            self.machine_group_name,
+            self.channel_name
+        )
+
+    # Receive message from room group
+    async def machine_id(self, event):
+        machine_id = event['machine_id']
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'machine_id': machine_id
+        }))
