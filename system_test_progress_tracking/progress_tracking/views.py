@@ -31,7 +31,7 @@ class MachineDetailView(DetailView):
     model = Machine
     template_name = "progress_tracking/machine_detail.html"
     context_object_name = 'machine'
-    paginate_by = 2
+    paginate_by = MachineListPagePagination.page_size
 
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
@@ -43,6 +43,10 @@ class MachineDetailView(DetailView):
             "dry_run_datas": page_obj,
             "page_obj": page_obj,
             "is_paginated": is_paginated,
+
+            "count": self.object.dry_run_datas.all().count(),
+            "page_number": self.request.GET.get("page", "1"),
+            "page_size": self.request.GET.get("page_size", self.paginate_by),
         }
         context_data.update(extra_context)
         return context_data

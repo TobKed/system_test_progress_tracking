@@ -156,7 +156,30 @@ class MachineListSerializer(serializers.ModelSerializer):
 class MachineLastDataSerializer(serializers.ModelSerializer):
     last_master_scenario = MasterScenarioModelDetailSerializer(read_only=True)
 
-
     class Meta:
         model = Machine
-        fields = ("machine_name", "last_master_scenario")
+        fields = ["machine_name", "last_master_scenario"]
+
+
+class MachineDryRunDatasSerializer(serializers.ModelSerializer):
+    timestamp = serializers.DateTimeField(format="%d-%m-%Y  %H:%M:%S", required=False, read_only=True)
+    scenarios = serializers.SerializerMethodField()
+    tests = serializers.SerializerMethodField()
+    tests_status = serializers.SerializerMethodField()
+    absolute_url = serializers.SerializerMethodField()
+
+    def get_absolute_url(self, obj):
+        return obj.get_absolute_url()
+
+    def get_scenarios(self, obj):
+        return obj.master_scenario.scenarios_count
+
+    def get_tests(self, obj):
+        return obj.master_scenario.tests_count
+
+    def get_tests_status(self, obj):
+        return obj.master_scenario.tests_status
+
+    class Meta:
+        model = DryRunData
+        fields = ["pk", "machine", "timestamp", "scenarios", "tests", "tests_status", "absolute_url"]

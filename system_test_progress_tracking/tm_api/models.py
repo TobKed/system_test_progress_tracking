@@ -59,7 +59,7 @@ class Machine(models.Model):
         return self.machine_name
 
     def get_master_scenarios(self):
-        return (dry_run_data.master_scenario for dry_run_data in self.dry_run_datas.all())
+        return MasterScenario.objects.filter(dryrundata__machine=self)
 
     def get_tests(self, file_name, file_path, status=WAITING):
         return Test.objects.filter(
@@ -186,6 +186,9 @@ class DryRunData(models.Model):
         for dry_run_data in DryRunData.objects.filter(query, machine=self.machine):
             dry_run_data.master_scenario.set_all_ongoing_tests_to_unknown()
         return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("dry-run-data-detail-view", kwargs={"pk": self.pk})
 
     class Meta:
         ordering = ['-timestamp', '-pk']

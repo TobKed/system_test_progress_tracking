@@ -8,7 +8,8 @@ from .views import (
     MasterScenarioDetailView,
     MasterScenarioDetailFullView,
     MachineLastDataView,
-    MachineListView
+    MachineListView,
+    MachineDryRunDatasListView,
 )
 
 urlpatterns = [
@@ -23,4 +24,5 @@ urlpatterns = [
 
     path('machine_last_data/<int:pk>/', MachineLastDataView.as_view()),
     path('machines/', MachineListView.as_view()),
+    path('machine_dry_run_datas/<int:pk>', MachineDryRunDatasListView.as_view()),
 ]
