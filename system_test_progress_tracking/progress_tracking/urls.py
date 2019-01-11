@@ -13,5 +13,5 @@ urlpatterns = [
     path('machine/', MachineListView.as_view(),  name='machine-list-view'),
     path('machine/<int:pk>', MachineDetailView.as_view(),  name='machine-detail-view'),
     path('machine/<int:pk>/last', MachineLastDataView.as_view(),  name='machine-last-data-view'),
-    path('dry_run_data/<int:pk>', DryRunDataDetailView.as_view(),  name='dry-run-data-detail-view'),
+    path('machine/run_data/<int:pk>', DryRunDataDetailView.as_view(),  name='dry-run-data-detail-view'),
 ]

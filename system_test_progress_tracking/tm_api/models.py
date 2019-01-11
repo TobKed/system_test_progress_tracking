@@ -187,6 +187,9 @@ class DryRunData(models.Model):
             dry_run_data.master_scenario.set_all_ongoing_tests_to_unknown()
         return super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse("dry-run-data-detail-view", kwargs={"pk": self.pk})
+
     class Meta:
         ordering = ['-timestamp', '-pk']
 

@@ -162,9 +162,14 @@ class MachineLastDataSerializer(serializers.ModelSerializer):
 
 
 class MachineDryRunDatasSerializer(serializers.ModelSerializer):
+    timestamp = serializers.DateTimeField(format="%d-%m-%Y  %H:%M:%S", required=False, read_only=True)
     scenarios = serializers.SerializerMethodField()
     tests = serializers.SerializerMethodField()
     tests_status = serializers.SerializerMethodField()
+    absolute_url = serializers.SerializerMethodField()
+
+    def get_absolute_url(self, obj):
+        return obj.get_absolute_url()
 
     def get_scenarios(self, obj):
         return obj.master_scenario.scenarios_count
@@ -177,4 +182,4 @@ class MachineDryRunDatasSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DryRunData
-        fields = ["pk", "machine", "timestamp", "scenarios", "tests", "tests_status"]
+        fields = ["pk", "machine", "timestamp", "scenarios", "tests", "tests_status", "absolute_url"]
