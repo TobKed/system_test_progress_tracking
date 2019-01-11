@@ -14,10 +14,16 @@ def send_message_to_channels(sender, instance, **kwargs):
     try:
         machine = instance.dryrundata.machine
         machine_id = machine.pk
-        serializer = MachineLastDataSerializer(machine)
+
+        serializer_last_data = MachineLastDataSerializer(machine)
         async_to_sync(channel_layer.group_send)(
             f"machine_{machine_id}",
-            {"type": "machine_data", "machine_data": serializer.data}
+            {"type": "machine_data", "machine_data": serializer_last_data.data}
+        )
+
+        async_to_sync(channel_layer.group_send)(
+            f"machine_status_change",
+            {"type": "machine_id", "machine_id": machine_id}
         )
     except:
         pass
