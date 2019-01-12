@@ -11,19 +11,34 @@ docker run -p 6379:6379 -d redis:2.8
 * General scheme
 ![system_test_progress_tracking_overall_scheme](/docs/img/system_test_progress_tracking_overall_scheme.png)
 
-* Scipts structure in vritual testing machine
+* Scripts structure in vritual testing machine
 ![test_scenario_structure](/docs/img/test_scenario_structure.png)
-
 
 * Database scheme
 ![db_schema](/docs/img/db_scheme.png)
 
+#### Virtual Testing Machine
+##### Running scripts hierarchy (simplified functions)
+```yaml
+run_scenario_master("scenario_master.py")
+    run_test_scenario("scenario_01.py")
+        run_test_case("01_01_test.py")
+        run_test_case("01_02_test.py")
+        run_test_case("01_03_test.py")
+        run_test_case("01_04_test.py")
+        run_test_case("01_05_test.py")
+    run_test_scenario(, "scenario_02.py")
+        run_test_case("01_01_test.py")
+        run_test_case("01_02_test.py")
+    run_test_scenario(, "scenario_03.py")
+        run_test_case("01_01.py")
+        run_test_case("01_01.py")
+```
 
-#### JSON
+##### JSON
 Information sent by virtual testing machine are sent via POST request to adequate System Test Progress Tracking REST endpoints.
 
-
-* before first test run (all information about scripts to run)
+* DRY RUN - before first test really run (all information about scripts to run)
 ```javascript
 // host/tm_api/dry_run/
 let data = {
@@ -75,7 +90,7 @@ let data = {
 }
 ```
 
-* before test run
+* WET RUN - before test run
 ```javascript
 // host/tm_api/test_start/
 let data = {
@@ -86,7 +101,7 @@ let data = {
 }
 ```
 
-* after test run
+* WET RUN - after test run
 ```javascript
 // host/tm_api/test_stop/
 let data = {
@@ -100,7 +115,6 @@ let data = {
 
 #### URLs
 
----
 | Path  | View | Name |
 | ------------- | ------------- | ------------- |
 | **Template views:** |
@@ -126,6 +140,9 @@ let data = {
 | /password-reset/ | django.contrib.auth.views.PasswordResetView | password_reset |
 | /password-reset/done | django.contrib.auth.views.PasswordResetDoneView password_reset_done |
 
+
 #### Django lessons learned
 * django channels (websockets)
-* rest pagination
+* REST 
+    * serialization
+    * pagination
