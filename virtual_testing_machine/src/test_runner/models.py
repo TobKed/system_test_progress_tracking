@@ -1,6 +1,26 @@
-from .settings import MACHINE_NAME
 import json
+import random
+from .settings import MACHINE_NAME
 from datetime import datetime
+
+
+CANCELLED   = "cancelled"
+RUNNING     = "running"
+WAITING     = "waiting"
+UNKNOWN     = "unknown"
+FAILED      = "failed"
+ERROR       = "error"
+WARNING     = "warning"
+PASSED      = "passed"
+
+STATUS_FINISHED = [
+    CANCELLED,
+    FAILED,
+    ERROR,
+    UNKNOWN,
+    WARNING,
+    PASSED,
+]
 
 
 class RunData:
@@ -20,6 +40,10 @@ class RunData:
         if state:
             self.dry_run_data = DryRunData()
         self._dry_run_active = state
+
+    @staticmethod
+    def get_random_finished_status():
+        return random.choice(STATUS_FINISHED)
 
 
 RUN_DATA = RunData()
