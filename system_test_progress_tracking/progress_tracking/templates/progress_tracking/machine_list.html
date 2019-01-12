@@ -22,6 +22,7 @@
                         </thead>
 
                         <tbody>
+                            <!-- TABLE FILLED BY JS-->
                         </tbody>
                     </table>
 
@@ -44,6 +45,27 @@
 
 {% block script %}
 <script>
+
+    let loc = window.location;
+    let wsStart = 'ws://';
+    if (loc.protocol == 'https:') {
+        wsStart = 'wss://'
+    }
+
+    let machineSocket = new WebSocket(
+        wsStart + loc.host + '/ws/machine/status/'
+    );
+
+    machineSocket.onmessage = function(e) {
+        console.log("machineSocket.onmessage");
+        let data = JSON.parse(e.data);
+        let machineIdStatus = data["machine_id_status"];
+        updateMachineStatus(machineIdStatus.id, machineIdStatus.status);
+    };
+
+    machineSocket.onclose = function(e) {
+        console.error('Machine socket closed unexpectedly');
+    };
 
     let defaultPageNumber = {{ page_number }};
     let defaultPageSize = {{ page_size }};
@@ -96,7 +118,7 @@
             }
 
             tableBody.append(
-               "<tr>" + 
+               "<tr data-machine-id='"+ machine.pk +"'>" +
                     "<td class='align-middle' style='width: 10%'>" +  machine.pk + "</td>" +
                     "<td class='align-middle' style='width: 40%'>" + machine.machine_name + "</td>" +
                     "<td class='align-middle' style='width: 40%'>" +
@@ -109,6 +131,16 @@
                     "</td>" +
                 "</tr>");
         });
+    }
+
+    function updateMachineStatus(id, status) {
+        let tableRow = $("tr[data-machine-id='" + id +"']");
+        let progressDiv = tableRow.find(".progress");
+        let additionalStyle = "";
+        if ((status == "running") || (status == "waiting")) {
+            additionalStyle = "progress-bar-striped progress-bar-animated";
+        }
+        progressDiv.html("<div class='progress-bar bg-ts-" + status + " " + additionalStyle + "' role='progressbar' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100' style='width: 100%'>" + status + "</div>");
     }
 
     $(document).ready(function() {
