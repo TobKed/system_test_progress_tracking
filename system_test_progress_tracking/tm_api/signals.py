@@ -17,7 +17,7 @@ def send_message_to_channels(sender, instance, **kwargs):
 
         serializer_last_data = MachineLastDataSerializer(machine)
         async_to_sync(channel_layer.group_send)(
-            f"machine_{machine_id}",
+            f"machine_last_data_{machine_id}",
             {"type": "machine_data", "machine_data": serializer_last_data.data}
         )
 

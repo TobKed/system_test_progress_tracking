@@ -2,10 +2,10 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 
 
-class MachineConsumer(AsyncWebsocketConsumer):
+class MachineLastRunConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.machine_id = self.scope['url_route']['kwargs']['pk']
-        self.machine_group_name = 'machine_%s' % self.machine_id
+        self.machine_group_name = f'machine_last_data_{self.machine_id}'
 
         # Join machine group
         await self.channel_layer.group_add(
@@ -31,7 +31,7 @@ class MachineConsumer(AsyncWebsocketConsumer):
         }))
 
 
-class MachineStatusConsumer(AsyncWebsocketConsumer):
+class MachinesStatusConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.machine_group_name = 'machine_status_change'
 
