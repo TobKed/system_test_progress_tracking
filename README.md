@@ -146,3 +146,13 @@ let data = {
 * REST 
     * serialization
     * pagination
+
+
+#### Lessons learned
+* Git branching
+
+
+#### Links
+* [A successful Git branching model By Vincent Driessen](https://nvie.com/posts/a-successful-git-branching-model/)
+* [Django Channels - Documentation](https://channels.readthedocs.io/en/latest/)
+* [Django REST framework - Pagination](https://www.django-rest-framework.org/api-guide/pagination/)
