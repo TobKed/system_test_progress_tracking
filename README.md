@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/TobKed/system_test_progress_tracking.svg?branch=master)](https://travis-ci.org/TobKed/system_test_progress_tracking) [![codecov](https://codecov.io/gh/TobKed/system_test_progress_tracking/branch/master/graph/badge.svg)](https://codecov.io/gh/TobKed/system_test_progress_tracking)
 
 ## To start 
-Prject uses Redis as its backing store. To start a Redis server on port 6379, run the following command:
+Project uses Redis as its backing store. To start a Redis server on port 6379, run the following command:
 ```bash
 docker run -p 6379:6379 -d redis:2.8
 ```
@@ -11,14 +11,14 @@ docker run -p 6379:6379 -d redis:2.8
 * General scheme
 ![system_test_progress_tracking_overall_scheme](/docs/img/system_test_progress_tracking_overall_scheme.png)
 
-* Scripts structure in vritual testing machine
+* Virtual testing machine scripts structure
 ![test_scenario_structure](/docs/img/test_scenario_structure.png)
 
 * Database scheme
 ![db_schema](/docs/img/db_scheme.png)
 
 #### Virtual Testing Machine
-##### Running scripts hierarchy (simplified functions)
+##### Scripts execution hierarchy (simplified functions)
 ```yaml
 run_scenario_master("scenario_master.py")
     run_test_scenario("scenario_01.py")
@@ -36,9 +36,9 @@ run_scenario_master("scenario_master.py")
 ```
 
 ##### JSON
-Information sent by virtual testing machine are sent via POST request to adequate System Test Progress Tracking REST endpoints.
+Information from Virtual System Testing Machine is sent via POST request to adequate System Test Progress Tracking REST endpoints.
 
-* DRY RUN - before first test really run (all information about scripts to run)
+* DRY RUN - scenarios are run built initial json (all information about scripts to run)
 ```javascript
 // host/tm_api/dry_run/
 let data = {
@@ -123,6 +123,8 @@ let data = {
 | /machine/run_data/\<int:pk\> | progress_tracking.views.DryRunDataDetailView | dry-run-data-detail-view |
 | **REST endpoints:** |
 | /tm_api/dry_run/ | tm_api.views.DryRunView |
+| /tm_api/test_start/ | tm_api.views.TestStartView |
+| /tm_api/test_stop/ | tm_api.views.TestStopView |
 | /tm_api/machine_dry_run_datas/\<int:pk\> | tm_api.views.MachineDryRunDatasListView |
 | /tm_api/machine_last_data/\<int:pk\>/ | tm_api.views.MachineLastDataView |
 | /tm_api/machines/ | tm_api.views.MachineListView |
@@ -130,8 +132,6 @@ let data = {
 | /tm_api/master_scenario_full/\<int:pk\> | tm_api.views.MasterScenarioDetailFullView |
 | /tm_api/scenario/\<int:pk\> | tm_api.views.ScenarioDetailView |
 | /tm_api/test/\<int:pk\> | tm_api.views.TestDetailView |
-| /tm_api/test_start/ | tm_api.views.TestStartView |
-| /tm_api/test_stop/ | tm_api.views.TestStopView |
 | **User views:** |
 | /login/ | django.contrib.auth.views.LoginView | login |
 | /logout/ | django.contrib.auth.views.LogoutView | logout |
@@ -141,18 +141,20 @@ let data = {
 | /password-reset/done | django.contrib.auth.views.PasswordResetDoneView password_reset_done |
 
 
-#### Django lessons learned
-* django channels (websockets)
-* REST 
-    * serialization
-    * pagination
-
-
 #### Lessons learned
-* Git branching
+* Django
+    * Django Channels (WebSockets)
+    * REST 
+        * serialization
+        * pagination
+* other
+    * Git branching
+    * jQuery AJAX
+    * WebSockets
+    * Continous Integration (TravisCI)
 
 
 #### Links
-* [A successful Git branching model By Vincent Driessen](https://nvie.com/posts/a-successful-git-branching-model/)
+* [A successful Git branching model - Vincent Driessen blog](https://nvie.com/posts/a-successful-git-branching-model/)
 * [Django Channels - Documentation](https://channels.readthedocs.io/en/latest/)
 * [Django REST framework - Pagination](https://www.django-rest-framework.org/api-guide/pagination/)
