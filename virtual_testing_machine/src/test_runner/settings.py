@@ -2,6 +2,7 @@ import os
 
 
 MACHINE_NAME    = "machine #1"
+RANDOM_MODE     = True
 
 BASE_DIR        = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEST_CASES_DIR  = os.path.join(BASE_DIR, "test_cases")

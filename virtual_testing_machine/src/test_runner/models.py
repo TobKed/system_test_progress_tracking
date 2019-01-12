@@ -14,7 +14,7 @@ WARNING     = "warning"
 PASSED      = "passed"
 
 STATUS_FINISHED = [
-    CANCELLED,
+    # CANCELLED,
     FAILED,
     ERROR,
     UNKNOWN,

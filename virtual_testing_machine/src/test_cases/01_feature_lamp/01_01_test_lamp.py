@@ -1,5 +1,5 @@
 from time import sleep
-
+from run import RANDOM_MODE
 
 print("Start 01_01_test_lamp.py")
 
@@ -13,4 +13,7 @@ print("Wait 1 second")
 sleep(1)
 print("Verify is lamp off")
 
-RUN_DATA.last_status = "passed"
+if RANDOM_MODE:
+    RUN_DATA.last_status = RUN_DATA.get_random_finished_status()
+else:
+    RUN_DATA.last_status = "passed"
