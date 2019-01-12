@@ -14,6 +14,7 @@ docker run -p 6379:6379 -d redis:2.8
 * Scipts structure in vritual testing machine
 ![test_scenario_structure](/docs/img/test_scenario_structure.png)
 
+
 * Database scheme
 ![db_schema](/docs/img/db_scheme.png)
 
@@ -23,7 +24,8 @@ Information sent by virtual testing machine are sent via POST request to adequat
 
 
 * before first test run (all information about scripts to run)
-```js
+```javascript
+// host/tm_api/dry_run/
 let data = {
     "machine_name": "machine #1",
     "timestamp": "2018-12-30 13:01:57.461401",
@@ -75,6 +77,7 @@ let data = {
 
 * before test run
 ```javascript
+// host/tm_api/test_start/
 let data = {
   "machine_name": "machine #1",
   "file_path": "/virtual_testing_machine/src/test_cases/01_feature_lamp",
@@ -85,6 +88,7 @@ let data = {
 
 * after test run
 ```javascript
+// host/tm_api/test_stop/
 let data = {
   "machine_name": "machine #1",
   "file_path": "/virtual_testing_machine/src/test_cases/01_feature_lamp",
@@ -93,6 +97,34 @@ let data = {
   "timestamp_stop": "2018-12-30 13:01:59.622177"
 }
 ```
+
+#### URLs
+
+---
+| Path  | View | Name |
+| ------------- | ------------- | ------------- |
+| **Template views:** |
+| /matchine/\<int:pk\> | progress_tracking.views.MachineDetailView | machine-detail-view  |
+| /machine/\<int:pk\>/last | progress_tracking.views.MachineLastDataView | machine-last-data-view |
+| /machine/run_data/\<int:pk\> | progress_tracking.views.DryRunDataDetailView | dry-run-data-detail-view |
+| **REST endpoints:** |
+| /tm_api/dry_run/ | tm_api.views.DryRunView |
+| /tm_api/machine_dry_run_datas/\<int:pk\> | tm_api.views.MachineDryRunDatasListView |
+| /tm_api/machine_last_data/\<int:pk\>/ | tm_api.views.MachineLastDataView |
+| /tm_api/machines/ | tm_api.views.MachineListView |
+| /tm_api/master_scenario/\<int:pk\> | tm_api.views.MasterScenarioDetailView |
+| /tm_api/master_scenario_full/\<int:pk\> | tm_api.views.MasterScenarioDetailFullView |
+| /tm_api/scenario/\<int:pk\> | tm_api.views.ScenarioDetailView |
+| /tm_api/test/\<int:pk\> | tm_api.views.TestDetailView |
+| /tm_api/test_start/ | tm_api.views.TestStartView |
+| /tm_api/test_stop/ | tm_api.views.TestStopView |
+| **User views:** |
+| /login/ | django.contrib.auth.views.LoginView | login |
+| /logout/ | django.contrib.auth.views.LogoutView | logout |
+| /password-reset-complete/ | django.contrib.auth.views.PasswordResetCompleteView | password_reset_complete |
+| /password-reset-confirm/\<uidb64\>/\<token\>/ | django.contrib.auth.views.PasswordResetConfirmView | password_reset_confirm |
+| /password-reset/ | django.contrib.auth.views.PasswordResetView | password_reset |
+| /password-reset/done | django.contrib.auth.views.PasswordResetDoneView password_reset_done |
 
 #### Django lessons learned
 * django channels (websockets)
