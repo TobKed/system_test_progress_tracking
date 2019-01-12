@@ -1,13 +1,25 @@
-## system_test_progress_tracking   
+# System Test Progress Tracking   
 [![Build Status](https://travis-ci.org/TobKed/system_test_progress_tracking.svg?branch=master)](https://travis-ci.org/TobKed/system_test_progress_tracking) [![codecov](https://codecov.io/gh/TobKed/system_test_progress_tracking/branch/master/graph/badge.svg)](https://codecov.io/gh/TobKed/system_test_progress_tracking)
 
-## To start 
+## How to run project
+
+### Install requirements
+```
+pip install -r requirements.txt
+```
+
+### Environment variables
+```
+DJANGO_SECRET_KEY='dont-tell-eve'
+```
+
+### Redis instance
 Project uses Redis as its backing store. To start a Redis server on port 6379, run the following command:
 ```bash
 docker run -p 6379:6379 -d redis:2.8
 ```
 
-#### Schemas:
+## Schemas:
 * General scheme
 ![system_test_progress_tracking_overall_scheme](/docs/img/system_test_progress_tracking_overall_scheme.png)
 
@@ -17,7 +29,7 @@ docker run -p 6379:6379 -d redis:2.8
 * Database scheme
 ![db_schema](/docs/img/db_scheme.png)
 
-#### Virtual Testing Machine
+## Virtual Testing Machine
 ##### Scripts execution hierarchy (simplified functions)
 ```yaml
 run_scenario_master("scenario_master.py")
@@ -35,7 +47,7 @@ run_scenario_master("scenario_master.py")
         run_test_case("01_01.py")
 ```
 
-##### JSON
+### JSON
 Information from Virtual System Testing Machine is sent via POST request to adequate System Test Progress Tracking REST endpoints.
 
 * DRY RUN - scenarios are run built initial json (all information about scripts to run)
@@ -113,7 +125,7 @@ let data = {
 }
 ```
 
-#### URLs
+## URLs
 
 | Path  | View | Name |
 | ------------- | ------------- | ------------- |
@@ -141,7 +153,7 @@ let data = {
 | /password-reset/done | django.contrib.auth.views.PasswordResetDoneView password_reset_done |
 
 
-#### Lessons learned
+## Lessons learned
 * Django
     * Django Channels (WebSockets)
     * REST 
@@ -152,9 +164,9 @@ let data = {
     * jQuery AJAX
     * WebSockets
     * Continous Integration (TravisCI)
+   
 
-
-#### Links
+## Links
 * [A successful Git branching model - Vincent Driessen blog](https://nvie.com/posts/a-successful-git-branching-model/)
 * [Django Channels - Documentation](https://channels.readthedocs.io/en/latest/)
 * [Django REST framework - Pagination](https://www.django-rest-framework.org/api-guide/pagination/)
