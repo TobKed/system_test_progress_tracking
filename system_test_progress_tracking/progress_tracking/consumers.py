@@ -57,3 +57,32 @@ class MachinesStatusConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'machine_id_status': machine_id_status
         }))
+
+
+class MachineRunsStatusConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.machine_id = self.scope['url_route']['kwargs']['pk']
+        self.machine_group_name = f'machine_runs_data_{self.machine_id}'
+
+        # Join machine group
+        await self.channel_layer.group_add(
+            self.machine_group_name,
+            self.channel_name
+        )
+
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        # Leave room group
+        await self.channel_layer.group_discard(
+            self.machine_group_name,
+            self.channel_name
+        )
+
+    # Receive message from room group
+    async def run_data(self, event):
+        run_data = event['run_data']
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'run_data': run_data
+        }))
