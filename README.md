@@ -19,6 +19,16 @@ Project uses Redis as its backing store. To start a Redis server on port 6379, r
 docker run -p 6379:6379 -d redis:2.8
 ```
 
+### Run Django server
+```bash
+python system_test_progress_tracking/manage.py runsever
+```
+
+### Run Virtual System Testing Machine
+```bash
+python virtual_testing_machine/src/run.py
+```
+
 ## Schemas:
 * General scheme
 ![system_test_progress_tracking_overall_scheme](/docs/img/system_test_progress_tracking_overall_scheme.png)
@@ -30,7 +40,7 @@ docker run -p 6379:6379 -d redis:2.8
 ![db_schema](/docs/img/db_scheme.png)
 
 ## Virtual Testing Machine
-##### Scripts execution hierarchy (simplified functions)
+### Scripts execution hierarchy (simplified functions)
 ```yaml
 run_scenario_master("scenario_master.py")
     run_test_scenario("scenario_01.py")
