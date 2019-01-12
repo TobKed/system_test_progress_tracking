@@ -7,7 +7,7 @@ from django.views.generic import (
 )
 
 from tm_api.models import Machine, DryRunData
-from tm_api.pagination import MachineListPagePagination
+from tm_api.pagination import CustomListPageSizePagination
 
 
 def home(request):
@@ -16,7 +16,7 @@ def home(request):
 
 class MachineListView(View):
     template_name = "progress_tracking/machine_list.html"
-    paginate_by = MachineListPagePagination.page_size
+    paginate_by = CustomListPageSizePagination.page_size
 
     def get(self, request):
         params = {
@@ -31,7 +31,7 @@ class MachineDetailView(DetailView):
     model = Machine
     template_name = "progress_tracking/machine_detail.html"
     context_object_name = 'machine'
-    paginate_by = MachineListPagePagination.page_size
+    paginate_by = CustomListPageSizePagination.page_size
 
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)

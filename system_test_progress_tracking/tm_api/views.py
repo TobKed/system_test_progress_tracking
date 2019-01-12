@@ -25,7 +25,7 @@ from .serializers import (
     MachineDryRunDatasSerializer,
 )
 
-from .pagination import MachineListPagePagination
+from .pagination import CustomListPageSizePagination
 
 
 class DryRunView(APIView):
@@ -114,13 +114,13 @@ class MachineLastDataView(APIView):
 class MachineListView(generics.ListAPIView):
     queryset = Machine.objects.all()
     serializer_class = MachineListSerializer
-    pagination_class = MachineListPagePagination
+    pagination_class = CustomListPageSizePagination
 
 
 class MachineDryRunDatasListView(generics.ListAPIView):
     queryset = DryRunData.objects.all()
     serializer_class = MachineDryRunDatasSerializer
-    pagination_class = MachineListPagePagination
+    pagination_class = CustomListPageSizePagination
     lookup_url_kwarg = "pk"
 
     def get_queryset(self, *args, **kwargs):
