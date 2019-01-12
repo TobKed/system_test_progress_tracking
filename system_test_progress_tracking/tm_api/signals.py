@@ -13,14 +13,19 @@ channel_layer = get_channel_layer()
 def send_message_to_channels(sender, instance, **kwargs):
     try:
         machine = instance.dryrundata.machine
+        dry_run_data = instance.dryrundata
         machine_id = machine.pk
 
+        # routing:
+        # path('ws/machine/<int:pk>/last/', consumers.MachineLastRunConsumer)
         serializer_last_data = MachineLastDataSerializer(machine)
         async_to_sync(channel_layer.group_send)(
             f"machine_last_data_{machine_id}",
             {"type": "machine_data", "machine_data": serializer_last_data.data}
         )
 
+        # routing:
+        # path('ws/machine/status/', consumers.MachinesStatusConsumer),
         async_to_sync(channel_layer.group_send)(
             f"machine_status_change",
             {"type": "machine_id_status",
@@ -30,5 +35,18 @@ def send_message_to_channels(sender, instance, **kwargs):
                 }
              }
         )
+
+        # routing
+        # path('ws/machine/<int:pk>/runs/', consumers.MachineRunsStatusConsumer),
+        async_to_sync(channel_layer.group_send)(
+            f"machine_runs_data_{machine_id}",
+            {"type": "run_data",
+             "run_data": {
+                    "id": dry_run_data.pk,
+                    "status": dry_run_data.master_scenario.status,
+                }
+             }
+        )
+
     except:
         pass
