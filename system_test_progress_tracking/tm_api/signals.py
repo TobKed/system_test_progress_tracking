@@ -23,7 +23,12 @@ def send_message_to_channels(sender, instance, **kwargs):
 
         async_to_sync(channel_layer.group_send)(
             f"machine_status_change",
-            {"type": "machine_id", "machine_id": machine_id}
+            {"type": "machine_id_status",
+             "machine_id_status": {
+                    "id": machine_id,
+                    "status": machine.get_last_master_scenario_status()
+                }
+             }
         )
     except:
         pass

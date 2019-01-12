@@ -51,9 +51,9 @@ class MachineStatusConsumer(AsyncWebsocketConsumer):
         )
 
     # Receive message from room group
-    async def machine_id(self, event):
-        machine_id = event['machine_id']
+    async def machine_id_status(self, event):
+        machine_id_status = event['machine_id_status']
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'machine_id': machine_id
+            'machine_id_status': machine_id_status
         }))

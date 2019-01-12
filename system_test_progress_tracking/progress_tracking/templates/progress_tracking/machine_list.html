@@ -22,6 +22,7 @@
                         </thead>
 
                         <tbody>
+                            <!-- TABLE FILLED BY JS-->
                         </tbody>
                     </table>
 
@@ -58,8 +59,8 @@
     machineSocket.onmessage = function(e) {
         console.log("machineSocket.onmessage");
         let data = JSON.parse(e.data);
-        let machineId = data["machine_id"];
-        console.log(machineId);
+        let machineIdStatus = data["machine_id_status"];
+        console.log(machineIdStatus);
         {#fillPageWithData(machineData);#}
     };
 
