@@ -161,6 +161,10 @@ let data = {
 | /password-reset-confirm/\<uidb64\>/\<token\>/ | django.contrib.auth.views.PasswordResetConfirmView | password_reset_confirm |
 | /password-reset/ | django.contrib.auth.views.PasswordResetView | password_reset |
 | /password-reset/done | django.contrib.auth.views.PasswordResetDoneView password_reset_done |
+| **WebSockets:** |
+| /ws/machine/\<int:pk\>/last/' | consumers.MachineLastRunConsumer |
+| /ws/machine/\<int:pk\>/runs/' | consumers.MachineRunsStatusConsumer |
+| /ws/machine/status/' | consumers.MachinesStatusConsumer | 
 
 
 ## Lessons learned
