@@ -1,29 +1,17 @@
+import os
+import sys
 import unittest
 import coverage
-
 import django
 from django.conf import settings
 from django.test.utils import get_runner
-from system_test_progress_tracking.stpt.settings import DATABASES, INSTALLED_APPS, ROOT_URLCONF
 
-SETTINGS_DICT = {
-    "DATABASES": DATABASES,
-    "INSTALLED_APPS": ['django.contrib.admin',
-                       'django.contrib.auth',
-                       'django.contrib.contenttypes',
-                       'django.contrib.sessions',
-                       'django.contrib.messages',
-                       'django.contrib.staticfiles',
-                       'channels',
-                       'django_extensions',
-                       'rest_framework',
-                       'crispy_forms',
-                       'system_test_progress_tracking.stpt',
-                       'system_test_progress_tracking.tm_api',
-                       'system_test_progress_tracking.users',
-                       'system_test_progress_tracking.progress_tracking'],
-    "ROOT_URLCONF": 'system_test_progress_tracking.tm_api.urls'
-}
+
+VIRTUAL_TESTING_MACHINE_DIR = "virtual_testing_machine/"
+DJANGO_PROJECT_DIR = os.path.join(os.getcwd(), "system_test_progress_tracking/")
+
+# for django setup proper imports
+sys.path.insert(0, DJANGO_PROJECT_DIR)
 
 
 COV = coverage.coverage(
@@ -38,10 +26,9 @@ COV.start()
 
 def cov():
     """Runs the unit tests with coverage."""
-    virtual_testing_machine_tests = unittest.TestLoader().discover('virtual_testing_machine/')
-    result = unittest.TextTestRunner(verbosity=2).run(virtual_testing_machine_tests)
-    django_failures = test_django()
-    if result.wasSuccessful() and not django_failures:
+    testing_machine_result = testing_machine_test()
+    progress_tracking_failures = progress_tracking_test()
+    if testing_machine_result.wasSuccessful() and not progress_tracking_failures:
         COV.stop()
         COV.save()
         print('Coverage Summary:')
@@ -50,12 +37,18 @@ def cov():
     return 1
 
 
-def test_django():
-    settings.configure(**SETTINGS_DICT)
+def testing_machine_test():
+    virtual_testing_machine_tests = unittest.TestLoader().discover(VIRTUAL_TESTING_MACHINE_DIR)
+    result = unittest.TextTestRunner(verbosity=2).run(virtual_testing_machine_tests)
+    return result
+
+
+def progress_tracking_test():
+    os.environ['DJANGO_SETTINGS_MODULE'] = 'stpt.settings'
     django.setup()
     TestRunner = get_runner(settings)
-    test_runner = TestRunner(verbosity=2, interactive=True)
-    failures = test_runner.run_tests(['system_test_progress_tracking.tm_api.tests'])
+    test_runner = TestRunner(verbosity=2)
+    failures = test_runner.run_tests(['tm_api.tests'])
     return failures
 
 
