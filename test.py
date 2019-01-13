@@ -6,12 +6,25 @@ from django.conf import settings
 from django.test.utils import get_runner
 from system_test_progress_tracking.stpt.settings import DATABASES, INSTALLED_APPS, ROOT_URLCONF
 
-
 SETTINGS_DICT = {
     "DATABASES": DATABASES,
-    "INSTALLED_APPS": INSTALLED_APPS,
-    "ROOT_URLCONF": ROOT_URLCONF
+    "INSTALLED_APPS": ['django.contrib.admin',
+                       'django.contrib.auth',
+                       'django.contrib.contenttypes',
+                       'django.contrib.sessions',
+                       'django.contrib.messages',
+                       'django.contrib.staticfiles',
+                       'channels',
+                       'django_extensions',
+                       'rest_framework',
+                       'crispy_forms',
+                       'system_test_progress_tracking.stpt',
+                       'system_test_progress_tracking.tm_api',
+                       'system_test_progress_tracking.users',
+                       'system_test_progress_tracking.progress_tracking'],
+    "ROOT_URLCONF": 'system_test_progress_tracking.tm_api.urls'
 }
+
 
 COV = coverage.coverage(
     omit=[
@@ -42,7 +55,7 @@ def test_django():
     django.setup()
     TestRunner = get_runner(settings)
     test_runner = TestRunner(verbosity=2, interactive=True)
-    failures = test_runner.run_tests(['tm_api.tests'])
+    failures = test_runner.run_tests(['system_test_progress_tracking.tm_api.tests'])
     return failures
 
 

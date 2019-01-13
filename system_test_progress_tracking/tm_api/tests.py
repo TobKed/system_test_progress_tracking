@@ -54,6 +54,7 @@ class DryRunViewTest(APITestCase):
         }
 
     def test_post_dry_run(self):
-        response = self.client.post("/tm_api/dry_run/", data=self.test_data_dict, format='json')
+        # response = self.client.post("/tm_api/dry_run/", data=self.test_data_dict, format='json')
+        response = self.client.post("/dry_run/", data=self.test_data_dict, format='json')
         print(response.content)
         self.assertEqual(response.status_code, 201)
