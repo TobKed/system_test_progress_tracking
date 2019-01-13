@@ -17,9 +17,12 @@ sys.path.insert(0, DJANGO_PROJECT_DIR)
 
 COV = coverage.coverage(
     omit=[
-        'test.py',
+        '*test.py',
+        '*tests.py',
         'virtual_testing_machine/test/*',
         'venv/*',
+        '*__init__*',
+        '*/migrations/*'
     ]
 )
 COV.start()
@@ -33,14 +36,14 @@ def cov():
         COV.stop()
         COV.save()
         print('Coverage Summary:')
-        COV.report()
+        COV.report(ignore_errors=True)
         return 0
     return 1
 
 
 def testing_machine_test():
     virtual_testing_machine_tests = unittest.TestLoader().discover(VIRTUAL_TESTING_MACHINE_DIR)
-    result = unittest.TextTestRunner(verbosity=2).run(virtual_testing_machine_tests)
+    result = unittest.TextTestRunner(verbosity=3).run(virtual_testing_machine_tests)
     return result
 
 
