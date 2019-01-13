@@ -16,13 +16,13 @@ class MachineLastRunConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, close_code):
-        # Leave room group
+        # Leave machine group
         await self.channel_layer.group_discard(
             self.machine_group_name,
             self.channel_name
         )
 
-    # Receive message from room group
+    # Receive message from machine group
     async def machine_data(self, event):
         machine_data = event['machine_data']
         # Send message to WebSocket
@@ -44,13 +44,13 @@ class MachinesStatusConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, close_code):
-        # Leave room group
+        # Leave machine group
         await self.channel_layer.group_discard(
             self.machine_group_name,
             self.channel_name
         )
 
-    # Receive message from room group
+    # Receive message from machine group
     async def machine_id_status(self, event):
         machine_id_status = event['machine_id_status']
         # Send message to WebSocket
@@ -73,13 +73,13 @@ class MachineRunsStatusConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, close_code):
-        # Leave room group
+        # Leave machine group
         await self.channel_layer.group_discard(
             self.machine_group_name,
             self.channel_name
         )
 
-    # Receive message from room group
+    # Receive message from machine group
     async def run_data(self, event):
         run_data = event['run_data']
         # Send message to WebSocket
