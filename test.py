@@ -5,6 +5,7 @@ import coverage
 import django
 from django.conf import settings
 from django.test.utils import get_runner
+from django.utils.crypto import get_random_string
 
 
 VIRTUAL_TESTING_MACHINE_DIR = "virtual_testing_machine/"
@@ -45,6 +46,7 @@ def testing_machine_test():
 
 def progress_tracking_test():
     os.environ['DJANGO_SETTINGS_MODULE'] = 'stpt.settings'
+    os.environ['DJANGO_SECRET_KEY'] = get_random_string()
     django.setup()
     TestRunner = get_runner(settings)
     test_runner = TestRunner(verbosity=2)
