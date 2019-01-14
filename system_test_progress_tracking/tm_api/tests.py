@@ -3,6 +3,14 @@ from faker import Faker
 from rest_framework.test import APITestCase
 
 
+def setUpModule():
+    print("setUpModule")
+
+
+def tearDownModule():
+    print("tearDownModule")
+
+
 #TODO
 class BaseScriptModelTest(TestCase):
     pass
