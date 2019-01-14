@@ -3,6 +3,31 @@ from faker import Faker
 from rest_framework.test import APITestCase
 
 
+#TODO
+class BaseScriptModelTest(TestCase):
+    pass
+
+
+#TODO
+class TestModelTest(TestCase):
+    pass
+
+
+#TODO
+class ScenarioModelTest(TestCase):
+    pass
+
+
+#TODO
+class MasterScenarioModelTest(TestCase):
+    pass
+
+
+#TODO
+class DryRunData(TestCase):
+    pass
+
+
 class DryRunViewTest(APITestCase):
     def setUp(self):
         fake = Faker()
