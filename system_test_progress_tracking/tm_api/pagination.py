@@ -18,7 +18,5 @@ class CustomListPageSizePagination(PageNumberPagination):
             "previous_page_number": self.page.previous_page_number() if self.page.has_previous() else None,
             'has_next': self.page.has_next(),
             "next_page_number": self.page.next_page_number() if self.page.has_next() else None,
-            # 'next': self.get_next_link(),
-            # 'previous': self.get_previous_link(),
             'results': data
         })
