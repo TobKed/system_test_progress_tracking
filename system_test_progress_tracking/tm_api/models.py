@@ -101,7 +101,8 @@ class BaseScript(models.Model):
 
     @status.setter
     def status(self, value):
-            self.objects.update(_status=value)
+        self._status=value
+        self.save()
 
     def __str__(self):
         return self.file_name

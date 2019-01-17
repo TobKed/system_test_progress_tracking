@@ -1,6 +1,15 @@
+import random
 from django.test import TestCase
 from faker import Faker
 from rest_framework.test import APITestCase
+from .models import BaseScript, TEST_STATUS_CHOICES
+
+
+fake = Faker()
+
+
+def get_random_status():
+    return random.choice(TEST_STATUS_CHOICES)[1]
 
 
 def setUpModule():
@@ -13,7 +22,33 @@ def tearDownModule():
 
 #TODO
 class BaseScriptModelTest(TestCase):
-    pass
+    def create_base_script(
+            self,
+            file_name=fake.file_name(extension="py"),
+            file_path="/".join(fake.file_path(depth=10).split("/")[:-1]),
+            script=fake.text(),
+            _status=get_random_status(),
+            timestamp_start=fake.date_time(),
+            timestamp_stop=fake.date_time()):
+        return BaseScript.objects.create(
+            file_name=file_name,
+            file_path=file_path,
+            script=script,
+            _status=_status,
+            timestamp_start=timestamp_start,
+            timestamp_stop=timestamp_stop)
+
+    def test_base_script_creation(self):
+        b = self.create_base_script()
+        self.assertTrue(isinstance(b, BaseScript))
+        self.assertEqual(b.__str__(), b.file_name)
+
+    def test_base_script_status_property(self):
+        b = self.create_base_script()
+        self.assertEqual(b._status, b.status)
+        b.status = get_random_status()
+        self.assertEqual(b._status, b.status)
+
 
 
 #TODO
