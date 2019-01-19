@@ -10,15 +10,17 @@ from tm_api.models import (
     MasterScenario,
     DryRunData,
     Machine,
-    TEST_STATUS_CHOICES
+    TEST_STATUS_CHOICES,
 )
 
-
-fake = Faker()
-
-
-def get_random_status():
-    return random.choice(TEST_STATUS_CHOICES)[1]
+from .random_properties import (
+    get_random_machine_name,
+    get_random_status,
+    get_random_file_name,
+    get_random_file_path,
+    get_random_script,
+    get_random_time_stamp,
+)
 
 
 def setUpModule():
@@ -32,12 +34,12 @@ def tearDownModule():
 class BaseScriptModelTest(TestCase):
     def create_base_script(
             self,
-            file_name=fake.file_name(extension="py"),
-            file_path="/".join(fake.file_path(depth=10).split("/")[:-1]),
-            script=fake.text(),
+            file_name=get_random_file_name(),
+            file_path=get_random_file_path(),
+            script=get_random_script(),
             _status=get_random_status(),
-            timestamp_start=fake.date_time(),
-            timestamp_stop=fake.date_time()):
+            timestamp_start=get_random_time_stamp(),
+            timestamp_stop=get_random_time_stamp()):
         return BaseScript.objects.create(
             file_name=file_name,
             file_path=file_path,
@@ -78,53 +80,52 @@ class MasterScenarioModelTest(TestCase):
 
 
 #TODO
-class DryRunData(TestCase):
+class DryRunDataModelTest(TestCase):
     pass
 
 
 class DryRunViewTest(APITestCase):
     def setUp(self):
-        fake = Faker()
         self.test_data_dict = {
-            "machine_name": fake.name(),
-            "timestamp": fake.date_time(),
+            "machine_name": get_random_machine_name(),
+            "timestamp": get_random_time_stamp(),
             "master_scenario": {
-                "file_name": fake.file_name(extension="py"),
-                "file_path": "/".join(fake.file_path(depth=10).split("/")[:-1]),
-                "script": fake.text(),
+                "file_name": get_random_file_name(),
+                "file_path": get_random_file_path(),
+                "script": get_random_script(),
                 "scenarios": [
                     {
-                        "file_name": fake.file_name(extension="py"),
-                        "file_path": "/".join(fake.file_path(depth=10).split("/")[:-1]),
-                        "script": fake.text(),
+                        "file_name": get_random_file_name(),
+                        "file_path": get_random_file_path(),
+                        "script": get_random_script(),
                         "tests": [
                             {
-                                "file_name": fake.file_name(extension="py"),
-                                "file_path": "/".join(fake.file_path(depth=10).split("/")[:-1]),
-                                "script": fake.text(),
+                                "file_name": get_random_file_name(),
+                                "file_path": get_random_file_path(),
+                                "script": get_random_script(),
                             },
                             {
-                                "file_name": fake.file_name(extension="py"),
-                                "file_path": "/".join(fake.file_path(depth=10).split("/")[:-1]),
-                                "script": fake.text(),
+                                "file_name": get_random_file_name(),
+                                "file_path": get_random_file_path(),
+                                "script": get_random_script(),
                             },
 
                         ],
                     },
                     {
-                        "file_name": fake.file_name(extension="py"),
-                        "file_path": "/".join(fake.file_path(depth=10).split("/")[:-1]),
-                        "script": fake.text(),
+                        "file_name": get_random_file_name(),
+                        "file_path": get_random_file_path(),
+                        "script": get_random_script(),
                         "tests": [
                             {
-                                "file_name": fake.file_name(extension="py"),
-                                "file_path": "/".join(fake.file_path(depth=10).split("/")[:-1]),
-                                "script": fake.text(),
+                                "file_name": get_random_file_name(),
+                                "file_path": get_random_file_path(),
+                                "script": get_random_script(),
                             },
                             {
-                                "file_name": fake.file_name(extension="py"),
-                                "file_path": "/".join(fake.file_path(depth=10).split("/")[:-1]),
-                                "script": fake.text(),
+                                "file_name": get_random_file_name(),
+                                "file_path": get_random_file_path(),
+                                "script": get_random_script(),
                             },
                         ],
                     },
