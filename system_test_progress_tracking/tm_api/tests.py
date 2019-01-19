@@ -1,6 +1,7 @@
 import random
 from django.test import TestCase
 from faker import Faker
+from django.db import IntegrityError
 from rest_framework.test import APITestCase
 from .models import BaseScript, TEST_STATUS_CHOICES
 
@@ -20,7 +21,6 @@ def tearDownModule():
     print("tearDownModule")
 
 
-#TODO
 class BaseScriptModelTest(TestCase):
     def create_base_script(
             self,
@@ -46,9 +46,12 @@ class BaseScriptModelTest(TestCase):
     def test_base_script_status_property(self):
         b = self.create_base_script()
         self.assertEqual(b._status, b.status)
+        b.status = "running"
+        self.assertEqual(b._status, "running")
         b.status = get_random_status()
         self.assertEqual(b._status, b.status)
-
+        with self.assertRaises(IntegrityError):
+            b.status = "wrong status"
 
 
 #TODO

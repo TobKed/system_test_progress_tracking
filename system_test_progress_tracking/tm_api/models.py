@@ -101,8 +101,11 @@ class BaseScript(models.Model):
 
     @status.setter
     def status(self, value):
-        self._status=value
-        self.save()
+        if value in [i[0] for i in TEST_STATUS_CHOICES]:
+            self._status = value
+            self.save()
+        else:
+            raise IntegrityError("wrong status cannot be set")
 
     def __str__(self):
         return self.file_name
