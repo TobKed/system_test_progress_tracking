@@ -3,7 +3,15 @@ from django.test import TestCase
 from faker import Faker
 from django.db import IntegrityError
 from rest_framework.test import APITestCase
-from .models import BaseScript, TEST_STATUS_CHOICES
+from tm_api.models import (
+    BaseScript,
+    Test,
+    Scenario,
+    MasterScenario,
+    DryRunData,
+    Machine,
+    TEST_STATUS_CHOICES
+)
 
 
 fake = Faker()
