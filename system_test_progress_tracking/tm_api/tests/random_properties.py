@@ -3,7 +3,7 @@ from faker import Faker
 from tm_api.models import (
     TEST_STATUS_CHOICES
 )
-
+from . import random_properties
 
 fake = Faker()
 
@@ -30,3 +30,16 @@ def get_random_script():
 
 def get_random_time_stamp():
     return fake.date_time()
+
+
+def get_random_base_script_attrs(**kwargs):
+    attrs = {
+        "file_name": random_properties.get_random_file_name(),
+        "file_path": random_properties.get_random_file_path(),
+        "script": random_properties.get_random_script(),
+        "_status": random_properties.get_random_status(),
+        "timestamp_start": random_properties.get_random_time_stamp(),
+        "timestamp_stop": random_properties.get_random_time_stamp()
+    }
+    attrs.update(**kwargs)
+    return attrs
