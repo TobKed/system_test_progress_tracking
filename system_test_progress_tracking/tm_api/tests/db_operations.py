@@ -4,6 +4,7 @@ from django.db import models
 from tm_api.models import (
     Machine,
     BaseScript,
+    MasterScenario
 )
 
 from . import random_properties
@@ -18,21 +19,15 @@ def get_random_obj(model: models.base.ModelBase):
         return model.objects.all()[random_index]
 
 
-def create_base_script(
-        file_name=random_properties.get_random_file_name(),
-        file_path=random_properties.get_random_file_path(),
-        script=random_properties.get_random_script(),
-        _status=random_properties.get_random_status(),
-        timestamp_start=random_properties.get_random_time_stamp(),
-        timestamp_stop=random_properties.get_random_time_stamp()):
-    return BaseScript.objects.create(
-        file_name=file_name,
-        file_path=file_path,
-        script=script,
-        _status=_status,
-        timestamp_start=timestamp_start,
-        timestamp_stop=timestamp_stop)
-
-
 def create_machine(machine_name=random_properties.get_random_machine_name()):
     return Machine.objects.create(machine_name=machine_name)
+
+
+def create_base_script(**kwargs):
+    attrs = random_properties.get_random_base_script_attrs(**kwargs)
+    return BaseScript.objects.create(**attrs)
+
+
+def create_master_scenario(**kwargs):
+    attrs = random_properties.get_random_base_script_attrs(**kwargs)
+    return MasterScenario.objects.create(**attrs)

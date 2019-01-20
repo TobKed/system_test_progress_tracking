@@ -4,6 +4,7 @@ from rest_framework.test import APITestCase
 from tm_api.models import (
     Machine,
     BaseScript,
+    MasterScenario
 )
 
 from . import random_properties
@@ -42,9 +43,21 @@ class MachineModelTest(TestCase):
         self.assertEqual(m.__str__(), m.machine_name)
 
 
-#TODO
-class TestModelTest(TestCase):
-    pass
+class MasterScenarioModelTest(TestCase):
+    def test_master_scenario_creation(self):
+        ms = db_operations.create_master_scenario()
+        self.assertTrue(isinstance(ms, MasterScenario))
+        self.assertEqual(ms.__str__(), ms.file_name)
+        
+    def test_master_scenario_status_property(self):
+        ms = db_operations.create_master_scenario()
+        self.assertEqual(ms._status, ms.status)
+        ms.status = "running"
+        self.assertEqual(ms._status, "running")
+        ms.status = random_properties.get_random_status()
+        self.assertEqual(ms._status, ms.status)
+        with self.assertRaises(IntegrityError):
+            ms.status = "wrong status"
 
 
 #TODO
@@ -53,7 +66,7 @@ class ScenarioModelTest(TestCase):
 
 
 #TODO
-class MasterScenarioModelTest(TestCase):
+class TestModelTest(TestCase):
     pass
 
 
