@@ -43,7 +43,7 @@ def cov():
 
 def testing_machine_test():
     virtual_testing_machine_tests = unittest.TestLoader().discover(VIRTUAL_TESTING_MACHINE_DIR)
-    result = unittest.TextTestRunner(verbosity=3).run(virtual_testing_machine_tests)
+    result = unittest.TextTestRunner(verbosity=2).run(virtual_testing_machine_tests)
     return result
 
 
