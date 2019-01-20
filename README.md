@@ -1,5 +1,9 @@
-# System Test Progress Tracking   
-[![Build Status](https://travis-ci.org/TobKed/system_test_progress_tracking.svg?branch=master)](https://travis-ci.org/TobKed/system_test_progress_tracking) [![codecov](https://codecov.io/gh/TobKed/system_test_progress_tracking/branch/master/graph/badge.svg)](https://codecov.io/gh/TobKed/system_test_progress_tracking)
+# System Test Progress Tracking   [![Build Status](https://travis-ci.org/TobKed/system_test_progress_tracking.svg?branch=master)](https://travis-ci.org/TobKed/system_test_progress_tracking) [![codecov](https://codecov.io/gh/TobKed/system_test_progress_tracking/branch/master/graph/badge.svg)](https://codecov.io/gh/TobKed/system_test_progress_tracking)
+Application for system tests monitoring. The physical machines used for system testing have a built-in python
+         interpreter, however when the test suite is running there is no convenient way to track the test status. My 
+         application solved this problem. A modified test runner sends information in JSON format to the server where 
+         the Django application received and processed them. Users can browse not only the previous results, but also 
+         observe a live preview of the test suite currently running. 
 
 ## How to run project
 
@@ -60,7 +64,7 @@ run_scenario_master("scenario_master.py")
 ### JSON
 Information from Virtual System Testing Machine is sent via POST request to adequate System Test Progress Tracking REST endpoints.
 
-* DRY RUN - scenarios are run built initial json (all information about scripts to run)
+* DRY RUN - run without executing tests, used to build all information about scripts to run
 ```javascript
 // host/tm_api/dry_run/
 let data = {
@@ -112,7 +116,7 @@ let data = {
 }
 ```
 
-* WET RUN - before test run
+* WET RUN - before single test run
 ```javascript
 // host/tm_api/test_start/
 let data = {
@@ -123,7 +127,7 @@ let data = {
 }
 ```
 
-* WET RUN - after test run
+* WET RUN - after single test run
 ```javascript
 // host/tm_api/test_stop/
 let data = {
