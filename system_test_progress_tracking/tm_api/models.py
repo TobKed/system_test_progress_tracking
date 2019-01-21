@@ -124,7 +124,7 @@ class MasterScenario(BaseScript):
     @property
     def tests_status(self):
         if self._status is None:
-            self.objects.update(_status=self._get_status())
+            self._status=self._get_status()
         return self._status
 
     @property
@@ -216,7 +216,7 @@ class Scenario(BaseScript):
     @property
     def status(self):
         if self._status is None:
-            self.objects.update(_status=self._get_status())
+            self._status=self._get_status()
         return self._status
 
     def update_status(self):

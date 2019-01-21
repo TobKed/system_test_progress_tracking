@@ -4,7 +4,9 @@ from rest_framework.test import APITestCase
 from tm_api.models import (
     Machine,
     BaseScript,
-    MasterScenario
+    MasterScenario,
+    Scenario,
+    Test
 )
 
 from . import random_properties
@@ -16,6 +18,16 @@ def setUpModule():
     db_operations.populate_db()
 
 
+def test_basic_status_set(test_obj, instance):
+    test_obj.assertEqual(instance._status, instance.status)
+    instance.status = "running"
+    test_obj.assertEqual(instance._status, "running")
+    instance.status = random_properties.get_random_status()
+    test_obj.assertEqual(instance._status, instance.status)
+    with test_obj.assertRaises(IntegrityError):
+        instance.status = "wrong status"
+
+
 class BaseScriptModelTest(TestCase):
     def test_base_script_creation(self):
         b = db_operations.create_base_script()
@@ -24,13 +36,7 @@ class BaseScriptModelTest(TestCase):
 
     def test_base_script_status_property(self):
         b = db_operations.create_base_script()
-        self.assertEqual(b._status, b.status)
-        b.status = "running"
-        self.assertEqual(b._status, "running")
-        b.status = random_properties.get_random_status()
-        self.assertEqual(b._status, b.status)
-        with self.assertRaises(IntegrityError):
-            b.status = "wrong status"
+        test_basic_status_set(self, b)
 
 
 class MachineModelTest(TestCase):
@@ -48,23 +54,34 @@ class MasterScenarioModelTest(TestCase):
         
     def test_master_scenario_status_property(self):
         ms = db_operations.create_master_scenario()
-        self.assertEqual(ms._status, ms.status)
-        ms.status = "running"
-        self.assertEqual(ms._status, "running")
-        ms.status = random_properties.get_random_status()
-        self.assertEqual(ms._status, ms.status)
-        with self.assertRaises(IntegrityError):
-            ms.status = "wrong status"
+        test_basic_status_set(self, ms)
+
+    def test_tests_status(self):
+        ms = db_operations.get_random_obj(MasterScenario)
+        self.assertTrue(ms.tests_status)
 
 
-#TODO
 class ScenarioModelTest(TestCase):
-    pass
+    def test_scenario_creation(self):
+        s = db_operations.create_scenario()
+        self.assertTrue(isinstance(s, Scenario))
+        self.assertEqual(s.__str__(), s.file_name)
+
+    def test_test_status_property(self):
+        s = db_operations.create_scenario()
+        with self.assertRaises(AttributeError):
+            s.status = "passed"
 
 
-#TODO
 class TestModelTest(TestCase):
-    pass
+    def test_test_creation(self):
+        t = db_operations.create_test()
+        self.assertTrue(isinstance(t, Test))
+        self.assertEqual(t.__str__(), t.file_name)
+
+    def test_test_status_property(self):
+        t = db_operations.create_test()
+        test_basic_status_set(self, t)
 
 
 #TODO

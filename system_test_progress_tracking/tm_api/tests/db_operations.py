@@ -35,6 +35,18 @@ def create_master_scenario(**kwargs):
     return MasterScenario.objects.create(**attrs)
 
 
+def create_scenario(**kwargs):
+    attrs = random_properties.get_random_base_script_attrs(**kwargs)
+    master_scenario = get_random_obj(MasterScenario)
+    return Scenario.objects.create(master_scenario=master_scenario, **attrs)
+
+
+def create_test(**kwargs):
+    attrs = random_properties.get_random_base_script_attrs(**kwargs)
+    scenario = get_random_obj(Scenario)
+    return Test.objects.create(scenario_parent=scenario, **attrs)
+
+
 def populate_db():
     print("populate db ...")
 
