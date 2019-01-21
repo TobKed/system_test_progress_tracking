@@ -4,7 +4,9 @@ from django.db import models
 from tm_api.models import (
     Machine,
     BaseScript,
-    MasterScenario
+    MasterScenario,
+    Scenario,
+    Test
 )
 
 from . import random_properties
@@ -31,3 +33,28 @@ def create_base_script(**kwargs):
 def create_master_scenario(**kwargs):
     attrs = random_properties.get_random_base_script_attrs(**kwargs)
     return MasterScenario.objects.create(**attrs)
+
+
+def populate_db():
+    print("populate db ...")
+
+    # Machine
+    for _ in range(5):
+        Machine.objects.create(machine_name=random_properties.get_random_machine_name())
+
+    # MasterScenario
+    for _ in range(30):
+        attrs = random_properties.get_random_base_script_attrs()
+        MasterScenario.objects.create(**attrs)
+
+    # Scenario
+    for _ in range(100):
+        attrs = random_properties.get_random_base_script_attrs()
+        master_scenario = get_random_obj(MasterScenario)
+        Scenario.objects.create(master_scenario=master_scenario, **attrs)
+
+    # Test
+    for _ in range(300):
+        attrs = random_properties.get_random_base_script_attrs()
+        scenario_parent = get_random_obj(Scenario)
+        Test.objects.create(scenario_parent=scenario_parent, **attrs)

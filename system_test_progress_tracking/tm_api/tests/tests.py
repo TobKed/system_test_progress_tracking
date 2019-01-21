@@ -12,11 +12,8 @@ from . import db_operations
 
 
 def setUpModule():
-    print("setUpModule")
-
-
-def tearDownModule():
-    print("tearDownModule")
+    print("set up tm_api.tests")
+    db_operations.populate_db()
 
 
 class BaseScriptModelTest(TestCase):

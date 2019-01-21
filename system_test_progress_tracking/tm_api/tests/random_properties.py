@@ -5,6 +5,7 @@ from tm_api.models import (
 )
 from . import random_properties
 
+
 fake = Faker()
 
 
