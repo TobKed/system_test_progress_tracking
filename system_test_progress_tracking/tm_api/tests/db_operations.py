@@ -6,7 +6,8 @@ from tm_api.models import (
     BaseScript,
     MasterScenario,
     Scenario,
-    Test
+    Test,
+    DryRunData
 )
 
 from . import random_properties
@@ -47,6 +48,12 @@ def create_test(**kwargs):
     return Test.objects.create(scenario_parent=scenario, **attrs)
 
 
+def create_dry_run_data(machine=get_random_obj(Machine),
+                        timestamp=random_properties.get_random_time_stamp(),
+                        master_scenario=get_random_obj(MasterScenario)):
+    return DryRunData.objects.create(machine=machine, timestamp=timestamp, master_scenario=master_scenario)
+
+
 def populate_db():
     print("populate db ...")
 
@@ -58,6 +65,12 @@ def populate_db():
     for _ in range(30):
         attrs = random_properties.get_random_base_script_attrs()
         MasterScenario.objects.create(**attrs)
+
+    # DryRunData
+    for master_scenario in MasterScenario.objects.all():
+        machine = get_random_obj(Machine)
+        timestamp = random_properties.get_random_time_stamp()
+        DryRunData.objects.create(machine=machine, timestamp=timestamp, master_scenario=master_scenario)
 
     # Scenario
     for _ in range(100):

@@ -186,6 +186,11 @@ class DryRunData(models.Model):
         return f"DryRunData: {self.machine.machine_name} - {self.timestamp}"
 
     def save(self, *args, **kwargs):
+        """
+        before saving new dry run data
+            if any ongoing tests on the machine
+            then set all ongoing tests to unknown
+        """
         query = reduce(operator.or_, (Q(master_scenario___status__icontains=status) for status in STATUS_ONGOING))
         for dry_run_data in DryRunData.objects.filter(query, machine=self.machine):
             dry_run_data.master_scenario.set_all_ongoing_tests_to_unknown()

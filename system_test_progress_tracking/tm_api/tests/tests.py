@@ -6,7 +6,8 @@ from tm_api.models import (
     BaseScript,
     MasterScenario,
     Scenario,
-    Test
+    Test,
+    DryRunData
 )
 
 from . import random_properties
@@ -69,6 +70,7 @@ class ScenarioModelTest(TestCase):
 
     def test_test_status_property(self):
         s = db_operations.create_scenario()
+        #FIXME
         with self.assertRaises(AttributeError):
             s.status = "passed"
 
@@ -84,9 +86,10 @@ class TestModelTest(TestCase):
         test_basic_status_set(self, t)
 
 
-#TODO
 class DryRunDataModelTest(TestCase):
-    pass
+    def test_dry_run_data_creation(self):
+        dr = db_operations.create_dry_run_data()
+        self.assertTrue(isinstance(dr, DryRunData))
 
 
 class DryRunViewTest(APITestCase):
