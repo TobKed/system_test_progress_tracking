@@ -101,7 +101,11 @@ class BaseScript(models.Model):
 
     @status.setter
     def status(self, value):
-            self.objects.update(_status=value)
+        if value in [i[0] for i in TEST_STATUS_CHOICES]:
+            self._status = value
+            self.save()
+        else:
+            raise IntegrityError("wrong status cannot be set")
 
     def __str__(self):
         return self.file_name
@@ -120,7 +124,7 @@ class MasterScenario(BaseScript):
     @property
     def tests_status(self):
         if self._status is None:
-            self.objects.update(_status=self._get_status())
+            self._status=self._get_status()
         return self._status
 
     @property
@@ -182,6 +186,11 @@ class DryRunData(models.Model):
         return f"DryRunData: {self.machine.machine_name} - {self.timestamp}"
 
     def save(self, *args, **kwargs):
+        """
+        before saving new dry run data
+            if any ongoing tests on the machine
+            then set all ongoing tests to unknown
+        """
         query = reduce(operator.or_, (Q(master_scenario___status__icontains=status) for status in STATUS_ONGOING))
         for dry_run_data in DryRunData.objects.filter(query, machine=self.machine):
             dry_run_data.master_scenario.set_all_ongoing_tests_to_unknown()
@@ -212,7 +221,7 @@ class Scenario(BaseScript):
     @property
     def status(self):
         if self._status is None:
-            self.objects.update(_status=self._get_status())
+            self._status=self._get_status()
         return self._status
 
     def update_status(self):
