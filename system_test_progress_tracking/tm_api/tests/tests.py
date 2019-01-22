@@ -88,8 +88,12 @@ class TestModelTest(TestCase):
 
 class DryRunDataModelTest(TestCase):
     def test_dry_run_data_creation(self):
-        dr = db_operations.create_dry_run_data()
+        machine = db_operations.get_random_obj(Machine)
+        timestamp = random_properties.get_random_time_stamp()
+        master_scenario = db_operations.create_master_scenario()
+        dr = db_operations.create_dry_run_data(machine=machine, timestamp=timestamp, master_scenario=master_scenario)
         self.assertTrue(isinstance(dr, DryRunData))
+        self.assertEqual(dr.__str__(), f"DryRunData: {machine.machine_name} - {timestamp}")
 
 
 class DryRunViewTest(APITestCase):
