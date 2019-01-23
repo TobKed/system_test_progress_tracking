@@ -13,7 +13,7 @@ from .views import (
 )
 
 urlpatterns = [
-    path('dry_run/', DryRunView.as_view()),
+    path('dry_run/', DryRunView.as_view(), name='dry-run-input'),
     path('test_start/', TestStartView.as_view()),
     path('test_stop/', TestStopView.as_view()),
 

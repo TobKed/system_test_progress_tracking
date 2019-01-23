@@ -9,9 +9,9 @@ from .views import (
 
 
 urlpatterns = [
-    path('', MachineListView.as_view(),  name='home-view'),
-    path('', MachineListView.as_view(),  name='machine-list-view'),
-    path('machine/<int:pk>', MachineDetailView.as_view(),  name='machine-detail-view'),
-    path('machine/<int:pk>/last', MachineLastDataView.as_view(),  name='machine-last-data-view'),
-    path('machine/run_data/<int:pk>', DryRunDataDetailView.as_view(),  name='dry-run-data-detail-view'),
+    path('', MachineListView.as_view(), name='home-view'),
+    path('', MachineListView.as_view(), name='machine-list-view'),
+    path('machine/<int:pk>', MachineDetailView.as_view(), name='machine-detail-view'),
+    path('machine/<int:pk>/last', MachineLastDataView.as_view(), name='machine-last-data-view'),
+    path('machine/run_data/<int:pk>', DryRunDataDetailView.as_view(), name='dry-run-data-detail-view'),
 ]
