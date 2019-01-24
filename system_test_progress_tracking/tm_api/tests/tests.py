@@ -148,8 +148,10 @@ class DryRunViewTest(APITestCase):
         }
 
     def test_post_dry_run(self):
+        dry_run_count_before = DryRunData.objects.count()
         url = reverse('tm_api:dry-run-input')
         data = self.test_data_dict
         response = self.client.post(url, data, format='json')
-        print(response.content)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        dry_run_count_diff = DryRunData.objects.count() - dry_run_count_before
+        self.assertEqual(dry_run_count_diff, 1)
