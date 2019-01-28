@@ -100,52 +100,7 @@ class DryRunDataModelTest(TestCase):
 
 class DryRunViewTest(APITestCase):
     def setUp(self):
-        self.test_data_dict = {
-            "machine_name": random_properties.get_random_machine_name(),
-            "timestamp": random_properties.get_random_time_stamp(),
-            "master_scenario": {
-                "file_name": random_properties.get_random_file_name(),
-                "file_path": random_properties.get_random_file_path(),
-                "script": random_properties.get_random_script(),
-                "scenarios": [
-                    {
-                        "file_name": random_properties.get_random_file_name(),
-                        "file_path": random_properties.get_random_file_path(),
-                        "script": random_properties.get_random_script(),
-                        "tests": [
-                            {
-                                "file_name": random_properties.get_random_file_name(),
-                                "file_path": random_properties.get_random_file_path(),
-                                "script": random_properties.get_random_script(),
-                            },
-                            {
-                                "file_name": random_properties.get_random_file_name(),
-                                "file_path": random_properties.get_random_file_path(),
-                                "script": random_properties.get_random_script(),
-                            },
-
-                        ],
-                    },
-                    {
-                        "file_name": random_properties.get_random_file_name(),
-                        "file_path": random_properties.get_random_file_path(),
-                        "script": random_properties.get_random_script(),
-                        "tests": [
-                            {
-                                "file_name": random_properties.get_random_file_name(),
-                                "file_path": random_properties.get_random_file_path(),
-                                "script": random_properties.get_random_script(),
-                            },
-                            {
-                                "file_name": random_properties.get_random_file_name(),
-                                "file_path": random_properties.get_random_file_path(),
-                                "script": random_properties.get_random_script(),
-                            },
-                        ],
-                    },
-                ]
-            }
-        }
+        self.test_data_dict = random_properties.get_random_dry_run_data_dict(scenarios_count=2, tests_count=2)
 
     def test_post_dry_run(self):
         dry_run_count_before = DryRunData.objects.count()
