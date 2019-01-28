@@ -149,9 +149,18 @@ class DryRunViewTest(APITestCase):
 
     def test_post_dry_run(self):
         dry_run_count_before = DryRunData.objects.count()
+        master_scenario_count_before = MasterScenario.objects.count()
+        scenario_count_before = Scenario.objects.count()
+        test_count_before = Test.objects.count()
         url = reverse('tm_api:dry-run-input')
         data = self.test_data_dict
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         dry_run_count_diff = DryRunData.objects.count() - dry_run_count_before
+        master_scenario_count_diff = MasterScenario.objects.count() - master_scenario_count_before
+        scenario_count_diff = Scenario.objects.count() - scenario_count_before
+        test_count_diff = Test.objects.count() - test_count_before
         self.assertEqual(dry_run_count_diff, 1)
+        self.assertEqual(master_scenario_count_diff, 1)
+        self.assertEqual(scenario_count_diff, 2)
+        self.assertEqual(test_count_diff, 4)
