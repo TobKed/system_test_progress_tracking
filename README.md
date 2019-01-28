@@ -148,16 +148,16 @@ let data = {
 | /machine/\<int:pk\>/last | progress_tracking.views.MachineLastDataView | machine-last-data-view |
 | /machine/run_data/\<int:pk\> | progress_tracking.views.DryRunDataDetailView | dry-run-data-detail-view |
 | **REST endpoints:** |
-| /tm_api/dry_run/ | tm_api.views.DryRunView |
-| /tm_api/test_start/ | tm_api.views.TestStartView |
-| /tm_api/test_stop/ | tm_api.views.TestStopView |
-| /tm_api/machine_dry_run_datas/\<int:pk\> | tm_api.views.MachineDryRunDatasListView |
-| /tm_api/machine_last_data/\<int:pk\>/ | tm_api.views.MachineLastDataView |
-| /tm_api/machines/ | tm_api.views.MachineListView |
-| /tm_api/master_scenario/\<int:pk\> | tm_api.views.MasterScenarioDetailView |
-| /tm_api/master_scenario_full/\<int:pk\> | tm_api.views.MasterScenarioDetailFullView |
-| /tm_api/scenario/\<int:pk\> | tm_api.views.ScenarioDetailView |
-| /tm_api/test/\<int:pk\> | tm_api.views.TestDetailView |
+| /tm_api/dry_run/ | tm_api.views.DryRunView | dry-run-input |
+| /tm_api/test_start/ | tm_api.views.TestStartView | test-start |
+| /tm_api/test_stop/ | tm_api.views.TestStopView | test-stop |
+| /tm_api/test/\<int:pk\> | tm_api.views.TestDetailView | test-detail |
+| /tm_api/scenario/\<int:pk\> | tm_api.views.ScenarioDetailView | scenario-detail |
+| /tm_api/master_scenario/\<int:pk\> | tm_api.views.MasterScenarioDetailView | master-scenario-detail |
+| /tm_api/master_scenario_full/\<int:pk\> | tm_api.views.MasterScenarioDetailFullView | master-scenario-detail-full |
+| /tm_api/machines/ | tm_api.views.MachineListView | machine-list |
+| /tm_api/machine_dry_run_datas/\<int:pk\> | tm_api.views.MachineDryRunDatasListView | machine-dry-run-datas |
+| /tm_api/machine_last_data/\<int:pk\>/ | tm_api.views.MachineLastDataView | machine-last-data |
 | **User views:** |
 | /login/ | django.contrib.auth.views.LoginView | login |
 | /logout/ | django.contrib.auth.views.LogoutView | logout |
