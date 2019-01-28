@@ -101,6 +101,9 @@ class DryRunDataModelTest(TestCase):
 class DryRunViewTest(APITestCase):
     def setUp(self):
         self.test_data_dict = random_properties.get_random_dry_run_data_dict(scenarios_count=2, tests_count=2)
+        self.master_scenario = self.test_data_dict.get("master_scenario")
+        self.scenarios = self.master_scenario.get("scenarios")
+        self.tests = [test for scenario in self.scenarios for test in scenario.get("tests")]
 
     def test_post_dry_run(self):
         dry_run_count_before = DryRunData.objects.count()
