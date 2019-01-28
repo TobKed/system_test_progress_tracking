@@ -47,7 +47,7 @@ def get_random_base_script_attrs(**kwargs):
 
 
 def get_random_dry_run_data_dict(scenarios_count=None, tests_count=None):
-    scenarios_count = scenarios_count if scenarios_count else random.rdint(1, 5)
+    scenarios_count = scenarios_count if scenarios_count else random.randint(1, 5)
     tests_count = tests_count if tests_count else random.randint(1, 5)
     scenarios = [
         {
