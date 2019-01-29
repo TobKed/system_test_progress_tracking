@@ -100,58 +100,25 @@ class DryRunDataModelTest(TestCase):
 
 class DryRunViewTest(APITestCase):
     def setUp(self):
-        self.test_data_dict = {
-            "machine_name": random_properties.get_random_machine_name(),
-            "timestamp": random_properties.get_random_time_stamp(),
-            "master_scenario": {
-                "file_name": random_properties.get_random_file_name(),
-                "file_path": random_properties.get_random_file_path(),
-                "script": random_properties.get_random_script(),
-                "scenarios": [
-                    {
-                        "file_name": random_properties.get_random_file_name(),
-                        "file_path": random_properties.get_random_file_path(),
-                        "script": random_properties.get_random_script(),
-                        "tests": [
-                            {
-                                "file_name": random_properties.get_random_file_name(),
-                                "file_path": random_properties.get_random_file_path(),
-                                "script": random_properties.get_random_script(),
-                            },
-                            {
-                                "file_name": random_properties.get_random_file_name(),
-                                "file_path": random_properties.get_random_file_path(),
-                                "script": random_properties.get_random_script(),
-                            },
-
-                        ],
-                    },
-                    {
-                        "file_name": random_properties.get_random_file_name(),
-                        "file_path": random_properties.get_random_file_path(),
-                        "script": random_properties.get_random_script(),
-                        "tests": [
-                            {
-                                "file_name": random_properties.get_random_file_name(),
-                                "file_path": random_properties.get_random_file_path(),
-                                "script": random_properties.get_random_script(),
-                            },
-                            {
-                                "file_name": random_properties.get_random_file_name(),
-                                "file_path": random_properties.get_random_file_path(),
-                                "script": random_properties.get_random_script(),
-                            },
-                        ],
-                    },
-                ]
-            }
-        }
+        self.test_data_dict = random_properties.get_random_dry_run_data_dict(scenarios_count=2, tests_count=2)
+        self.master_scenario = self.test_data_dict.get("master_scenario")
+        self.scenarios = self.master_scenario.get("scenarios")
+        self.tests = [test for scenario in self.scenarios for test in scenario.get("tests")]
 
     def test_post_dry_run(self):
         dry_run_count_before = DryRunData.objects.count()
+        master_scenario_count_before = MasterScenario.objects.count()
+        scenario_count_before = Scenario.objects.count()
+        test_count_before = Test.objects.count()
         url = reverse('tm_api:dry-run-input')
         data = self.test_data_dict
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         dry_run_count_diff = DryRunData.objects.count() - dry_run_count_before
+        master_scenario_count_diff = MasterScenario.objects.count() - master_scenario_count_before
+        scenario_count_diff = Scenario.objects.count() - scenario_count_before
+        test_count_diff = Test.objects.count() - test_count_before
         self.assertEqual(dry_run_count_diff, 1)
+        self.assertEqual(master_scenario_count_diff, 1)
+        self.assertEqual(scenario_count_diff, 2)
+        self.assertEqual(test_count_diff, 4)
