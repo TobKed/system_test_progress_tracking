@@ -41,9 +41,9 @@ function getPaginatorDiv(totalPages, pageSize, pageNumber,
             "Items per page: " + pageSize +
         "</button>" +
         "<div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>" +
-            "<a class='dropdown-item' data-page='1' data-page-size='2' href='#'>2</a>" +
-            "<a class='dropdown-item' data-page='1' data-page-size='4' href='#'>4</a>" +
-            "<a class='dropdown-item' data-page='1' data-page-size='6' href='#'>6</a>" +
+            "<a class='dropdown-item' data-page='1' data-page-size='10' href='#'>10</a>" +
+            "<a class='dropdown-item' data-page='1' data-page-size='40' href='#'>40</a>" +
+            "<a class='dropdown-item' data-page='1' data-page-size='100' href='#'>100</a>" +
         "</div>" +
     "</div>");
 
