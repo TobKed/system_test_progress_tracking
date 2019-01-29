@@ -75,6 +75,10 @@ class Machine(models.Model):
         dry_run_data = self.dry_run_datas.first()
         return dry_run_data.master_scenario if dry_run_data else None
 
+    @property
+    def last_dry_run_data(self):
+        return self.dry_run_datas.first()
+
     def get_last_master_scenario_status(self):
         dry_run_data = self.dry_run_datas.first()
         status = dry_run_data.master_scenario.tests_status if dry_run_data else "not-available"

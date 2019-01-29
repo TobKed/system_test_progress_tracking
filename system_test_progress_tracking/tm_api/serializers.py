@@ -94,7 +94,7 @@ class MasterScenarioModelDetailSerializer(serializers.ModelSerializer):
     scenarios       = _ScenarioModelSerializer(many=True, read_only=True)
     duration        = serializers.SerializerMethodField()
     started_ago     = serializers.SerializerMethodField()
-    finished_ago     = serializers.SerializerMethodField()
+    finished_ago    = serializers.SerializerMethodField()
 
     def get_duration(self, obj):
         if obj.timestamp_start and obj.timestamp_stop:
@@ -114,7 +114,7 @@ class MasterScenarioModelDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = MasterScenario
         fields = ("pk", "file_name", "timestamp_start", "started_ago", "timestamp_stop", "finished_ago", "duration",
-                  "status", "tests_statistics", "tests_count", "scenarios_count", "scenarios")
+                  "status", "tests_statistics", "tests_count", "scenarios_count", "scenarios", "dryrundata")
 
 
 class DryRunDataSerializer(serializers.Serializer):
