@@ -1,4 +1,4 @@
-# System Test Progress Tracking   [![Build Status](https://travis-ci.org/TobKed/system_test_progress_tracking.svg?branch=master)](https://travis-ci.org/TobKed/system_test_progress_tracking) [![codecov](https://codecov.io/gh/TobKed/system_test_progress_tracking/branch/master/graph/badge.svg)](https://codecov.io/gh/TobKed/system_test_progress_tracking)
+# System Test Progress Tracking   [![Build Status](https://travis-ci.org/TobKed/system_test_progress_tracking.svg?branch=master)](https://travis-ci.org/TobKed/system_test_progress_tracking) [![codecov](https://codecov.io/gh/TobKed/system_test_progress_tracking/branch/master/graph/badge.svg)](https://codecov.io/gh/TobKed/system_test_progress_tracking) ![](https://img.shields.io/github/license/TobKed/system_test_progress_tracking.svg?style=flat)
 Application for system tests monitoring. The physical machines used for system testing have a built-in python
          interpreter, however when the test suite is running there is no convenient way to track the test status. My 
          application solved this problem. A modified test runner sends information in JSON format to the server where 
