@@ -3,8 +3,9 @@
     <article class="media content-section">
         <div class="media-body">
             <h4 class="article-title">
-                <a href="{% url 'machine-detail-view' machine.pk %}" style="text-decoration: none; color: black;">{{ machine.machine_name }}</a>
+                <a href="{% url 'machine-detail-view' machine.pk %}" style="text-decoration: none; color: black;">{{ machine.machine_name }}</a>  <span class=" ml-3 badge bg-steel-2">last run (autoupdate)</span>
             </h4>
+
             <p id="firstParagraph">
             </p>
 
