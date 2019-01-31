@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="{% static 'progress_tracking/highlight/styles/monokai.css' %}">
+
     <link rel="stylesheet" type="text/css" href="{% static 'progress_tracking/main.css' %}">
 
     {% if title %}
@@ -71,8 +74,17 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+
+<!-- highlight.js -->
+<script src="{% static 'progress_tracking/highlight/highlight.pack.js' %}"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- js-cookie -->
 <script src="{% static 'progress_tracking/js/js.cookie.js' %}"></script>
+
+<!-- main.js -->
 <script src="{% static 'progress_tracking/js/main.js' %}"></script>
+
 
 {% block script %}
 {% endblock %}

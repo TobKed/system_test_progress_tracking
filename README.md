@@ -185,7 +185,8 @@ let data = {
    
 
 ## Links
-* [JavaScript Cookie v2.2.0](https://github.com/js-cookie/js-cookie)
+* [JavaScript Cookie - JavaScript API for handling browser cookies](https://github.com/js-cookie/js-cookie)
+* [highlight.js - Syntax highlighting for the Web](https://highlightjs.org/)
 * [A successful Git branching model - Vincent Driessen blog](https://nvie.com/posts/a-successful-git-branching-model/)
 * [Django Channels - Documentation](https://channels.readthedocs.io/en/latest/)
 * [Django REST framework - Pagination](https://www.django-rest-framework.org/api-guide/pagination/)

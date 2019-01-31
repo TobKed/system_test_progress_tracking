@@ -207,8 +207,7 @@
         let infoModalLabel = $("#infoModalLabel");
         let infoModalBody = $("#infoModal .modal-body");
         let script = data.script;
-        script = script.replace(/\n/g, "<br>");
-        script = "<div class='bg-light'>" + script + "</div>";
+        script = "<pre><code>" + script + "</code></pre>";
         infoModalLabel.text(data.file_name);
         let html = "<div>" +
                 "<p>file name: " + data.file_name + "</p>" +
@@ -217,6 +216,9 @@
                 "<p>stop: " + data.timestamp_stop + "</p>" +
                 "<p>script: </p>" + script;
         infoModalBody.html(html);
+        document.querySelectorAll('code').forEach((block) => {
+            hljs.highlightBlock(block);
+        });
     }
 
     function assingInfoButton() {
