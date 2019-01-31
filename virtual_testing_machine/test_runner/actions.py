@@ -33,30 +33,17 @@ def run_script(script_path, type_=None):
 
     if  type_ in ["scenario_parent", "master"]:
         exec(script_compiled)
-    elif not RUN_DATA.dry_run and type_ =="test_case":
+    elif not RUN_DATA.dry_run and type_ == "test_case":
 
         print("test start")
         RUN_DATA.wet_run_data = WetRunData(file_path=file_path, file_name=file_name)
-        wet_run_dict_data_start = RUN_DATA.wet_run_data.get_wet_start_dict()
-        print("wet_run_dict_data_start:", wet_run_dict_data_start)
-        try:
-            r = requests.post(ENDPOINT_RUN_START, json=wet_run_dict_data_start)
-            print(r.status_code)
-            print(r.content)
-        except Exception as e:
-            print(e)
+        RUN_DATA.last_status = None
+        RUN_DATA.wet_run_data.send_start()
 
         exec(script_compiled)
 
         print("test finished")
-        wet_run_dict_data_stop = RUN_DATA.wet_run_data.get_wet_stop_dict(status=RUN_DATA.last_status)
-        print("wet_run_dict_data_stop:", wet_run_dict_data_stop)
-        try:
-            r = requests.post(ENDPOINT_RUN_STOP, json=wet_run_dict_data_stop)
-            print(r.status_code)
-            print(r.content)
-        except Exception as e:
-            print(e)
+        RUN_DATA.wet_run_data.send_stop(status=RUN_DATA.last_status)
 
     print(f"FINISH - {file_name}")
 

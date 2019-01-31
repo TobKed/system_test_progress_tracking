@@ -1,6 +1,7 @@
 import json
 import random
-from .settings import MACHINE_NAME
+import requests
+from .settings import MACHINE_NAME, ENDPOINT_RUN_START, ENDPOINT_RUN_STOP
 from datetime import datetime
 
 
@@ -135,6 +136,26 @@ class WetRunData(ScriptData):
             "timestamp_stop": str(datetime.now()),
         }
         return {**wet_data, **update}
+
+    def send_start(self):
+        wet_run_dict_data_start = RUN_DATA.wet_run_data.get_wet_start_dict()
+        print("wet_run_dict_data_start:", wet_run_dict_data_start)
+        try:
+            r = requests.post(ENDPOINT_RUN_START, json=wet_run_dict_data_start)
+            print(r.status_code)
+            print(r.content)
+        except Exception as e:
+            print(e)
+
+    def send_stop(self, status):
+        wet_run_dict_data_stop = RUN_DATA.wet_run_data.get_wet_stop_dict(status=status)
+        print("wet_run_dict_data_stop:", wet_run_dict_data_stop)
+        try:
+            r = requests.post(ENDPOINT_RUN_STOP, json=wet_run_dict_data_stop)
+            print(r.status_code)
+            print(r.content)
+        except Exception as e:
+            print(e)
 
     def __str__(self):
         return self.file_name
