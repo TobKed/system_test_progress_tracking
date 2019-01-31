@@ -65,7 +65,7 @@ function getPaginatorDiv(totalPages, pageSize, pageNumber,
  *                                        has_next
  *                                        next_page_number
  */
-function putPaginator(paginatorTarget, fetchDataFunction, data) {
+function putPaginator(paginatorTarget, fetchDataFunction, data, cookieName) {
     paginatorTarget.html("");
     let paginatorDiv = getPaginatorDiv(data.total_pages, data.page_size, data.page_number,
         data.has_previous, data.previous_page_number, data.has_next, data.next_page_number);
@@ -76,6 +76,10 @@ function putPaginator(paginatorTarget, fetchDataFunction, data) {
         let elem = $(this);
         let page = elem.data('page');
         let pageSize = elem.data('pageSize');
+        if (cookieName != undefined) {
+            console.log("test");
+            Cookies.set(Cookies.set(cookieName, pageSize, { expires: 31 }));
+        }
         fetchDataFunction(page, pageSize);
     });
 }

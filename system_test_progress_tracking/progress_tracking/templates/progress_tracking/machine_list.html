@@ -93,7 +93,7 @@
             method: "GET",
             success: function (data) {
                 let pagnatorTarget = $('#pagination');
-                putPaginator(pagnatorTarget, fetchMachineListData, data);
+                putPaginator(pagnatorTarget, fetchMachineListData, data, 'machineListPageSize');
                 fillPageWithData(data);
                 history.pushState({'page': pageNumber, 'pageSize': pageSize}, $(document).prop('title'), URLparameters);
             },

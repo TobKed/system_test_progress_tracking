@@ -19,10 +19,11 @@ class MachineListView(View):
     paginate_by = CustomListPageSizePagination.page_size
 
     def get(self, request):
+        paginate_by = request.COOKIES.get("machineListPageSize", self.paginate_by)
         params = {
             "count": Machine.objects.all().count(),
             "page_number": self.request.GET.get("page", "1"),
-            "page_size": self.request.GET.get("page_size", self.paginate_by),
+            "page_size": self.request.GET.get("page_size", paginate_by),
         }
         return render(request, self.template_name, params)
 
@@ -34,6 +35,7 @@ class MachineDetailView(DetailView):
     paginate_by = CustomListPageSizePagination.page_size
 
     def get_context_data(self, *args, **kwargs):
+        paginate_by = self.request.COOKIES.get("machineDetailPageSize", self.paginate_by)
         context_data = super().get_context_data(*args, **kwargs)
         dry_run_datas = self.object.dry_run_datas.all()
         paginator = Paginator(dry_run_datas, self.paginate_by)
@@ -46,7 +48,7 @@ class MachineDetailView(DetailView):
 
             "count": self.object.dry_run_datas.all().count(),
             "page_number": self.request.GET.get("page", "1"),
-            "page_size": self.request.GET.get("page_size", self.paginate_by),
+            "page_size": self.request.GET.get("page_size", paginate_by),
         }
         context_data.update(extra_context)
         return context_data
