@@ -1,4 +1,11 @@
 {% extends "progress_tracking/base.html" %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home-view' %}">Home</a></li>
+    <li class="breadcrumb-item "><a href="{% url 'machine-detail-view' dry_run_data.machine.pk %}">{{ dry_run_data.machine.machine_name }}</a></li>
+    <li class="breadcrumb-item active">run details</li>
+{% endblock breadcrumb %}
+
 {% block content %}
     <article class="media content-section">
         <div class="media-body">

@@ -78,3 +78,10 @@ ul {
 .bg-ts-waiting {
     background-color: #7b7b7b;
 }
+
+.breadcrumb {
+    padding:5px 10px;
+    margin-bottom:15px;
+    list-style:none;
+    background-color:#f5f5f5;
+    border-radius:2px}
