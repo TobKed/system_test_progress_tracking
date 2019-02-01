@@ -264,8 +264,9 @@ function fillInfoModal(data) {
             "<p>stop: " + data.timestamp_stop + "</p>" +
             "<p>script: </p>" + script;
     infoModalBody.html(html);
-    document.querySelectorAll('code').forEach((block) => {
-        hljs.highlightBlock(block);
+    let codes = document.querySelectorAll('code');
+    [].forEach.call(codes, function (block) {
+        hljs.highlightBlock(block)
     });
 }
 
