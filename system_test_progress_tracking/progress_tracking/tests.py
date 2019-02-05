@@ -70,4 +70,4 @@ class LogInTest(StaticLiveServerTestCase):
         signup_form.setPassword("asdf")
         signup_form.submit()
         elem = self.browser.find_element_by_css_selector('.alert')
-        assert elem is not None
+        self.assertIsNotNone(elem)
