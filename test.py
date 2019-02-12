@@ -53,7 +53,7 @@ def progress_tracking_test():
     django.setup()
     TestRunner = get_runner(settings)
     test_runner = TestRunner(verbosity=2)
-    failures = test_runner.run_tests(['tm_api.tests'])
+    failures = test_runner.run_tests(['tm_api.tests', 'progress_tracking.tests'])
     return failures
 
 
