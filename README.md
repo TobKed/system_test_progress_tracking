@@ -158,6 +158,8 @@ let data = {
 | /tm_api/machines/ | tm_api.views.MachineListView | machine-list |
 | /tm_api/machine_dry_run_datas/\<int:pk\> | tm_api.views.MachineDryRunDatasListView | machine-dry-run-datas |
 | /tm_api/machine_last_data/\<int:pk\>/ | tm_api.views.MachineLastDataView | machine-last-data |
+| **REST documentation:** |
+| /docs/ | | |
 | **User views:** |
 | /login/ | django.contrib.auth.views.LoginView | login |
 | /logout/ | django.contrib.auth.views.LogoutView | logout |
