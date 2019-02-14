@@ -173,10 +173,11 @@ let data = {
 
 
 ## How it looks
-/machine/\<int:pk\>/last
+
+Last run on given machine (autoupdate)
 ![db_schema](/docs/img/last_run_autoupdate_view.gif)
 
-| /machine/run_data/\<int:pk\>
+Details of given run
 ![db_schema](/docs/img/run_details_view.gif)
 
 
