@@ -172,6 +172,14 @@ let data = {
 | /ws/machine/status/' | consumers.MachinesStatusConsumer | 
 
 
+## How it looks
+/machine/\<int:pk\>/last
+![db_schema](/docs/img/last_run_autoupdate_view.gif)
+
+| /machine/run_data/\<int:pk\>
+![db_schema](/docs/img/run_details_view.gif)
+
+
 ## Lessons learned
 * Django
     * Django Channels (WebSockets)
