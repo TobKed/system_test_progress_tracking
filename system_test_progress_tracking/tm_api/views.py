@@ -16,10 +16,7 @@ from .serializers import (
     DryRunDataSerializer,
     TestStartSerializer,
     TestStopSerializer,
-    TestModelSerializer,
-    ScenarioModelSerializer,
-    MasterScenarioModelSerializer,
-    MasterScenarioModelDetailSerializer,
+    BaseScriptModelSerializer,
     MachineLastDataSerializer,
     MachineListSerializer,
     MachineDryRunDatasSerializer,
@@ -79,28 +76,21 @@ class TestStopView(APIView):
 class TestDetailView(APIView):
     def get(self, request, pk, format=None):
         obj = get_object_or_404(Test, pk=pk)
-        serializer = TestModelSerializer(obj, context={"request": request})
+        serializer = BaseScriptModelSerializer(obj, context={"request": request})
         return Response(serializer.data)
 
 
 class ScenarioDetailView(APIView):
     def get(self, request, pk, format=None):
         obj = get_object_or_404(Scenario, pk=pk)
-        serializer = ScenarioModelSerializer(obj, context={"request": request})
+        serializer = BaseScriptModelSerializer(obj, context={"request": request})
         return Response(serializer.data)
 
 
 class MasterScenarioDetailView(APIView):
     def get(self, request, pk, format=None):
         obj = get_object_or_404(MasterScenario, pk=pk)
-        serializer = MasterScenarioModelSerializer(obj, context={"request": request})
-        return Response(serializer.data)
-
-
-class MasterScenarioDetailFullView(APIView):
-    def get(self, request, pk, format=None):
-        obj = get_object_or_404(MasterScenario, pk=pk)
-        serializer = MasterScenarioModelDetailSerializer(obj, context={"request": request})
+        serializer = BaseScriptModelSerializer(obj, context={"request": request})
         return Response(serializer.data)
 
 

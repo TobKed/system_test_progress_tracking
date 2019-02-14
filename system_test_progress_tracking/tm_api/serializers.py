@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.utils import timesince
 from .models import (
     Machine,
+    BaseScript,
     Test,
     Scenario,
     MasterScenario,
@@ -10,18 +11,12 @@ from .models import (
 )
 
 
-class TestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Test
-        fields = ("file_name", "file_path", "script")
-
-
-class TestModelSerializer(serializers.ModelSerializer):
+class BaseScriptModelSerializer(serializers.ModelSerializer):
     timestamp_start = serializers.DateTimeField(format="%d-%m-%Y  %H:%M:%S", required=False, read_only=True)
     timestamp_stop  = serializers.DateTimeField(format="%d-%m-%Y  %H:%M:%S", required=False, read_only=True)
 
     class Meta:
-        model = Test
+        model = BaseScript
         fields = ("file_name", "file_path", "script", "timestamp_start", "timestamp_stop")
 
 
@@ -42,6 +37,12 @@ class TestStopSerializer(serializers.ModelSerializer):
         fields = ("machine_name", "file_name", "file_path", "timestamp_stop", "status")
 
 
+class TestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Test
+        fields = ("file_name", "file_path", "script")
+
+
 class ScenarioSerializer(serializers.ModelSerializer):
     tests = TestSerializer(many=True, required=False)
 
@@ -50,30 +51,12 @@ class ScenarioSerializer(serializers.ModelSerializer):
         fields = ("file_name", "file_path", "script", "tests")
 
 
-class ScenarioModelSerializer(serializers.ModelSerializer):
-    timestamp_start = serializers.DateTimeField(format="%d-%m-%Y  %H:%M:%S", required=False, read_only=True)
-    timestamp_stop  = serializers.DateTimeField(format="%d-%m-%Y  %H:%M:%S", required=False, read_only=True)
-
-    class Meta:
-        model = Scenario
-        fields = ("file_name", "file_path", "script", "timestamp_start", "timestamp_stop")
-
-
 class MasterScenarioSerializer(serializers.ModelSerializer):
     scenarios       = ScenarioSerializer(many=True, required=False)
 
     class Meta:
         model = MasterScenario
         fields = ("file_name", "file_path", "script", "scenarios")
-
-
-class MasterScenarioModelSerializer(serializers.ModelSerializer):
-    timestamp_start = serializers.DateTimeField(format="%d-%m-%Y  %H:%M:%S", required=False, read_only=True)
-    timestamp_stop  = serializers.DateTimeField(format="%d-%m-%Y  %H:%M:%S", required=False, read_only=True)
-
-    class Meta:
-        model = Scenario
-        fields = ("file_name", "file_path", "script", "timestamp_start", "timestamp_stop")
 
 
 class MasterScenarioModelDetailSerializer(serializers.ModelSerializer):

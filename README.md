@@ -154,7 +154,6 @@ let data = {
 | /tm_api/test/\<int:pk\> | tm_api.views.TestDetailView | test-detail |
 | /tm_api/scenario/\<int:pk\> | tm_api.views.ScenarioDetailView | scenario-detail |
 | /tm_api/master_scenario/\<int:pk\> | tm_api.views.MasterScenarioDetailView | master-scenario-detail |
-| /tm_api/master_scenario_full/\<int:pk\> | tm_api.views.MasterScenarioDetailFullView | master-scenario-detail-full |
 | /tm_api/machines/ | tm_api.views.MachineListView | machine-list |
 | /tm_api/machine_dry_run_datas/\<int:pk\> | tm_api.views.MachineDryRunDatasListView | machine-dry-run-datas |
 | /tm_api/machine_last_data/\<int:pk\>/ | tm_api.views.MachineLastDataView | machine-last-data |
