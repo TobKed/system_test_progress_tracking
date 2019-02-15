@@ -26,6 +26,12 @@ from .pagination import CustomListPageSizePagination
 
 
 class DryRunView(APIView):
+    """
+    post:
+    Create a new DryRun instance.
+
+    Endpoint to communicate with testing machine.
+    """
     def post(self, request, format=None):
         serializer = DryRunDataSerializer(data=request.data)
         if serializer.is_valid():
@@ -35,6 +41,13 @@ class DryRunView(APIView):
 
 
 class TestStartView(APIView):
+    """
+    post:
+    Set first waiting test on a given machine to RUNNING status
+    Set previous ongoing tests on given machine to UNKNOWN status
+
+    Endpoint to communicate with testing machine.
+    """
     def post(self, request, format=None):
         serializer = TestStartSerializer(data=request.data)
         if serializer.is_valid():
@@ -54,6 +67,12 @@ class TestStartView(APIView):
 
 
 class TestStopView(APIView):
+    """
+    post:
+    Set last ongoing test on given machine to status given in request.
+
+    Endpoint to communicate with testing machine.
+    """
     def post(self, request, format=None):
         serializer = TestStopSerializer(data=request.data)
         if serializer.is_valid():
@@ -74,6 +93,12 @@ class TestStopView(APIView):
 
 
 class TestDetailView(APIView):
+    """
+    get:
+    Return test details.
+
+    Endpoint for info modal.
+    """
     def get(self, request, pk, format=None):
         obj = get_object_or_404(Test, pk=pk)
         serializer = BaseScriptModelSerializer(obj, context={"request": request})
@@ -81,6 +106,12 @@ class TestDetailView(APIView):
 
 
 class ScenarioDetailView(APIView):
+    """
+    get:
+    Return scenario details.
+
+    Endpoint for info modal.
+    """
     def get(self, request, pk, format=None):
         obj = get_object_or_404(Scenario, pk=pk)
         serializer = BaseScriptModelSerializer(obj, context={"request": request})
@@ -88,6 +119,12 @@ class ScenarioDetailView(APIView):
 
 
 class MasterScenarioDetailView(APIView):
+    """
+    get:
+    Return master scenario details.
+
+    Endpoint for info modal.
+    """
     def get(self, request, pk, format=None):
         obj = get_object_or_404(MasterScenario, pk=pk)
         serializer = BaseScriptModelSerializer(obj, context={"request": request})
@@ -95,6 +132,10 @@ class MasterScenarioDetailView(APIView):
 
 
 class MachineLastDataView(APIView):
+    """
+    get:
+    Return last run data on given machine.
+    """
     def get(self, request, pk, format=None):
         obj = get_object_or_404(Machine, pk=pk)
         serializer = MachineLastDataSerializer(obj, context={"request": request})
@@ -102,12 +143,20 @@ class MachineLastDataView(APIView):
 
 
 class MachineListView(generics.ListAPIView):
+    """
+    get:
+    Return a paginated list of machines.
+    """
     queryset = Machine.objects.all()
     serializer_class = MachineListSerializer
     pagination_class = CustomListPageSizePagination
 
 
 class MachineDryRunDatasListView(generics.ListAPIView):
+    """
+    get:
+    Return a machine details and a paginated list of run datas on given machine.
+    """
     queryset = DryRunData.objects.all()
     serializer_class = MachineDryRunDatasSerializer
     pagination_class = CustomListPageSizePagination

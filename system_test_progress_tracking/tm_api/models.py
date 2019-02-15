@@ -55,14 +55,12 @@ STATUS_FINISHED = [
 class Machine(models.Model):
     machine_name    = models.CharField(max_length=256, unique=True)
 
-    def __str__(self):
-        return self.machine_name
-
     @property
     def master_scenarios(self):
         return MasterScenario.objects.filter(dryrundata__machine=self)
 
     def get_tests(self, file_name, file_path, status=WAITING):
+        """ get ongoing test on given machine """
         return Test.objects.filter(
             file_name=file_name,
             file_path=file_path,
@@ -85,6 +83,9 @@ class Machine(models.Model):
         status = dry_run_data.master_scenario.tests_status if dry_run_data else "not-available"
         return status
 
+    def __str__(self):
+        return self.machine_name
+
     def get_absolute_url(self):
         return reverse("machine-detail-view", kwargs={"pk": self.pk})
 
@@ -96,9 +97,6 @@ class BaseScript(models.Model):
     script          = models.TextField(blank=True, null=True)
     timestamp_start = models.DateTimeField(blank=True, null=True)
     timestamp_stop  = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        ordering = ['-pk']
 
     @property
     def status(self):
@@ -112,12 +110,14 @@ class BaseScript(models.Model):
         else:
             raise IntegrityError("wrong status cannot be set")
 
+    class Meta:
+        ordering = ['-pk']
+
     def __str__(self):
         return self.file_name
 
 
 class MasterScenario(BaseScript):
-
     @property
     def scenarios_count(self):
         return self.scenarios.all().count()
@@ -187,8 +187,14 @@ class DryRunData(models.Model):
     timestamp       = models.DateTimeField(null=True, blank=True)
     master_scenario = models.OneToOneField(MasterScenario, null=True, blank=True, on_delete=models.CASCADE)
 
+    class Meta:
+        ordering = ['-timestamp', '-pk']
+
     def __str__(self):
         return f"DryRunData: {self.machine.machine_name} - {self.timestamp}"
+
+    def get_absolute_url(self):
+        return reverse("dry-run-data-detail-view", kwargs={"pk": self.pk})
 
     def save(self, *args, **kwargs):
         """
@@ -200,12 +206,6 @@ class DryRunData(models.Model):
         for dry_run_data in DryRunData.objects.filter(query, machine=self.machine):
             dry_run_data.master_scenario.set_all_ongoing_tests_to_unknown()
         return super().save(*args, **kwargs)
-
-    def get_absolute_url(self):
-        return reverse("dry-run-data-detail-view", kwargs={"pk": self.pk})
-
-    class Meta:
-        ordering = ['-timestamp', '-pk']
 
 
 class Scenario(BaseScript):
