@@ -1,4 +1,5 @@
 import random
+import pytz
 from faker import Faker
 from tm_api.models import (
     TEST_STATUS_CHOICES
@@ -30,7 +31,7 @@ def get_random_script():
 
 
 def get_random_time_stamp():
-    return fake.date_time()
+    return fake.date_time(tzinfo=pytz.utc)
 
 
 def get_random_base_script_attrs(**kwargs):
