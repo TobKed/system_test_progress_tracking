@@ -30,7 +30,7 @@ python system_test_progress_tracking/manage.py runserver
 
 ### Run Virtual System Testing Machine
 ```bash
-python virtual_testing_machine/src/run.py
+python virtual_testing_machine/run.py
 ```
 
 ## Schemas:
