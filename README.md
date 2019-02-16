@@ -25,7 +25,7 @@ docker run -p 6379:6379 -d redis:2.8
 
 ### Run Django server
 ```bash
-python system_test_progress_tracking/manage.py runsever
+python system_test_progress_tracking/manage.py runserver
 ```
 
 ### Run Virtual System Testing Machine
