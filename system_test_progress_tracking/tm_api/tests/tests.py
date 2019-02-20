@@ -1,6 +1,6 @@
 from django.urls import reverse
 from rest_framework import status
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.db import IntegrityError
 from rest_framework.test import APITestCase
 from tm_api.models import (
@@ -10,6 +10,9 @@ from tm_api.models import (
     Scenario,
     Test,
     DryRunData
+)
+from tm_api.serializers import (
+    BaseScriptModelSerializer
 )
 
 from . import random_properties
@@ -96,6 +99,32 @@ class DryRunDataModelTest(TestCase):
         dr = db_operations.create_dry_run_data(machine=machine, timestamp=timestamp, master_scenario=master_scenario)
         self.assertTrue(isinstance(dr, DryRunData))
         self.assertEqual(dr.__str__(), f"DryRunData: {machine.machine_name} - {timestamp}")
+
+
+class ViewsForInfoModalTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.test = Test.objects.first()
+        self.scenario = Scenario.objects.first()
+        self.master_scenario = MasterScenario.objects.first()
+
+    def test_get_test(self):
+        response = self.client.get(reverse('tm_api:test-detail', kwargs={"pk": self.test.pk}))
+        serializer = BaseScriptModelSerializer(self.test)
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_scenario(self):
+        response = self.client.get(reverse('tm_api:scenario-detail', kwargs={"pk": self.scenario.pk}))
+        serializer = BaseScriptModelSerializer(self.scenario)
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_master_scenario(self):
+        response = self.client.get(reverse('tm_api:master-scenario-detail', kwargs={"pk": self.master_scenario.pk}))
+        serializer = BaseScriptModelSerializer(self.master_scenario)
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
 class DryRunViewTest(APITestCase):
