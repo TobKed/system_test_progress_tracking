@@ -1,0 +1,9 @@
+version: '3'
+services:
+  web:
+    build: .
+    container_name: djangus
+    volumes:
+      - ./system_test_progress_tracking:/src
+    ports:
+      - "8000:8000"
