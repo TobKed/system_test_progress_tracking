@@ -2,8 +2,15 @@ version: '3'
 services:
   web:
     build: .
-    container_name: djangus
+    container_name: stpt
     volumes:
       - ./system_test_progress_tracking:/src
     ports:
       - "8000:8000"
+    depends_on:
+      - redis
+  redis:
+    image: redis:2.8
+    container_name: stpt_redis
+    ports:
+      - '6379:6379'
