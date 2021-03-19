@@ -20,7 +20,7 @@ daphne==2.2.4
 Django==2.1.4
 django-crispy-forms==1.7.2
 django-extensions==2.1.4
-djangorestframework==3.9.0
+djangorestframework==3.11.2
 Faker==1.0.1
 gunicorn==19.9.0
 hiredis==0.3.1
