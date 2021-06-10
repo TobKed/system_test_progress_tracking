@@ -17,7 +17,7 @@ coreschema==0.0.4
 coverage==4.5.2
 crayons==0.1.2
 daphne==2.2.4
-Django==2.1.4
+Django==2.2.24
 django-crispy-forms==1.7.2
 django-extensions==2.1.4
 djangorestframework==3.9.0
