@@ -8,7 +8,7 @@ certifi==2018.11.29
 channels==2.1.6
 channels-redis==2.3.2
 chardet==3.0.4
-codecov==2.0.15
+codecov==2.0.16
 colorama==0.4.1
 configparser==3.7.1
 constantly==15.1.0
